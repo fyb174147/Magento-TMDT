@@ -1,0 +1,22 @@
+# Sensitive files (KHÔNG ĐƯỢC ĐẨY LÊN)
+auth.json
+src/app/etc/env.php
+
+# Docker & OS
+.DS_Store
+Thumbs.db
+.docker/data/
+
+# Magento Generated & Cache
+src/var/*
+src/generated/*
+!src/generated/.gitkeep
+src/pub/static/*
+!src/pub/static/.htaccess
+
+# Dependencies
+src/vendor/
+
+# Temp files
+*.log
+*.swp
