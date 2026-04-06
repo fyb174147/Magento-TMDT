@@ -1,0 +1,21 @@
+server {
+    listen 80;
+    server_name localhost;
+    root /var/www/html/pub; # Magento chạy từ thư mục pub để bảo mật
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_pass php:9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+        # Thêm 3 dòng này để Nginx đợi PHP lâu hơn (3600 giây = 1 tiếng)
+    fastcgi_read_timeout 3600s;
+    fastcgi_connect_timeout 3600s;
+    fastcgi_send_timeout 3600s;
+    }
+}

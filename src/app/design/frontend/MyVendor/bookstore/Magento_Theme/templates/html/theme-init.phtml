@@ -1,0 +1,9 @@
+<script>
+    // Chạy ngay lập tức khi browser đọc đến đây, trước khi render HTML
+    (function() {
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    })();
+</script>

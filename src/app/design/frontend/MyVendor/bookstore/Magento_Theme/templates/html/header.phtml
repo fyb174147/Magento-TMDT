@@ -1,0 +1,33 @@
+<header>
+    <div class="header-main">
+        <div class="header-content">
+            <a href="<?= $block->getUrl('') ?>" class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                <span><?= $block->escapeHtml(__('BookStore')) ?></span>
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="<?= $block->getUrl('') ?>" class="active"><?= $block->escapeHtml(__('Trang chủ')) ?></a></li>
+                <li><a href="#"><?= $block->escapeHtml(__('Sách mới')) ?></a></li>
+                <li><a href="#"><?= $block->escapeHtml(__('Danh mục')) ?></a></li>
+                <li><a href="#"><?= $block->escapeHtml(__('Khuyến mãi')) ?></a></li>
+            </ul>
+
+            <div class="header-actions">
+                <button type="button" class="cart-trigger" onclick="toggleCart(true)">🛒</button>
+                <button type="button" class="btn-login" onclick="openModal('login')"><?= $block->escapeHtml(__('Đăng nhập')) ?></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-search-static">
+        <div class="container-center">
+            <form class="search-form" action="<?= $block->getUrl('catalogsearch/result') ?>" method="get">
+                <div class="search-input-wrapper">
+                    <input type="text" name="q" placeholder="<?= $block->escapeHtml(__('Tìm tên sách, tác giả, thể loại...')) ?>" autocomplete="off">
+                    <button type="submit" class="btn-search-inner">🔍</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</header>

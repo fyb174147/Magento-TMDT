@@ -1,0 +1,36 @@
+<?php
+/**
+ * Custom Footer Template cho Bookstore
+ */
+?>
+<footer>
+    <div class="footer-top">
+        <div class="container footer-content"> <div class="footer-col brand-info">
+                <div class="logo">BookStore</div>
+                <p><?= $block->escapeHtml(__('Nơi kết nối đam mê tri thức.')) ?></p>
+            </div>
+            
+            <div class="footer-col">
+                <h4><?= $block->escapeHtml(__('Khám phá')) ?></h4>
+                <ul class="footer-links">
+                    <li onclick="navigateTo('new-books')"><?= $block->escapeHtml(__('Sách mới')) ?></li>
+                    <li onclick="navigateTo('deals')"><?= $block->escapeHtml(__('Khuyến mãi')) ?></li>
+                    <li onclick="navigateTo('categories')"><?= $block->escapeHtml(__('Danh mục')) ?></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4><?= $block->escapeHtml(__('Hỗ trợ')) ?></h4>
+                <ul class="footer-links">
+                    <li><?= $block->escapeHtml(__('Điều khoản sử dụng')) ?></li>
+                    <li><?= $block->escapeHtml(__('Chính sách bảo mật')) ?></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container"> <p>&copy; <?= date('Y') ?> BookStore Project. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
