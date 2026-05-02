@@ -2,15 +2,18 @@
     <div class="header-main">
         <div class="header-content">
             <a href="<?= $block->getUrl('') ?>" class="logo">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                <svg style="width: 24px; height: 24px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="#0095ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
                 <span><?= $block->escapeHtml(__('BookStore')) ?></span>
             </a>
 
             <ul class="nav-menu">
-                <li><a href="<?= $block->getUrl('') ?>" class="active"><?= $block->escapeHtml(__('Trang chủ')) ?></a></li>
-                <li><a href="#"><?= $block->escapeHtml(__('Sách mới')) ?></a></li>
-                <li><a href="#"><?= $block->escapeHtml(__('Danh mục')) ?></a></li>
-                <li><a href="#"><?= $block->escapeHtml(__('Khuyến mãi')) ?></a></li>
+                <li><a href="<?= $block->getUrl('') ?>"><?= __('Trang chủ') ?></a></li>
+                <li><a href="<?= $block->getUrl('new-books') ?>"><?= __('Sách mới') ?></a></li>
+                <li><a href="<?= $block->getUrl('categories') ?>"><?= __('Danh mục') ?></a></li>
+                <li><a href="<?= $block->getUrl('promotions') ?>"><?= __('Khuyến mãi') ?></a></li>
             </ul>
 
             <div class="header-actions">
