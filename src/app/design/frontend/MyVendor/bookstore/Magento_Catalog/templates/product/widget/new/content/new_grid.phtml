@@ -1,0 +1,80 @@
+<?php
+/**
+ * Template widget Sách mới + Nhãn giảm giá
+ * @var $block \Magento\Catalog\Block\Product\Widget\NewWidget
+ */
+if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())) {
+    $type = 'widget-new-grid';
+    $mode = 'grid';
+    $image = 'new_products_content_widget_grid';
+    $items = $block->getProductCollection()->getItems();
+}
+?>
+
+<?php if ($exist) :?>
+    <div class="block widget block-new-products <?= $mode ?>">
+        <div class="block-content">
+            <div class="products-<?= $mode ?> <?= $mode ?>">
+                <ol class="product-items <?= $type ?>">
+                    <?php foreach ($items as $_item) :?>
+                        <?php 
+                            // 1. TÍNH TOÁN % GIẢM GIÁ
+                            $price = $_item->getPrice();
+                            $specialPrice = $_item->getSpecialPrice();
+                            $discount = 0;
+                            if ($specialPrice > 0 && $price > $specialPrice) {
+                                $discount = round((($price - $specialPrice) / $price) * 100);
+                            }
+                            
+                            // 2. GÁN CLASS ĐỂ CSS VIỀN (CAM NẾU SALE, XANH NẾU MỚI)
+                            $itemClass = ($discount > 0) ? 'is-sale-item' : 'is-new-item';
+                        ?>
+                        <li class="product-item <?= $itemClass ?>">
+                            <div class="product-item-info">
+                                <div class="product-photo-container">
+                                    <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="product-item-photo">
+                                        <?= $block->getImage($_item, $image)->toHtml() ?>
+                                    </a>
+                                    <?php if ($discount > 0): ?>
+                                        <div class="product-badge-sale">-<?= $discount ?>%</div>
+                                    <?php endif; ?>
+                                </div>
+                                
+                                <div class="product-item-details">
+                                    <strong class="product-item-name">
+                                        <a title="<?= $block->escapeHtml($_item->getName()) ?>"
+                                           href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>"
+                                           class="product-item-link">
+                                            <?= $block->escapeHtml($_item->getName()) ?>
+                                        </a>
+                                    </strong>
+                                    
+                                    <div class="price-box">
+                                        <?= $block->getProductPriceHtml($_item, $type); ?>
+                                    </div>
+
+                                    <div class="product-item-actions">
+                                        <div class="actions-primary">
+                                            <?php if ($_item->isSaleable()) :?>
+                                                <?php
+                                                    $postDataHelper = $this->helper(Magento\Framework\Data\Helper\PostHelper::class);
+                                                    $postData = $postDataHelper->getPostData(
+                                                        $block->escapeUrl($block->getAddToCartUrl($_item)),
+                                                        ['product' => (int) $_item->getEntityId()]
+                                                    )
+                                                ?>
+                                                <button class="action tocart primary" data-post='<?= $postData ?>' type="button">
+                                                    <span><?= __('Thêm vào giỏ') ?></span>
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach ?>
+                </ol>
+            </div>
+        </div>
+    </div>
+<?php endif;?>

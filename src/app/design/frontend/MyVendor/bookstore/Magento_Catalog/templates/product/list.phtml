@@ -1,0 +1,48 @@
+<?php
+/** @var \Magento\Catalog\Block\Product\ListProduct $block */
+$_productCollection = $block->getLoadedProductCollection();
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+?>
+
+<?php if (!$_productCollection->count()): ?>
+    <div class="message info empty"><div><?= __('Không tìm thấy cuốn sách nào.') ?></div></div>
+<?php else: ?>
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-8 p-4">
+        <?php foreach ($_productCollection as $_product): ?>
+            <div class="book-card border rounded-xl overflow-hidden hover:shadow-2xl transition duration-300 bg-white group">
+                <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>" class="block relative aspect-[3/4]">
+                    <img src="<?= $block->escapeUrl($block->getImage($_product, 'category_page_grid')->getImageUrl()) ?>" 
+                         alt="<?= $block->escapeHtml($_product->getName()) ?>"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </a>
+                
+                <div class="p-4">
+                    <h3 class="text-sm font-semibold h-10 overflow-hidden mb-2">
+                        <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>" class="hover:text-blue-600">
+                            <?= $block->escapeHtml($_product->getName()) ?>
+                        </a>
+                    </h3>
+
+                    <div class="price-container flex flex-col">
+                        <?php if ($_product->getSpecialPrice()): ?>
+                            <span class="text-xs text-gray-400 line-through">
+                                <?= number_format($_product->getPrice(), 0, ',', '.') ?>đ
+                            </span>
+                            <span class="text-red-600 font-bold text-lg">
+                                <?= number_format($_product->getSpecialPrice(), 0, ',', '.') ?>đ
+                            </span>
+                        <?php else: ?>
+                            <span class="text-gray-900 font-bold text-lg">
+                                <?= number_format($_product->getPrice(), 0, ',', '.') ?>đ
+                            </span>
+                        <?php endif; ?>
+                    </div>
+
+                    <button class="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg opacity-0 group-hover:opacity-100 transition duration-300">
+                        Xem chi tiết
+                    </button>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>

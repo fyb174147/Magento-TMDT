@@ -1,21 +1,46 @@
+<?php
+/** @var \Magento\Theme\Block\Html\Header $block */
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->create(\Magento\Customer\Model\Session::class);
+$isLoggedIn = $customerSession->isLoggedIn();
+$customerName = $isLoggedIn ? $customerSession->getCustomer()->getName() : '';
+?>
+
 <header>
     <div class="header-main">
         <div class="header-content">
             <a href="<?= $block->getUrl('') ?>" class="logo">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                <span><?= $block->escapeHtml(__('BookStore')) ?></span>
+                <svg style="width: 24px; height: 24px; flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="#0095ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+                <span>BookStore</span>
             </a>
 
             <ul class="nav-menu">
-                <li><a href="<?= $block->getUrl('') ?>" class="active"><?= $block->escapeHtml(__('Trang chủ')) ?></a></li>
-                <li><a href="#"><?= $block->escapeHtml(__('Sách mới')) ?></a></li>
-                <li><a href="#"><?= $block->escapeHtml(__('Danh mục')) ?></a></li>
-                <li><a href="#"><?= $block->escapeHtml(__('Khuyến mãi')) ?></a></li>
+                <li><a href="<?= $block->getUrl('') ?>"><?= __('Trang chủ') ?></a></li>
+                <li><a href="<?= $block->getUrl('new-books') ?>"><?= __('Sách mới') ?></a></li>
+                <li><a href="<?= $block->getUrl('promotions') ?>"><?= __('Khuyến mãi') ?></a></li>
             </ul>
 
             <div class="header-actions">
-                <button type="button" class="cart-trigger" onclick="toggleCart(true)">🛒</button>
-                <button type="button" class="btn-login" onclick="openModal('login')"><?= $block->escapeHtml(__('Đăng nhập')) ?></button>
+                <?php if ($isLoggedIn): ?>
+                    <div class="user-account-wrapper">
+                        <button class="user-trigger">
+                            Chào, <strong><?= $block->escapeHtml($customerName) ?></strong> ▼
+                        </button>
+                        <ul class="user-dropdown-menu">
+                            <li><a href="<?= $block->getUrl('customer/account') ?>"><?= __('Thông tin cá nhân') ?></a></li>
+                            <li><a href="<?= $block->getUrl('checkout/cart') ?>"><?= __('Giỏ hàng của tôi') ?></a></li>
+                            <li class="divider"></li>
+                            <li><a href="<?= $block->getUrl('customer/account/logout') ?>" class="logout-link"><?= __('Đăng xuất') ?></a></li>
+                        </ul>
+                    </div>
+                <?php else: ?>
+                    <a href="<?= $block->getUrl('customer/account/login') ?>" class="btn-login-link">
+                        <?= __('Đăng nhập') ?>
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -24,10 +49,54 @@
         <div class="container-center">
             <form class="search-form" action="<?= $block->getUrl('catalogsearch/result') ?>" method="get">
                 <div class="search-input-wrapper">
-                    <input type="text" name="q" placeholder="<?= $block->escapeHtml(__('Tìm tên sách, tác giả, thể loại...')) ?>" autocomplete="off">
+                    <input type="text" name="q" placeholder="<?= __('Tìm tên sách, tác giả...') ?>" autocomplete="off">
                     <button type="submit" class="btn-search-inner">🔍</button>
                 </div>
             </form>
         </div>
     </div>
 </header>
+
+<style>
+    /* Style cho Dropdown Người dùng */
+    .user-account-wrapper { position: relative; display: inline-block; }
+    
+    .user-trigger {
+        background: #f1f5f9; border: none; padding: 10px 18px;
+        border-radius: 12px; cursor: pointer; font-family: inherit;
+        color: var(--text-main); transition: 0.3s;
+    }
+    .user-trigger:hover { background: #e2e8f0; }
+
+    .user-dropdown-menu {
+        position: absolute; right: 0; top: 110%; width: 220px;
+        background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        list-style: none; padding: 8px 0; margin: 0;
+        display: none; z-index: 1001;
+    }
+    
+    /* Hiện dropdown khi hover vào wrapper */
+    .user-account-wrapper:hover .user-dropdown-menu { display: block; }
+
+    .user-dropdown-menu li a {
+        display: block; padding: 10px 20px; color: var(--text-main);
+        text-decoration: none; font-size: 14px; font-weight: 600;
+    }
+    .user-dropdown-menu li a:hover { background: #f8fafc; color: #0095ff; }
+    .user-dropdown-menu .divider { height: 1px; background: #e2e8f0; margin: 8px 0; }
+    .user-dropdown-menu .logout-link { color: #ef4444; }
+
+    /* Nút đăng nhập dạng link */
+    .btn-login-link {
+        background: #0095ff; color: #fff !important; padding: 10px 25px;
+        border-radius: 12px; text-decoration: none; font-weight: 800;
+    }
+
+    /* Các CSS cũ của bạn giữ nguyên bên dưới... */
+    .btn-theme-toggle { background: #f1f5f9; border: none; width: 42px; height: 42px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .dark-icon { display: none; }
+    [data-theme='dark'] .light-icon { display: none; }
+    [data-theme='dark'] .dark-icon { display: block; }
+    [data-theme='dark'] .user-dropdown-menu { background: #1e293b; border-color: #334155; }
+</style>

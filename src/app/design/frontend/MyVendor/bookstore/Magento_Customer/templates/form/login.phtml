@@ -1,0 +1,83 @@
+<?php
+/** @var \Magento\Customer\Block\Form\Login $block */
+/** @var $escaper \Magento\Framework\Escaper */
+?>
+<div class="login-container-wrapper">
+    <div class="login-card">
+        <div class="login-header">
+            <h2><?= $escaper->escapeHtml(__('Đăng nhập')) ?></h2>
+            <p><?= $escaper->escapeHtml(__('Mừng bạn quay trở lại với BookStore')) ?></p>
+        </div>
+
+        <div class="block-content">
+            <form class="form form-login"
+                  action="<?= $escaper->escapeUrl($block->getPostActionUrl()) ?>"
+                  method="post"
+                  id="login-form"
+                  data-mage-init='{"validation":{}}'>
+                <?= $block->getBlockHtml('formkey') ?>
+                
+                <div class="field email required">
+                    <label class="label" for="email"><span><?= $escaper->escapeHtml(__('Email')) ?></span></label>
+                    <div class="control">
+                        <input name="login[username]" 
+                               value="<?= $escaper->escapeHtmlAttr($block->getUsername()) ?>"
+                               id="email" type="email" class="input-text"
+                               placeholder="name@example.com"
+                               data-validate="{required:true, 'validate-email':true}">
+                    </div>
+                </div>
+
+                <div class="field password required">
+                    <label for="pass" class="label"><span><?= $escaper->escapeHtml(__('Mật khẩu')) ?></span></label>
+                    <div class="control">
+                        <input name="login[password]" type="password"
+                               class="input-text" id="password"
+                               placeholder="••••••••"
+                               data-validate="{required:true}">
+                    </div>
+                </div>
+
+                <div class="actions-toolbar">
+                    <div class="secondary">
+                        <a class="action remind" href="<?= $escaper->escapeUrl($block->getForgotPasswordUrl()) ?>">
+                            <span><?= $escaper->escapeHtml(__('Quên mật khẩu?')) ?></span>
+                        </a>
+                    </div>
+                    <div class="primary">
+                        <button type="submit" class="action login primary-btn-full" name="send" id="send2">
+                            <span><?= $escaper->escapeHtml(__('Đăng nhập ngay')) ?></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="social-divider">
+                <span><?= $escaper->escapeHtml(__('hoặc tiếp tục với')) ?></span>
+            </div>
+
+            <div class="social-actions">
+                <button type="button" class="btn-google-login" onclick="window.location.href='#'">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                    <span><?= $escaper->escapeHtml(__('Đăng nhập với Google')) ?></span>
+                </button>
+            </div>
+
+            <div class="login-footer">
+                <p><?= $escaper->escapeHtml(__('Chưa có tài khoản?')) ?> 
+                    <a href="<?= $escaper->escapeUrl($block->getCreateAccountUrl()) ?>"><?= $escaper->escapeHtml(__('Đăng ký ngay')) ?></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Customer/js/block-submit-on-send": {
+                "formId": "login-form"
+            }
+        }
+    }
+</script>

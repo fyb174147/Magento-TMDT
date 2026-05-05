@@ -3,10 +3,15 @@ services:
     image: mysql:8.0
     container_name: magento-db
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: magento_db
+      # Sử dụng biến từ file .env
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
     volumes:
       - db_data:/var/lib/mysql
+    deploy:
+      resources:
+        limits:
+          memory: 1G
     restart: always
 
   opensearch:
@@ -14,9 +19,13 @@ services:
     container_name: magento-os
     environment:
       - discovery.type=single-node
-      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "OPENSEARCH_JAVA_OPTS=${OS_JAVA_OPTS}"
       - DISABLE_INSTALL_DEMO_CONFIG=true
-      - DISABLE_SECURITY_PLUGIN=true # Tắt bảo mật để cài đặt nội bộ cho dễ
+      - DISABLE_SECURITY_PLUGIN=true
+    deploy:
+      resources:
+        limits:
+          memory: 1.5G
     restart: always
 
   php:
@@ -26,6 +35,16 @@ services:
     container_name: magento-php
     volumes:
       - ./src:/var/www/html
+    environment:
+      # Tăng giới hạn RAM cho PHP để fix lỗi Admin lag
+      - PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT}
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    depends_on:
+      - db
+      - opensearch
     restart: always
 
   nginx:

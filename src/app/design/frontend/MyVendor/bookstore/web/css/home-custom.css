@@ -1,0 +1,69 @@
+/* Đường dẫn: web/css/home-custom.css */
+.hero-banner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 80px 20px; background: linear-gradient(135px, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 40px; margin-top: 30px;
+}
+.hero-banner h1 { font-size: 3.5rem; font-weight: 900; line-height: 1.1; color: #1e293b; }
+
+.service-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px;
+}
+.service-item {
+    text-align: center; padding: 30px; background: #fff; border-radius: 24px;
+    border: 1px solid #e2e8f0; transition: 0.3s;
+}
+
+.category-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px;
+}
+.category-card {
+    background: #f8fafc; border-radius: 28px; padding: 30px 20px;
+    text-align: center; transition: 0.3s; text-decoration: none !important;
+}
+
+/* Ép phần Đăng nhập thành Modal ẩn */
+.modal-overlay, #authModal {
+    position: fixed !important;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Nền mờ */
+    z-index: 9999;
+    display: none; /* Ẩn đi, chỉ hiện khi click */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Khi có class active thì mới hiện */
+.modal-overlay.active {
+    display: flex !important;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Sửa Layout Footer */
+footer .footer-content {
+    display: flex !important;
+    justify-content: space-between; /* Đẩy các cột ra xa nhau */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+footer .footer-col {
+    flex: 1; /* Chia đều không gian cho mỗi cột */
+    text-align: left;
+}
+
+footer .footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}

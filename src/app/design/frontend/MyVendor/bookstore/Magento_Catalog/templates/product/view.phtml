@@ -1,0 +1,64 @@
+<?php
+/** @var $block \Magento\Catalog\Block\Product\View */
+$_product = $block->getProduct();
+?>
+<div class="product-detail-container">
+    <div class="product-view-main">
+        <div class="product-media">
+            <div class="image-wrapper">
+                <img src="<?= $block->getImage($_product, 'product_page_image_medium')->getImageUrl() ?>" 
+                     alt="<?= $_product->getName() ?>">
+            </div>
+        </div>
+
+        <div class="product-info-main">
+            <div class="product-breadcrumb">
+                <a href="<?= $block->getUrl('') ?>">Trang chủ</a> / <span>Chi tiết sách</span>
+            </div>
+            
+            <h1 class="product-title"><?= $_product->getName() ?></h1>
+            
+            <div class="product-meta">
+                <span class="author">
+                    Tác giả: <strong><?= $_product->getAttributeText('author') ?: 'Đang cập nhật' ?></strong>
+                </span>
+            </div>
+
+            <div class="product-price-box">
+                <span class="price"><?= number_format($_product->getFinalPrice(), 0, ',', '.') ?>đ</span>
+                <?php if ($_product->getSpecialPrice()): ?>
+                    <span class="old-price"><?= number_format($_product->getPrice(), 0, ',', '.') ?>đ</span>
+                <?php endif; ?>
+            </div>
+
+            <div class="product-short-description">
+                <h3>Tóm tắt nội dung</h3>
+                <p><?= $_product->getShortDescription() ?: 'Đang cập nhật nội dung cho cuốn sách này...' ?></p>
+            </div>
+
+            <div class="product-actions">
+                <form data-role="tocart-form" action="<?= $block->getSubmitUrl($_product) ?>" method="post">
+                    <?= $block->getBlockHtml('formkey') ?>
+                    <div class="qty-selector">
+                        <label>Số lượng:</label>
+                        <input type="number" name="qty" value="1" min="1">
+                    </div>
+                    <button type="submit" class="btn-add-to-cart">
+                        Thêm vào giỏ hàng
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="related-products-section">
+        <div class="section-header">
+            <h2>Sách bạn có thể thích</h2>
+        </div>
+        <?php /* <?= $block->getChildHtml('catalog.product.related') ?> */ ?>
+    </div>
+
+    <div class="product-reviews-section">
+        <?= $block->getChildHtml('reviews') ?>
+    </div>
+</div>

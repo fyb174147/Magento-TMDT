@@ -1,0 +1,19 @@
+.products-grid .product-items .product-item {
+    background: #ffffff !important;
+    border: 3px solid #ff4d00 !important; /* Ép viền cam hiện lên */
+    border-radius: 20px !important;
+    padding: 20px !important;
+    box-shadow: 0 4px 10px rgba(255, 77, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+    box-sizing: border-box !important;
+}
+
+.products-grid .product-items .product-item:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 15px 30px rgba(255, 77, 0, 0.2) !important;
+}
+
+/* Đổi màu gạch chân tiêu đề trang Khuyến mãi */
+.section-header h2:after {
+    background: #ff4d00 !important; /* Màu cam rực rỡ */
+}

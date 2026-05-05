@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Magento_Theme::js/theme-switcher.js"/>
+        <link src="Magento_Theme::js/theme-custom.js"/>
+    </head>
     <body>
         <referenceBlock name="header.container" remove="true"/>
         <referenceBlock name="footer-container" remove="true"/>
-        <referenceBlock name="breadcrumbs" remove="true"/> <referenceContainer name="page.wrapper">
+        <referenceBlock name="breadcrumbs" remove="true"/> 
+        <referenceBlock name="report.bugs" remove="true"/>
+
+        <referenceContainer name="page.wrapper">
             <block class="Magento\Framework\View\Element\Template" name="custom.header" 
-                   template="Magento_Theme::html/header.phtml" before="main.content">
-                
-                <block class="Magento\Framework\View\Element\Template" name="theme.switcher" 
-                       template="Magento_Theme::html/theme-toggle.phtml"/>
-            </block>
+                   template="Magento_Theme::html/header.phtml" before="main.content"/>
         </referenceContainer>
 
         <referenceContainer name="page.wrapper">
             <container name="custom.footer.wrapper" as="custom_footer_wrapper" after="main.content" label="Custom Footer Container">
                 <block class="Magento\Framework\View\Element\Template" name="custom.footer" 
                        template="Magento_Theme::html/footer.phtml"/>
-                
-                <block class="Magento\Framework\View\Element\Template" name="custom.modals" 
-                       template="Magento_Theme::html/modals.phtml"/>
             </container>
         </referenceContainer>
 

@@ -1,30 +1,36 @@
-/**
- * Logic điều khiển giao diện (Toggle theme, modals, navigation)
- */
 define([
     'jquery'
 ], function ($) {
     'use strict';
 
     return function (config, element) {
-        window.toggleTheme = function() {
-            const body = document.body;
-            const isDark = body.getAttribute('data-theme') === 'dark';
-            isDark ? body.removeAttribute('data-theme') : body.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', isDark ? 'light' : 'dark');
-        };
-
+        // Hàm mở Modal Đăng nhập
         window.openModal = function(view) { 
-            $('#authModal').css('display', 'flex');
-            window.switchAuth(view);
+            $('#authModal').addClass('active'); // Dùng class thay vì .css('display')
+            if (typeof window.switchAuth === 'function') {
+                window.switchAuth(view);
+            }
         };
 
-        window.closeModal = function() { $('#authModal').hide(); };
+        window.closeModal = function() { 
+            $('#authModal').removeClass('active'); 
+        };
 
+        // Hàm mở/đóng Giỏ hàng - Class phải là 'active' để khớp với CSS
         window.toggleCart = function(open) { 
-            $('#cart-sidebar').toggleClass('open', open); 
+            if (open) {
+                $('#cart-sidebar').addClass('active');
+                $('body').addClass('_has-modal'); // Chống cuộn trang
+            } else {
+                $('#cart-sidebar').removeClass('active');
+                $('body').removeClass('_has-modal');
+            }
         };
 
-        // Các logic khác...
+        // Đóng modal khi click ra ngoài nền mờ
+        $(document).on('click', '.sidebar-overlay, .modal-overlay', function() {
+            window.closeModal();
+            window.toggleCart(false);
+        });
     };
 });

@@ -1,9 +1,17 @@
 <script>
-    // Chạy ngay lập tức khi browser đọc đến đây, trước khi render HTML
     (function() {
-        const currentTheme = localStorage.getItem('theme');
+        const currentTheme = localStorage.getItem('theme') || 'light';
         if (currentTheme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
         }
     })();
+</script>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Theme/js/theme-switcher": {},
+        "Magento_Theme/js/theme-custom": {}
+    }
+}
 </script>
