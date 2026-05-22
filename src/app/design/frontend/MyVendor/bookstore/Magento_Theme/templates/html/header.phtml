@@ -21,14 +21,16 @@ $customerName = $isLoggedIn ? $customerSession->getCustomer()->getName() : '';
                 <li><a href="<?= $block->getUrl('') ?>"><?= __('Trang chủ') ?></a></li>
                 <li><a href="<?= $block->getUrl('new-books') ?>"><?= __('Sách mới') ?></a></li>
                 <li><a href="<?= $block->getUrl('promotions') ?>"><?= __('Khuyến mãi') ?></a></li>
+                <li><a href="<?= $block->getUrl('stores') ?>"><?= __('Cửa hàng') ?></a></li>
+                <li><a href="<?= $block->getUrl('bookstore-info') ?>"><?= __('Tiện ích') ?></a></li>
             </ul>
 
             <div class="header-actions">
                 <?php if ($isLoggedIn): ?>
                     <div class="user-account-wrapper">
-                        <button class="user-trigger">
+                        <div class="user-trigger">
                             Chào, <strong><?= $block->escapeHtml($customerName) ?></strong> ▼
-                        </button>
+                        </div>
                         <ul class="user-dropdown-menu">
                             <li><a href="<?= $block->getUrl('customer/account') ?>"><?= __('Thông tin cá nhân') ?></a></li>
                             <li><a href="<?= $block->getUrl('checkout/cart') ?>"><?= __('Giỏ hàng của tôi') ?></a></li>
@@ -36,6 +38,7 @@ $customerName = $isLoggedIn ? $customerSession->getCustomer()->getName() : '';
                             <li><a href="<?= $block->getUrl('customer/account/logout') ?>" class="logout-link"><?= __('Đăng xuất') ?></a></li>
                         </ul>
                     </div>
+                    <a href="<?= $block->getUrl('checkout/cart') ?>" class="cart-icon-link" style="margin-left: 15px; font-size: 20px; text-decoration: none;">🛒</a>
                 <?php else: ?>
                     <a href="<?= $block->getUrl('customer/account/login') ?>" class="btn-login-link">
                         <?= __('Đăng nhập') ?>
@@ -57,31 +60,81 @@ $customerName = $isLoggedIn ? $customerSession->getCustomer()->getName() : '';
     </div>
 </header>
 
+<script>
+require(['jquery'], function($) {
+    $(document).ready(function() {
+        $('.user-trigger').on('click', function(e) {
+            e.stopPropagation();
+            $(this).parent('.user-account-wrapper').toggleClass('active');
+        });
+
+        $(document).on('click', function() {
+            $('.user-account-wrapper').removeClass('active');
+        });
+
+        $('.user-dropdown-menu').on('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+});
+</script>
+
 <style>
     /* Style cho Dropdown Người dùng */
-    .user-account-wrapper { position: relative; display: inline-block; }
+    .user-account-wrapper { 
+        position: relative; 
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
     
     .user-trigger {
-        background: #f1f5f9; border: none; padding: 10px 18px;
-        border-radius: 12px; cursor: pointer; font-family: inherit;
-        color: var(--text-main); transition: 0.3s;
+        background: #f1f5f9; 
+        border: none; 
+        padding: 10px 18px;
+        border-radius: 12px; 
+        cursor: pointer; 
+        font-family: inherit;
+        color: var(--text-main); 
+        transition: 0.3s;
+        display: flex; 
+        align-items: center; 
+        white-space: nowrap;
+        height: 48px;
+        font-size: 14px;
+        font-weight: 600;
     }
     .user-trigger:hover { background: #e2e8f0; }
+    
+    .user-account-wrapper.active .user-trigger { background: var(--primary); color: #fff; }
 
     .user-dropdown-menu {
-        position: absolute; right: 0; top: 110%; width: 220px;
-        background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+        position: absolute; 
+        right: 0; 
+        top: 100%; 
+        margin-top: 8px;
+        width: 220px;
+        background: #fff; 
+        border: 1px solid #e2e8f0; 
+        border-radius: 12px;
         box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-        list-style: none; padding: 8px 0; margin: 0;
-        display: none; z-index: 1001;
+        list-style: none; 
+        padding: 8px 0; 
+        margin: 0;
+        display: none; 
+        z-index: 1001;
     }
     
-    /* Hiện dropdown khi hover vào wrapper */
-    .user-account-wrapper:hover .user-dropdown-menu { display: block; }
+    /* Hiện dropdown khi có class active */
+    .user-account-wrapper.active .user-dropdown-menu { display: block; }
 
     .user-dropdown-menu li a {
-        display: block; padding: 10px 20px; color: var(--text-main);
-        text-decoration: none; font-size: 14px; font-weight: 600;
+        display: block; 
+        padding: 10px 20px; 
+        color: var(--text-main);
+        text-decoration: none; 
+        font-size: 14px; 
+        font-weight: 600;
     }
     .user-dropdown-menu li a:hover { background: #f8fafc; color: #0095ff; }
     .user-dropdown-menu .divider { height: 1px; background: #e2e8f0; margin: 8px 0; }
@@ -89,8 +142,40 @@ $customerName = $isLoggedIn ? $customerSession->getCustomer()->getName() : '';
 
     /* Nút đăng nhập dạng link */
     .btn-login-link {
-        background: #0095ff; color: #fff !important; padding: 10px 25px;
-        border-radius: 12px; text-decoration: none; font-weight: 800;
+        background: #0095ff; 
+        color: #fff !important; 
+        padding: 10px 25px;
+        border-radius: 12px; 
+        text-decoration: none; 
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 48px;
+        white-space: nowrap;
+        font-size: 14px;
+    }
+
+    .btn-login-link:hover {
+        background: #0076cc;
+    }
+
+    /* Cart icon alignment */
+    .cart-icon-link {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center;
+        height: 48px !important;
+        width: 48px !important;
+        border-radius: 12px;
+        background: #f1f5f9;
+        text-decoration: none !important;
+        font-size: 20px;
+        transition: 0.3s;
+    }
+
+    .cart-icon-link:hover {
+        background: #e2e8f0;
     }
 
     /* Các CSS cũ của bạn giữ nguyên bên dưới... */

@@ -39,15 +39,15 @@
                 </div>
 
                 <div class="actions-toolbar">
-                    <div class="secondary">
-                        <a class="action remind" href="<?= $escaper->escapeUrl($block->getForgotPasswordUrl()) ?>">
-                            <span><?= $escaper->escapeHtml(__('Quên mật khẩu?')) ?></span>
-                        </a>
-                    </div>
                     <div class="primary">
                         <button type="submit" class="action login primary-btn-full" name="send" id="send2">
                             <span><?= $escaper->escapeHtml(__('Đăng nhập ngay')) ?></span>
                         </button>
+                    </div>
+                    <div class="secondary">
+                        <a class="action remind" href="<?= $escaper->escapeUrl($block->getForgotPasswordUrl()) ?>">
+                            <span><?= $escaper->escapeHtml(__('Quên mật khẩu?')) ?></span>
+                        </a>
                     </div>
                 </div>
             </form>
@@ -59,13 +59,16 @@
             <div class="social-actions">
                 <button type="button" class="btn-google-login" onclick="window.location.href='#'">
                     <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-                    <span><?= $escaper->escapeHtml(__('Đăng nhập với Google')) ?></span>
+                    <span><?= $escaper->escapeHtml(__('Google')) ?></span>
                 </button>
             </div>
 
             <div class="login-footer">
-                <p><?= $escaper->escapeHtml(__('Chưa có tài khoản?')) ?> 
-                    <a href="<?= $escaper->escapeUrl($block->getCreateAccountUrl()) ?>"><?= $escaper->escapeHtml(__('Đăng ký ngay')) ?></a>
+                <p>
+                    <?= $escaper->escapeHtml(__('Chưa có tài khoản?')) ?> 
+                    <a href="<?= $block->getUrl('customer/account/create') ?>" class="action-register">
+                        <strong><?= $escaper->escapeHtml(__('Đăng ký ngay')) ?></strong>
+                    </a>
                 </p>
             </div>
         </div>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/bookstore/catalog/products" method="GET">
+        <service class="Bookstore\CoreApi\Api\CatalogInterface" method="getProducts"/>
+        <resources><resource ref="anonymous"/></resources>
+    </route>
+    <route url="/V1/bookstore/catalog/categories" method="GET">
+        <service class="Bookstore\CoreApi\Api\CatalogInterface" method="getCategories"/>
+        <resources><resource ref="anonymous"/></resources>
+    </route>
+    <route url="/V1/bookstore/customer/me" method="GET">
+        <service class="Bookstore\CoreApi\Api\CustomerInterface" method="me"/>
+        <resources><resource ref="self"/></resources>
+    </route>
+</routes>

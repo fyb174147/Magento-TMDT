@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Kết quả tìm kiếm</title>
+    </head>
+    <body>
+        <referenceContainer name="page.wrapper" label="Page Wrapper">
+            <container name="page.main" label="Page Main" htmlTag="main" htmlClass="page-main">
+                <referenceContainer name="main.content" label="Main Content">
+                    <!-- Remove default Magento layout -->
+                    <referenceBlock name="search.result" remove="true" />
+                    <referenceBlock name="category.products" remove="true" />
+                </referenceContainer>
+            </container>
+        </referenceContainer>
+
+        <referenceContainer name="main.content">
+            <container name="catalog.search.container" label="Search Results Container" htmlClass="catalog-search-container">
+                <container name="catalog.search.sidebar" label="Search Sidebar" htmlClass="sidebar sidebar-main">
+                    <block class="Magento\Framework\View\Element\Template" name="catalog.search.filter" 
+                           template="Magento_CatalogSearch::filter.phtml" />
+                </container>
+                <container name="catalog.search.results" label="Search Results Content" htmlClass="search-results-content">
+                    <block class="Magento\Catalog\Block\Product\ListProduct" name="search.results" 
+                           template="Magento_Catalog::product/list.phtml">
+                        <container name="product.list.toolbar" label="Toolbar">
+                            <block class="Magento\Catalog\Block\Product\ProductList\Toolbar" name="product_list_toolbar" 
+                                   template="Magento_Catalog::product/list/toolbar.phtml" />
+                        </container>
+                    </block>
+                </container>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

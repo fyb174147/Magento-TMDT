@@ -24,6 +24,13 @@ $_product = $block->getProduct();
                 </span>
             </div>
 
+            <div class="bookstore-product-badges">
+                <span class="stock-badge <?= $_product->isAvailable() ? 'is-in-stock' : 'is-out-stock' ?>">
+                    <?= $_product->isAvailable() ? 'Còn hàng' : 'Hết hàng' ?>
+                </span>
+                <span class="sku-badge">SKU: <?= $block->escapeHtml($_product->getSku()) ?></span>
+            </div>
+
             <div class="product-price-box">
                 <span class="price"><?= number_format($_product->getFinalPrice(), 0, ',', '.') ?>đ</span>
                 <?php if ($_product->getSpecialPrice()): ?>
@@ -36,6 +43,11 @@ $_product = $block->getProduct();
                 <p><?= $_product->getShortDescription() ?: 'Đang cập nhật nội dung cho cuốn sách này...' ?></p>
             </div>
 
+            <?php
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $customerSession = $objectManager->create(\Magento\Customer\Model\Session::class);
+            $isLoggedIn = $customerSession->isLoggedIn();
+            ?>
             <div class="product-actions">
                 <form data-role="tocart-form" action="<?= $block->getSubmitUrl($_product) ?>" method="post">
                     <?= $block->getBlockHtml('formkey') ?>
@@ -43,9 +55,15 @@ $_product = $block->getProduct();
                         <label>Số lượng:</label>
                         <input type="number" name="qty" value="1" min="1">
                     </div>
-                    <button type="submit" class="btn-add-to-cart">
-                        Thêm vào giỏ hàng
-                    </button>
+                    <?php if (!$isLoggedIn): ?>
+                        <button type="button" class="btn-add-to-cart" onclick="window.location.href='<?= $block->getUrl('customer/account/login') ?>';">
+                            Thêm vào giỏ hàng
+                        </button>
+                    <?php else: ?>
+                        <button type="submit" class="btn-add-to-cart">
+                            Thêm vào giỏ hàng
+                        </button>
+                    <?php endif; ?>
                 </form>
             </div>
         </div>

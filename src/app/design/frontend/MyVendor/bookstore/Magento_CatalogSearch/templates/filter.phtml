@@ -1,0 +1,422 @@
+<?php
+/**
+ * Search Results Filter Sidebar
+ * Hỗ trợ lọc: Danh mục, Khoảng giá
+ * @var $block \Magento\Framework\View\Element\Template
+ */
+
+$categoryCollection = $block->getCategoryCollection();
+$query = $block->helper(\Magento\Search\Helper\Data::class)->getQueryText();
+$minPrice = isset($_GET['price']['from']) ? (int)$_GET['price']['from'] : 0;
+$maxPrice = isset($_GET['price']['to']) ? (int)$_GET['price']['to'] : 5000000;
+?>
+
+<div class="filter-sidebar">
+    <div class="filter-header">
+        <h2><?= __('Bộ lọc') ?></h2>
+    </div>
+
+    <!-- CATEGORY FILTER -->
+    <div class="filter-section filter-category">
+        <div class="filter-title">
+            <span><?= __('Danh mục') ?></span>
+            <button type="button" class="filter-toggle">▼</button>
+        </div>
+        <div class="filter-content">
+            <div class="category-filter-list">
+                <label class="filter-option">
+                    <input type="checkbox" name="cat" value="" onchange="filterSearch()"> 
+                    <?= __('Tất cả danh mục') ?>
+                </label>
+                <?php if ($categoryCollection): ?>
+                    <?php foreach ($categoryCollection as $category): ?>
+                        <label class="filter-option">
+                            <input type="checkbox" name="cat" value="<?= $category->getId() ?>" 
+                                   onchange="filterSearch()"> 
+                            <?= $block->escapeHtml($category->getName()) ?>
+                        </label>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRICE FILTER -->
+    <div class="filter-section filter-price">
+        <div class="filter-title">
+            <span><?= __('Khoảng giá') ?></span>
+            <button type="button" class="filter-toggle">▼</button>
+        </div>
+        <div class="filter-content">
+            <div class="price-filter-wrapper">
+                <div class="price-inputs">
+                    <div class="price-input-group">
+                        <label><?= __('Từ') ?> (₫)</label>
+                        <input type="number" id="priceFromInput" min="0" value="<?= (int)$minPrice ?>" 
+                               placeholder="0" onchange="updatePriceRange()" 
+                               class="price-input">
+                    </div>
+                    <div class="price-input-group">
+                        <label><?= __('Đến') ?> (₫)</label>
+                        <input type="number" id="priceToInput" min="0" value="<?= (int)$maxPrice ?>" 
+                               placeholder="5000000" onchange="updatePriceRange()" 
+                               class="price-input">
+                    </div>
+                </div>
+
+                <!-- Price Range Slider -->
+                <div class="price-slider-container" id="priceSliderContainer">
+                    <div class="price-slider-track">
+                        <div class="price-slider-fill"></div>
+                    </div>
+                    <input type="range" id="priceSliderFrom" min="0" max="5000000" 
+                           value="<?= (int)$minPrice ?>" class="price-slider">
+                    <input type="range" id="priceSliderTo" min="0" max="5000000" 
+                           value="<?= (int)$maxPrice ?>" class="price-slider">
+                </div>
+
+                <div class="price-output">
+                    <span id="priceDisplay">
+                        <?= __('Từ') ?> <strong><?= number_format($minPrice, 0, ',', '.') ?>₫</strong> 
+                        <?= __('đến') ?> 
+                        <strong><?= number_format($maxPrice, 0, ',', '.') ?>₫</strong>
+                    </span>
+                </div>
+
+                <button type="button" class="btn-apply-price" onclick="filterSearch()">
+                    <?= __('Áp dụng') ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var priceFrom = parseInt(document.getElementById('priceFromInput').value);
+    var priceTo = parseInt(document.getElementById('priceToInput').value);
+
+    // Xử lý Range Slider
+    function handlePriceSliders() {
+        var sliderFrom = document.getElementById('priceSliderFrom');
+        var sliderTo = document.getElementById('priceSliderTo');
+        var inputFrom = document.getElementById('priceFromInput');
+        var inputTo = document.getElementById('priceToInput');
+
+        var from = parseInt(sliderFrom.value);
+        var to = parseInt(sliderTo.value);
+
+        // Đảm bảo giá trị "từ" không lớn hơn "đến"
+        if (from > to) {
+            var temp = from;
+            from = to;
+            to = temp;
+            sliderFrom.value = from;
+            sliderTo.value = to;
+        }
+
+        inputFrom.value = from;
+        inputTo.value = to;
+
+        // Update Fill Color
+        var sliderTrack = document.querySelector('.price-slider-track');
+        var fill = document.querySelector('.price-slider-fill');
+        var min = parseInt(sliderFrom.min);
+        var max = parseInt(sliderFrom.max);
+        
+        var percentage1 = ((from - min) / (max - min)) * 100;
+        var percentage2 = ((to - min) / (max - min)) * 100;
+        
+        fill.style.left = percentage1 + '%';
+        fill.style.right = (100 - percentage2) + '%';
+
+        updatePriceDisplay();
+    }
+
+    function updatePriceRange() {
+        var sliderFrom = document.getElementById('priceSliderFrom');
+        var sliderTo = document.getElementById('priceSliderTo');
+        var inputFrom = document.getElementById('priceFromInput');
+        var inputTo = document.getElementById('priceToInput');
+
+        sliderFrom.value = Math.max(0, parseInt(inputFrom.value || 0));
+        sliderTo.value = Math.min(5000000, parseInt(inputTo.value || 5000000));
+
+        handlePriceSliders();
+    }
+
+    function updatePriceDisplay() {
+        var from = parseInt(document.getElementById('priceFromInput').value);
+        var to = parseInt(document.getElementById('priceToInput').value);
+        
+        var display = document.getElementById('priceDisplay');
+        display.innerHTML = 
+            '<?= __('Từ') ?> <strong>' + new Intl.NumberFormat('vi-VN').format(from) + '₫</strong> ' +
+            '<?= __('đến') ?> ' +
+            '<strong>' + new Intl.NumberFormat('vi-VN').format(to) + '₫</strong>';
+    }
+
+    // Event Listeners cho sliders
+    document.getElementById('priceSliderFrom').addEventListener('input', handlePriceSliders);
+    document.getElementById('priceSliderTo').addEventListener('input', handlePriceSliders);
+
+    // Toggle Filter Sections
+    document.querySelectorAll('.filter-toggle').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var filterSection = btn.closest('.filter-section');
+            filterSection.classList.toggle('collapsed');
+        });
+    });
+
+    // Function để apply filter
+    window.filterSearch = function() {
+        var categories = Array.from(document.querySelectorAll('input[name="cat"]:checked')).map(e => e.value).filter(Boolean);
+        var priceFrom = parseInt(document.getElementById('priceFromInput').value || 0);
+        var priceTo = parseInt(document.getElementById('priceToInput').value || 5000000);
+        
+        // Build URL query string
+        var url = new URL(window.location);
+        
+        if (categories.length > 0) {
+            url.searchParams.set('cat', categories[0]); // Magento thường lấy category đầu tiên
+        } else {
+            url.searchParams.delete('cat');
+        }
+        
+        if (priceFrom > 0 || priceTo < 5000000) {
+            url.searchParams.set('price[from]', priceFrom);
+            url.searchParams.set('price[to]', priceTo);
+        } else {
+            url.searchParams.delete('price[from]');
+            url.searchParams.delete('price[to]');
+        }
+        
+        window.location = url.toString();
+    };
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', function() {
+        handlePriceSliders();
+    });
+</script>
+
+<style>
+    .filter-sidebar {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+
+    .filter-header {
+        padding: 16px;
+        border-bottom: 1px solid #e2e8f0;
+        background: #f8fafc;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .filter-header h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 900;
+        color: #1e293b;
+    }
+
+    .filter-section {
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .filter-section:last-child {
+        border-bottom: none;
+    }
+
+    .filter-title {
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        background: #fafbfc;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .filter-toggle {
+        background: -none;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: transform 0.3s;
+    }
+
+    .filter-section.collapsed .filter-toggle {
+        transform: rotate(-90deg);
+    }
+
+    .filter-content {
+        padding: 12px 16px;
+        display: max-content;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .filter-section.collapsed .filter-content {
+        display: none;
+    }
+
+    /* Category Filter */
+    .category-filter-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .filter-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #1e293b;
+    }
+
+    .filter-option input[type="checkbox"] {
+        cursor: pointer;
+        accent-color: #0095ff;
+    }
+
+    /* Price Filter */
+    .price-filter-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .price-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .price-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .price-input-group label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #64748b;
+    }
+
+    .price-input {
+        padding: 8px 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .price-input:focus {
+        border-color: #0095ff;
+    }
+
+    /* Slider Container */
+    .price-slider-container {
+        position: relative;
+        padding: 8px 0;
+        margin: 8px 0;
+    }
+
+    .price-slider-track {
+        position: relative;
+        width: 100%;
+        height: 4px;
+        background: #e2e8f0;
+        border-radius: 999px;
+        margin-bottom: 8px;
+    }
+
+    .price-slider-fill {
+        position: absolute;
+        height: 100%;
+        background: #0095ff;
+        border-radius: 999px;
+    }
+
+    .price-slider {
+        position: absolute;
+        width: 100%;
+        top: -6px;
+        height: 16px;
+        background: transparent;
+        pointer-events: none;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    .price-slider::-webkit-slider-thumb {
+        pointer-events: auto;
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #0095ff;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 6px rgba(0, 149, 255, 0.3);
+        cursor: pointer;
+    }
+
+    .price-slider::-moz-range-thumb {
+        pointer-events: auto;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #0095ff;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 6px rgba(0, 149, 255, 0.3);
+        cursor: pointer;
+    }
+
+    .price-output {
+        text-align: center;
+        font-size: 13px;
+        color: #64748b;
+    }
+
+    .price-output #priceDisplay {
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .btn-apply-price {
+        width: 100%;
+        padding: 10px;
+        background: #0095ff;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn-apply-price:hover {
+        background: #0076cc;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .filter-sidebar {
+            margin-bottom: 18px;
+        }
+        
+        .price-inputs {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

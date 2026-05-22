@@ -1,0 +1,29 @@
+.bookstore-info-page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 28px 16px 48px;
+}
+
+.bookstore-info-page h1 {
+    margin: 0 0 18px;
+    font-size: 32px;
+}
+
+.bookstore-info-section {
+    border-top: 1px solid #e5e7eb;
+    padding: 18px 0;
+}
+
+.bookstore-info-section h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+}
+
+.bookstore-info-section ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.bookstore-info-section li {
+    margin: 8px 0;
+}

@@ -13,3 +13,29 @@
     transform: translateY(-8px) !important;
     box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2) !important;
 }
+
+/* Ẩn tiêu đề mặc định của Widget Sách mới */
+.block-new-products .block-title {
+    display: none !important;
+}
+
+/* Tùy chỉnh thêm cho tiêu đề thủ công bạn vừa chèn cho đẹp */
+.section-header h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.section-header h2:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 5px;
+    background: #10b981; /* Màu xanh Emerald khớp với viền sách */
+    border-radius: 10px;
+}

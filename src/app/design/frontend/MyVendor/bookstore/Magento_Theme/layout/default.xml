@@ -3,6 +3,7 @@
     <head>
         <link src="Magento_Theme::js/theme-switcher.js"/>
         <link src="Magento_Theme::js/theme-custom.js"/>
+        <link src="Magento_Theme::js/cart-login-check.js" />
     </head>
     <body>
         <referenceBlock name="header.container" remove="true"/>
@@ -13,9 +14,7 @@
         <referenceContainer name="page.wrapper">
             <block class="Magento\Framework\View\Element\Template" name="custom.header" 
                    template="Magento_Theme::html/header.phtml" before="main.content"/>
-        </referenceContainer>
 
-        <referenceContainer name="page.wrapper">
             <container name="custom.footer.wrapper" as="custom_footer_wrapper" after="main.content" label="Custom Footer Container">
                 <block class="Magento\Framework\View\Element\Template" name="custom.footer" 
                        template="Magento_Theme::html/footer.phtml"/>

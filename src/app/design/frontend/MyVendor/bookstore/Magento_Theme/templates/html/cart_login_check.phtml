@@ -1,0 +1,8 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->create(\Magento\Customer\Model\Session::class);
+if (!$customerSession->isLoggedIn()): ?>
+<script>
+    window.location.href = '<?php echo $block->getUrl('customer/account/login') ?>';
+</script>
+<?php endif; /* CART LOGIN CHECK COMPLETE */ ?>

@@ -1,0 +1,75 @@
+<?php
+/** @var \Magento\Catalog\Block\Product\ListProduct $block */
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$productCollectionFactory = $objectManager->get(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class);
+$collection = $productCollectionFactory->create();
+$collection->addAttributeToSelect('*')
+          ->setPageSize(8)
+          ->setCurPage(1)
+          ->addAttributeToFilter('visibility', \Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH)
+          ->addAttributeToFilter('status', \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
+
+$items = $collection->getItems();
+$imageHelper = $objectManager->get(\Magento\Catalog\Helper\Image::class);
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+$isLoggedIn = $customerSession->isLoggedIn();
+?>
+
+<div class="block widget block-products-list grid">
+    <div class="block-content">
+        <div class="products-grid grid">
+            <ol class="product-items widget-product-grid">
+                <?php foreach ($items as $_item): ?>
+                    <?php 
+                        $price = $_item->getFinalPrice();
+                        $regularPrice = $_item->getPrice();
+                        $discount = ($regularPrice > $price) ? round((($regularPrice - $price) / $regularPrice) * 100) : 0;
+                    ?>
+                    <li class="product-item">
+                        <div class="product-item-info">
+                            <div class="product-photo-container">
+                                <a href="<?= $_item->getProductUrl() ?>" class="product-item-photo">
+                                    <img src="<?= $imageHelper->init($_item, 'category_page_grid')->getUrl() ?>" alt="<?= $_item->getName() ?>" />
+                                </a>
+                                <?php if ($discount > 0): ?>
+                                    <div class="product-badge-sale">-<?= (int)$discount ?>%</div>
+                                <?php endif; ?>
+                            </div>
+
+                            <div class="product-item-details">
+                                <strong class="product-item-name">
+                                    <a href="<?= $_item->getProductUrl() ?>" class="product-item-link">
+                                        <?= $_item->getName() ?>
+                                    </a>
+                                </strong>
+
+                                <div class="price-box">
+                                    <span class="price"><?= number_format($price, 0, ',', '.') ?>đ</span>
+                                </div>
+
+                                <div class="product-item-actions">
+                                    <div class="actions-primary">
+                                        <?php if ($_item->isSaleable()): ?>
+                                                <form action="<?= $block->getUrl('checkout/cart/add', ['product' => $_item->getId()]) ?>" method="post">
+                                                    <?= $block->getBlockHtml('formkey') ?>
+                                                    <?php if (!$isLoggedIn): ?>
+                                                        <button type="button" class="action tocart primary" onclick="window.location.href='<?= $block->getUrl('customer/account/login') ?>';">
+                                                            <span><?= __('Thêm vào giỏ') ?></span>
+                                                        </button>
+                                                    <?php else: ?>
+                                                        <button type="submit" class="action tocart primary">
+                                                            <span><?= __('Thêm vào giỏ') ?></span>
+                                                        </button>
+                                                    <?php endif; ?>
+                                                </form>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                <?php endforeach ?>
+            </ol>
+        </div>
+    </div>
+</div>

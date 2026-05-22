@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <bookstore_vietqr>
+                <active>1</active>
+                <model>Bookstore\Payment\Model\VietQr</model>
+                <title>Chuyen khoan VietQR</title>
+                <order_status>pending</order_status>
+                <allowspecific>0</allowspecific>
+                <bank_id>VCB</bank_id>
+                <account_no>0123456789</account_no>
+                <account_name>BOOKSTORE DEMO</account_name>
+                <sort_order>20</sort_order>
+            </bookstore_vietqr>
+        </payment>
+    </default>
+</config>

@@ -42,7 +42,8 @@
                 <div class="form-group">
                     <label><?= $block->escapeHtml(__('Họ và tên')) ?></label>
                     <input type="text" name="firstname" placeholder="<?= $block->escapeHtml(__('Nhập họ tên...')) ?>" required>
-                    <input type="hidden" name="lastname" value="User"> </div>
+                    <input type="hidden" name="lastname" value="User" />
+                </div>
                 <div class="form-group">
                     <label><?= $block->escapeHtml(__('Email')) ?></label>
                     <input type="email" name="email" placeholder="name@example.com" required>
@@ -50,7 +51,8 @@
                 <div class="form-group">
                     <label><?= $block->escapeHtml(__('Mật khẩu')) ?></label>
                     <input type="password" name="password" placeholder="<?= $block->escapeHtml(__('Tối thiểu 8 ký tự')) ?>" required>
-                    <input type="hidden" name="password_confirmation" id="password-confirmation"> </div>
+                    <input type="hidden" name="password_confirmation" id="password-confirmation" />
+                </div>
                 <button type="submit" class="btn-auth-submit"><?= $block->escapeHtml(__('Tạo tài khoản')) ?></button>
             </form>
         </div>
@@ -91,8 +93,9 @@
             </a>
         </div>
     </div>
-    <div class="sidebar-overlay" onclick="toggleCart(false)"></div>
 </div>
+
+<div class="sidebar-overlay" onclick="toggleCart(false)"></div>
 
 <script>
     // Logic Switch Tab

@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Bookstore\CoreApi\Api\CatalogInterface" type="Bookstore\CoreApi\Model\Catalog"/>
+    <preference for="Bookstore\CoreApi\Api\CustomerInterface" type="Bookstore\CoreApi\Model\Customer"/>
+</config>

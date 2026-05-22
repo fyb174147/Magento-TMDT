@@ -1,36 +1,34 @@
-<?php
-/**
- * Custom Footer Template cho Bookstore
- */
-?>
 <footer>
-    <div class="footer-top">
-        <div class="container footer-content"> <div class="footer-col brand-info">
-                <div class="logo">BookStore</div>
-                <p><?= $block->escapeHtml(__('Nơi kết nối đam mê tri thức.')) ?></p>
-            </div>
-            
-            <div class="footer-col">
-                <h4><?= $block->escapeHtml(__('Khám phá')) ?></h4>
-                <ul class="footer-links">
-                    <li onclick="navigateTo('new-books')"><?= $block->escapeHtml(__('Sách mới')) ?></li>
-                    <li onclick="navigateTo('deals')"><?= $block->escapeHtml(__('Khuyến mãi')) ?></li>
-                    <li onclick="navigateTo('categories')"><?= $block->escapeHtml(__('Danh mục')) ?></li>
-                </ul>
-            </div>
+    <div class="footer-content">
+        <div class="footer-col">
+            <h3 style="color: #0095ff; font-weight: 800; margin: 0 0 15px;">BookStore</h3>
+            <p style="font-size: 14px; color: #64748b; line-height: 1.6;">Nơi kết nối đam mê tri thức.</p>
+        </div>
 
-            <div class="footer-col">
-                <h4><?= $block->escapeHtml(__('Hỗ trợ')) ?></h4>
-                <ul class="footer-links">
-                    <li><?= $block->escapeHtml(__('Điều khoản sử dụng')) ?></li>
-                    <li><?= $block->escapeHtml(__('Chính sách bảo mật')) ?></li>
-                </ul>
-            </div>
+        <div class="footer-col">
+            <h4>Khám phá</h4>
+            <ul>
+                <li><a href="<?= $block->getUrl('new-books') ?>">Sách mới</a></li>
+                <li><a href="<?= $block->getUrl('promotions') ?>">Khuyến mãi</a></li>
+                <li><a href="<?= $block->getUrl('about-us') ?>">Giới thiệu</a></li>
+                <li><a href="<?= $block->getUrl('bookstore-info') ?>">Tiện ích</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Hỗ trợ</h4>
+            <ul>
+                <li><a href="<?= $block->getUrl('stores') ?>">Hệ thống cửa hàng</a></li>
+                <li><a href="<?= $block->getUrl('chinh-sach') ?>">Chính sách & Hỗ trợ</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Liên hệ</h4>
+            <p style="font-size: 14px; color: #64748b;">Email: support@bookstore.vn</p>
         </div>
     </div>
-
     <div class="footer-bottom">
-        <div class="container"> <p>&copy; <?= date('Y') ?> BookStore Project. All rights reserved.</p>
-        </div>
+        <p>&copy; 2026 BookStore Project. All rights reserved.</p>
     </div>
 </footer>

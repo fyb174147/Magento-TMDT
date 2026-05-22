@@ -1,0 +1,111 @@
+<div class="bookstore-home-content">
+    <!-- Hero Section -->
+    <section class="home-hero">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <h1>Chào mừng đến với <span class="text-primary">BookStore</span></h1>
+                <p>Khám phá thế giới tri thức qua những trang sách tuyệt vời nhất. Chúng tôi cung cấp đa dạng các thể loại từ văn học, kỹ năng đến kinh doanh.</p>
+                <div class="hero-actions">
+                    <a href="<?= $block->getUrl('stores') ?>" class="btn-hero-primary">Tìm cửa hàng</a>
+                    <a href="<?= $block->getUrl('bookstore-info') ?>" class="btn-hero-secondary">Xem tiện ích</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#0095ff" d="M44.7,-76.4C58.2,-69.2,70,-58.5,77.4,-45.3C84.8,-32,87.8,-16,86.2,-0.9C84.7,14.2,78.5,28.4,70.2,40.8C61.8,53.2,51.3,63.8,38.8,71.3C26.3,78.8,11.8,83.2,-2.3,87.2C-16.4,91.2,-30,94.8,-42.1,89.1C-54.3,83.4,-65,68.4,-72.1,53.4C-79.3,38.4,-82.9,23.4,-83.4,8.5C-83.8,-6.4,-81.1,-21.2,-74.6,-34.8C-68.1,-48.4,-57.8,-60.8,-45.1,-68.4C-32.4,-76,-17.2,-78.8,-0.9,-77.3C15.4,-75.7,31.2,-83.6,44.7,-76.4Z" transform="translate(100 100)" />
+                    <text x="50" y="110" font-family="Arial" font-size="40" fill="white" font-weight="bold">BOOKS</text>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="home-about">
+        <div class="container-center">
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="icon">📚</div>
+                    <h3>Kho sách khổng lồ</h3>
+                    <p>Hàng ngàn đầu sách thuộc nhiều thể loại khác nhau, luôn cập nhật mới nhất.</p>
+                </div>
+                <div class="about-card">
+                    <div class="icon">🚚</div>
+                    <h3>Giao hàng nhanh</h3>
+                    <p>Hệ thống vận chuyển chuyên nghiệp, đảm bảo sách đến tay bạn trong 24h.</p>
+                </div>
+                <div class="about-card">
+                    <div class="icon">💳</div>
+                    <h3>Thanh toán dễ dàng</h3>
+                    <p>Hỗ trợ nhiều phương thức: COD, VietQR, Chuyển khoản ngân hàng.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Section -->
+    <section class="home-featured">
+        <div class="container-center">
+            <div class="section-header">
+                <h2>Sách mới nổi bật</h2>
+                <a href="<?= $block->getUrl('new-books') ?>">Xem tất cả →</a>
+            </div>
+            <?= $block->getChildHtml('new_books_grid') ?>
+        </div>
+    </section>
+</div>
+
+<style>
+    .bookstore-home-content { padding-bottom: 60px; }
+    .home-hero { 
+        background: linear-gradient(135deg, #f8fafc 0%, #eef6ff 100%);
+        padding: 80px 0;
+        margin-bottom: 40px;
+        border-bottom: 1px solid var(--border);
+    }
+    .hero-inner {
+        .container-center();
+        display: flex;
+        align-items: center;
+        gap: 60px;
+    }
+    .hero-text { flex: 1; }
+    .hero-text h1 { font-size: 48px; font-weight: 900; margin-bottom: 20px; line-height: 1.2; }
+    .hero-text p { font-size: 18px; color: var(--text-sub); margin-bottom: 35px; line-height: 1.6; }
+    .text-primary { color: var(--primary); }
+    .hero-actions { display: flex; gap: 15px; }
+    .btn-hero-primary { 
+        background: var(--primary); color: #fff !important; 
+        padding: 15px 30px; border-radius: 12px; font-weight: 800; text-decoration: none;
+        box-shadow: 0 10px 20px rgba(0, 149, 255, 0.2);
+    }
+    .btn-hero-secondary { 
+        background: #fff; color: var(--text-main) !important; 
+        padding: 15px 30px; border-radius: 12px; font-weight: 800; text-decoration: none;
+        border: 1px solid var(--border);
+    }
+    .hero-image { flex: 0 0 350px; }
+    
+    .home-about { padding: 60px 0; }
+    .about-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+    .about-card { 
+        background: #fff; padding: 40px; border-radius: 24px; border: 1px solid var(--border);
+        text-align: center; transition: var(--transition);
+    }
+    .about-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+    .about-card .icon { font-size: 40px; margin-bottom: 20px; display: block; }
+    .about-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 15px; }
+    .about-card p { color: var(--text-sub); line-height: 1.6; }
+
+    .home-featured { margin-top: 40px; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .section-header h2 { font-size: 28px; font-weight: 900; margin: 0; }
+    .section-header a { color: var(--primary); font-weight: 700; text-decoration: none; }
+    
+    @media (max-width: 900px) {
+        .hero-inner { flex-direction: column; text-align: center; gap: 40px; }
+        .hero-image { flex: 0 0 250px; }
+        .hero-actions { justify-content: center; }
+        .about-grid { grid-template-columns: 1fr; }
+        .hero-text h1 { font-size: 36px; }
+    }
+</style>

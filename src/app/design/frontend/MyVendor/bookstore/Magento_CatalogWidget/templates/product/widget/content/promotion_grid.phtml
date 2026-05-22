@@ -1,0 +1,88 @@
+<?php
+use Magento\Framework\App\Action\Action;
+
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Magento\CatalogWidget\Block\Product\ProductsList $block */
+
+if ($exist = ($block->getProductCollection() && $block->getProductCollection()->count())): ?>
+    <?php
+    $type = 'widget-product-grid';
+    $mode = 'grid';
+    $image = 'category_page_grid'; // Dùng ID chuẩn để hiện ảnh placeholder
+    $items = $block->getProductCollection()->getItems();
+
+    $showWishlist = true;
+    $showCompare = true;
+    $showCart = true;
+    // ĐÃ SỬA: Thay Model bằng Block
+    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $customerSession = $objectManager->create(\Magento\Customer\Model\Session::class);
+    $isLoggedIn = $customerSession->isLoggedIn();
+    ?>
+    <div class="block widget block-products-list <?= $mode ?>">
+        <div class="block-content">
+            <div class="products-<?= $mode ?> <?= $mode ?>">
+                <ol class="product-items <?= $type ?>">
+                    <?php foreach ($items as $_item): ?>
+                        <?php 
+                            $price = $_item->getPrice();
+                            $specialPrice = $_item->getSpecialPrice();
+                            $discount = ($specialPrice > 0 && $price > $specialPrice) ? round((($price - $specialPrice) / $price) * 100) : 0;
+                            $itemClass = ($discount > 0) ? 'is-sale-item' : 'is-new-item';
+                        ?>
+                        <li class="product-item <?= $itemClass ?>">
+                            <div class="product-item-info">
+                                <div class="product-photo-container">
+                                    <a href="<?= $escaper->escapeUrl($block->getProductUrl($_item)) ?>" class="product-item-photo">
+                                        <?= $block->getImage($_item, $image)->toHtml() ?>
+                                    </a>
+                                    <?php if ($discount > 0): ?>
+                                        <div class="product-badge-sale">-<?= (int)$discount ?>%</div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="product-item-details">
+                                    <strong class="product-item-name">
+                                        <a title="<?= $escaper->escapeHtml($_item->getName()) ?>"
+                                           href="<?= $escaper->escapeUrl($block->getProductUrl($_item)) ?>"
+                                           class="product-item-link">
+                                            <?= $escaper->escapeHtml($_item->getName()) ?>
+                                        </a>
+                                    </strong>
+
+                                    <?php if ($templateType): ?>
+                                        <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
+                                    <?php endif; ?>
+
+                                    <?= $block->getProductPriceHtml($_item, $type) ?>
+
+                                    <div class="product-item-actions">
+                                        <div class="actions-primary">
+                                            <?php if ($_item->isSaleable()): ?>
+                                                <?php $postParams = $block->getAddToCartPostParams($_item); ?>
+                                                <form data-role="tocart-form" action="<?= $escaper->escapeUrl($postParams['action']) ?>" method="post">
+                                                    <input type="hidden" name="product" value="<?= $escaper->escapeHtmlAttr($postParams['data']['product']) ?>">
+                                                    <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                                    <?= $block->getBlockHtml('formkey') ?>
+                                                    <button type="submit" class="action tocart primary"
+                                                        <?php if (!$isLoggedIn): ?>
+                                                            onclick="window.location.href='<?= $block->getUrl('customer/account/login') ?>'; return false;"
+                                                        <?php endif; ?>
+                                                    >
+                                                        <span><?= $escaper->escapeHtml(__('Thêm vào giỏ')) ?></span>
+                                                    </button>
+                                                </form>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach ?>
+                </ol>
+            </div>
+        </div>
+    </div>
+<?php endif;?>
