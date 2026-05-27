@@ -28,3 +28,15 @@ node_modules/
 *.bak
 .idea/
 .vscode/
+
+# --- Ignore demo images in any image/img folders ---
+# Matches files or directories containing the word "demo" inside any images or img directory
+**/images/**/*demo*
+**/img/**/*demo*
+**/images/**/demo/
+**/img/**/demo/
+
+# --- Ignore Magento product image cache (not needed in repo) ---
+# Ignore the product image cache directory and its contents
+src/pub/media/catalog/product/cache/
+src/pub/media/catalog/product/cache/**

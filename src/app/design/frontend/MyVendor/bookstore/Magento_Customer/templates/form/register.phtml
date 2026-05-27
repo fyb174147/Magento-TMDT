@@ -2,13 +2,15 @@
 /** @var \Magento\Customer\Block\Form\Register $block */
 /** @var \Magento\Framework\Escaper $escaper */
 ?>
-<div class="login-container-wrapper"> <div class="login-card"> <div class="login-header">
+<div class="login-container-wrapper"> 
+    <div class="login-card"> 
+        <div class="login-header">
             <h2><?= $escaper->escapeHtml(__('Đăng ký tài khoản')) ?></h2>
             <p><?= $escaper->escapeHtml(__('Trở thành thành viên của BookStore ngay hôm nay')) ?></p>
         </div>
 
         <div class="block-content">
-            <form class="form create account form-create-account" 
+            <form class="form create account form-create-account-custom" 
                   action="<?= $escaper->escapeUrl($block->getPostActionUrl()) ?>" 
                   method="post" 
                   id="form-validate" 
@@ -17,67 +19,91 @@
                   data-mage-init='{"validation":{}}'>
                 <?= $block->getBlockHtml('formkey') ?>
 
-                <fieldset class="fieldset create info">
-                    <?= $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Name::class)->setObject($block->getFormData())->toHtml() ?>
+                <fieldset class="fieldset-custom-register">
+                    <div class="field-group-custom required">
+                        <label for="firstname" class="label-custom"><span><?= $escaper->escapeHtml(__('Họ')) ?></span></label>
+                        <div class="control-custom">
+                            <input type="text" name="firstname" id="firstname"
+                                   value="<?= $escaper->escapeHtmlAttr($block->getFormData()->getFirstname()) ?>"
+                                   title="<?= $escaper->escapeHtmlAttr(__('Họ')) ?>"
+                                   class="input-custom-field"
+                                   placeholder="<?= $escaper->escapeHtmlAttr(__('Họ')) ?>"
+                                   data-validate="{required:true}">
+                        </div>
+                    </div>
 
-                    <div class="field email required">
-                        <label for="email_address" class="label"><span><?= $escaper->escapeHtml(__('Email')) ?></span></label>
-                        <div class="control">
-                            <input type="email" name="email" id="email_address" 
-                                   value="<?= $escaper->escapeHtmlAttr($block->getFormData()->getEmail()) ?>" 
-                                   title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>" 
-                                   class="input-text" 
+                    <div class="field-group-custom required">
+                        <label for="lastname" class="label-custom"><span><?= $escaper->escapeHtml(__('Tên')) ?></span></label>
+                        <div class="control-custom">
+                            <input type="text" name="lastname" id="lastname"
+                                   value="<?= $escaper->escapeHtmlAttr($block->getFormData()->getLastname()) ?>"
+                                   title="<?= $escaper->escapeHtmlAttr(__('Tên')) ?>"
+                                   class="input-custom-field"
+                                   placeholder="<?= $escaper->escapeHtmlAttr(__('Tên')) ?>"
+                                   data-validate="{required:true}">
+                        </div>
+                    </div>
+
+                    <div class="field-group-custom">
+                        <label for="middlename" class="label-custom"><span><?= $escaper->escapeHtml(__('Tên người dùng')) ?></span></label>
+                        <div class="control-custom">
+                            <input type="text" name="middlename" id="middlename"
+                                   value="<?= $escaper->escapeHtmlAttr($block->getFormData()->getMiddlename()) ?>"
+                                   title="<?= $escaper->escapeHtmlAttr(__('Tên người dùng')) ?>"
+                                   class="input-custom-field"
+                                   placeholder="<?= $escaper->escapeHtmlAttr(__('Tên hiển thị')) ?>">
+                        </div>
+                    </div>
+
+                    <div class="field-group-custom required">
+                        <label for="email_address" class="label-custom"><span><?= $escaper->escapeHtml(__('Email')) ?></span></label>
+                        <div class="control-custom">
+                            <input type="email" name="email" id="email_address"
+                                   value="<?= $escaper->escapeHtmlAttr($block->getFormData()->getEmail()) ?>"
+                                   title="<?= $escaper->escapeHtmlAttr(__('Email')) ?>"
+                                   class="input-custom-field"
                                    placeholder="name@example.com"
                                    data-validate="{required:true, 'validate-email':true}">
                         </div>
                     </div>
-
-                    <?php if ($block->isNewsletterEnabled()): ?>
-                        <div class="field choice newsletter">
-                            <input type="checkbox" name="is_subscribed" title="<?= $escaper->escapeHtmlAttr(__('Đăng ký nhận tin từ BookStore')) ?>" value="1" id="is_subscribed" class="checkbox">
-                            <label for="is_subscribed" class="label"><span><?= $escaper->escapeHtml(__('Đăng ký nhận tin khuyến mãi')) ?></span></label>
-                        </div>
-                    <?php endif ?>
                 </fieldset>
 
-                <fieldset class="fieldset create account" data-hasrequired="<?= $escaper->escapeHtmlAttr(__('* Required Fields')) ?>">
-                    <div class="field password required">
-                        <label for="password" class="label"><span><?= $escaper->escapeHtml(__('Mật khẩu')) ?></span></label>
-                        <div class="control">
+                <fieldset class="fieldset-custom-register">
+                    <div class="field-group-custom required">
+                        <label for="password" class="label-custom"><span><?= $escaper->escapeHtml(__('Mật khẩu')) ?></span></label>
+                        <div class="control-custom">
                             <input type="password" name="password" id="password" 
                                    title="<?= $escaper->escapeHtmlAttr(__('Mật khẩu')) ?>" 
-                                   class="input-text" 
+                                   class="input-custom-field" 
                                    placeholder="••••••••"
                                    data-validate="{required:true, 'validate-password':true}">
                         </div>
                     </div>
 
-                    <div class="field confirmation required">
-                        <label for="password-confirmation" class="label"><span><?= $escaper->escapeHtml(__('Xác nhận mật khẩu')) ?></span></label>
-                        <div class="control">
+                    <div class="field-group-custom required">
+                        <label for="password-confirmation" class="label-custom"><span><?= $escaper->escapeHtml(__('Xác nhận mật khẩu')) ?></span></label>
+                        <div class="control-custom">
                             <input type="password" name="password_confirmation" id="password-confirmation" 
                                    title="<?= $escaper->escapeHtmlAttr(__('Xác nhận mật khẩu')) ?>" 
-                                   class="input-text" 
+                                   class="input-custom-field" 
                                    placeholder="••••••••"
                                    data-validate="{required:true, equalTo:'#password'}">
                         </div>
                     </div>
                 </fieldset>
 
-                <div class="actions-toolbar">
-                    <div class="primary">
-                        <button type="submit" class="action submit primary-btn-full" title="<?= $escaper->escapeHtmlAttr(__('Tạo tài khoản ngay')) ?>">
-                            <span><?= $escaper->escapeHtml(__('Tạo tài khoản ngay')) ?></span>
-                        </button>
-                    </div>
+                <div class="register-actions-center-block">
+                    <button type="submit" class="btn-register-submit-custom" title="<?= $escaper->escapeHtmlAttr(__('Tạo tài khoản ngay')) ?>">
+                        <span><?= $escaper->escapeHtml(__('Tạo tài khoản ngay')) ?></span>
+                    </button>
                 </div>
             </form>
 
-            <div class="login-footer" style="margin-top: 25px; text-align: center;">
+            <div class="register-footer-left-align">
                 <p>
                     <?= $escaper->escapeHtml(__('Đã có tài khoản?')) ?> 
                     <a href="<?= $block->getUrl('customer/account/login') ?>">
-                        <strong><?= $escaper->escapeHtml(__('Đăng nhập tại đây')) ?></strong>
+                        <strong><?= $escaper->escapeHtml(__('Đăng nhập')) ?></strong>
                     </a>
                 </p>
             </div>

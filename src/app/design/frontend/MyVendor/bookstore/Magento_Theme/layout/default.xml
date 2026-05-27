@@ -10,6 +10,8 @@
         <referenceBlock name="footer-container" remove="true"/>
         <referenceBlock name="breadcrumbs" remove="true"/> 
         <referenceBlock name="report.bugs" remove="true"/>
+        <referenceBlock name="catalog.topnav" remove="true"/>
+        <referenceBlock name="navigation.sections" remove="true"/>
 
         <referenceContainer name="page.wrapper">
             <block class="Magento\Framework\View\Element\Template" name="custom.header" 

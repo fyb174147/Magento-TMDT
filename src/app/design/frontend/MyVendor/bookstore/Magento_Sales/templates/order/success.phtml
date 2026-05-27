@@ -1,0 +1,38 @@
+<?php
+/**
+ * @var \Magento\Checkout\Block\Onepage\Success $block
+ */
+$orderId = $block->getOrderId();
+?>
+<div class="checkout-success-wrapper" style="background: var(--bg-surface); padding: 60px 20px; min-height: 60vh; display: flex; align-items: center; justify-content: center;">
+    <div class="checkout-success-card" style="background: #fff; padding: 40px; border-radius: 24px; box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08); max-width: 600px; width: 100%; text-align: center; border: 1px solid var(--border);">
+        
+        <!-- Icon Checkmark -->
+        <div class="success-icon" style="margin-bottom: 24px;">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="40" cy="40" r="40" fill="var(--new-color)" fill-opacity="0.1"/>
+                <path d="M56 28L34 50L24 40" stroke="var(--new-color)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <h1 style="font-weight: 900; color: var(--text-main); font-size: 32px; margin-bottom: 16px;">
+            <?= $block->escapeHtml(__('Đặt hàng thành công!')) ?>
+        </h1>
+
+        <p style="color: var(--text-sub); font-size: 16px; line-height: 1.6; margin-bottom: 32px;">
+            <?= $block->escapeHtml(__('Cảm ơn bạn đã mua sách tại BookStore!')) ?><br>
+            <?= $block->escapeHtml(__('Mã đơn hàng của bạn là')) ?> 
+            <strong style="color: var(--text-main); font-weight: 900;">#<?= $block->escapeHtml($orderId) ?></strong>
+        </p>
+
+        <div class="actions-toolbar">
+            <div class="primary">
+                <a class="action primary continue" 
+                   href="<?= $block->escapeUrl($block->getUrl('')) ?>"
+                   style="display: block; width: 100%; background: var(--primary); color: #fff; padding: 16px; border-radius: 14px; font-weight: 900; text-decoration: none; font-size: 16px; transition: var(--transition); box-shadow: 0 10px 20px rgba(0, 149, 255, 0.2);">
+                    <?= $block->escapeHtml(__('Tiếp tục mua sắm')) ?>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

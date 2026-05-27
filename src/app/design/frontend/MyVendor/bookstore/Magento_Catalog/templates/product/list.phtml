@@ -1,48 +1,149 @@
 <?php
 /** @var \Magento\Catalog\Block\Product\ListProduct $block */
-$_productCollection = $block->getLoadedProductCollection();
-$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$postDataHelper = $objectManager->get(\Magento\Framework\Data\Helper\PostHelper::class);
+$request = $block->getRequest();
+$fullActionName = (string)$request->getFullActionName();
+$isAllBooksPage = in_array($fullActionName, ['bookstore_shop_index_index', 'shop_index_index'], true);
+$categoryId = (int)$request->getParam('cat', 0);
+$priceParam = $request->getParam('price');
+$pageSize = 12;
+$currentPage = max(1, (int)$request->getParam('p', 1));
+
+if ($isAllBooksPage) {
+    $productCollectionFactory = $objectManager->get(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class);
+    $status = $objectManager->get(\Magento\Catalog\Model\Product\Attribute\Source\Status::class);
+    $visibility = $objectManager->get(\Magento\Catalog\Model\Product\Visibility::class);
+    $_productCollection = $productCollectionFactory->create()
+        ->addAttributeToSelect(['name', 'price', 'special_price', 'small_image', 'thumbnail', 'image'])
+        ->addAttributeToFilter('status', ['in' => $status->getVisibleStatusIds()])
+        ->setVisibility($visibility->getVisibleInSiteIds())
+        ->addStoreFilter()
+        ->addFinalPrice();
+
+    if (method_exists($_productCollection, 'addUrlRewrite')) {
+        $_productCollection->addUrlRewrite();
+    }
+} else {
+    $_productCollection = $block->getLoadedProductCollection();
+}
+
+if (!$_productCollection->isLoaded()) {
+    if ($categoryId > 0) {
+        $_productCollection->addCategoriesFilter(['in' => [$categoryId]]);
+    }
+
+    $priceFilter = [];
+    if (is_array($priceParam)) {
+        if (isset($priceParam['from']) && $priceParam['from'] !== '') {
+            $priceFilter['from'] = (float)$priceParam['from'];
+        }
+        if (isset($priceParam['to']) && $priceParam['to'] !== '') {
+            $priceFilter['to'] = (float)$priceParam['to'];
+        }
+    } elseif (is_string($priceParam) && strpos($priceParam, '-') !== false) {
+        [$from, $to] = array_pad(explode('-', $priceParam, 2), 2, null);
+        if ($from !== null && $from !== '') {
+            $priceFilter['from'] = (float)$from;
+        }
+        if ($to !== null && $to !== '') {
+            $priceFilter['to'] = (float)$to;
+        }
+    }
+
+    if ($priceFilter) {
+        $_productCollection->addAttributeToFilter('price', $priceFilter);
+    }
+}
+
+$_productCollection->setPageSize($pageSize)->setCurPage($currentPage);
+$totalItems = (int)$_productCollection->getSize();
+$totalPages = max(1, (int)ceil($totalItems / $pageSize));
+if ($currentPage > $totalPages) {
+    $currentPage = $totalPages;
+    $_productCollection->setCurPage($currentPage);
+}
+
+$pageUrl = function (int $page) use ($block) {
+    return $block->getUrl('*/*/*', [
+        '_current' => true,
+        '_use_rewrite' => true,
+        '_query' => ['p' => $page],
+    ]);
+};
 ?>
 
 <?php if (!$_productCollection->count()): ?>
     <div class="message info empty"><div><?= __('Không tìm thấy cuốn sách nào.') ?></div></div>
 <?php else: ?>
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-8 p-4">
+    <div class="product-items">
         <?php foreach ($_productCollection as $_product): ?>
-            <div class="book-card border rounded-xl overflow-hidden hover:shadow-2xl transition duration-300 bg-white group">
-                <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>" class="block relative aspect-[3/4]">
-                    <img src="<?= $block->escapeUrl($block->getImage($_product, 'category_page_grid')->getImageUrl()) ?>" 
-                         alt="<?= $block->escapeHtml($_product->getName()) ?>"
-                         class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                </a>
-                
-                <div class="p-4">
-                    <h3 class="text-sm font-semibold h-10 overflow-hidden mb-2">
-                        <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>" class="hover:text-blue-600">
-                            <?= $block->escapeHtml($_product->getName()) ?>
+            <?php
+                $regularPrice = (float)$_product->getPrice();
+                $finalPrice = (float)$_product->getFinalPrice();
+                $postData = $postDataHelper->getPostData(
+                    $block->escapeUrl($block->getAddToCartUrl($_product)),
+                    ['product' => (int)$_product->getEntityId()]
+                );
+            ?>
+            <div class="book-card product-item">
+                <div class="product-item-info">
+                    <div class="product-photo-container">
+                        <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>" class="product-item-photo">
+                            <img src="<?= $block->escapeUrl($block->getImage($_product, 'category_page_grid')->getImageUrl()) ?>"
+                                 alt="<?= $block->escapeHtmlAttr($_product->getName()) ?>">
                         </a>
-                    </h3>
-
-                    <div class="price-container flex flex-col">
-                        <?php if ($_product->getSpecialPrice()): ?>
-                            <span class="text-xs text-gray-400 line-through">
-                                <?= number_format($_product->getPrice(), 0, ',', '.') ?>đ
-                            </span>
-                            <span class="text-red-600 font-bold text-lg">
-                                <?= number_format($_product->getSpecialPrice(), 0, ',', '.') ?>đ
-                            </span>
-                        <?php else: ?>
-                            <span class="text-gray-900 font-bold text-lg">
-                                <?= number_format($_product->getPrice(), 0, ',', '.') ?>đ
-                            </span>
-                        <?php endif; ?>
                     </div>
 
-                    <button class="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg opacity-0 group-hover:opacity-100 transition duration-300">
-                        Xem chi tiết
-                    </button>
+                    <div class="product-item-details">
+                        <strong class="product-item-name">
+                            <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>" class="product-item-link">
+                                <?= $block->escapeHtml($_product->getName()) ?>
+                            </a>
+                        </strong>
+
+                        <div class="price-box">
+                            <?php if ($regularPrice > $finalPrice): ?>
+                                <span class="old-price"><?= number_format($regularPrice, 0, ',', '.') ?> đ</span>
+                            <?php endif; ?>
+                            <span class="price"><?= number_format($finalPrice, 0, ',', '.') ?> đ</span>
+                        </div>
+
+                        <div class="product-item-actions">
+                            <?php if ($_product->isSaleable()): ?>
+                                <button class="action tocart primary"
+                                        data-post='<?= $block->escapeHtmlAttr($postData) ?>'
+                                        type="button">
+                                    <span><?= __('Thêm vào giỏ') ?></span>
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
+    <nav class="bookstore-pagination" aria-label="<?= $block->escapeHtmlAttr(__('Phân trang')) ?>">
+        <div class="bookstore-page-status">
+            <?= $block->escapeHtml(__('Trang %1 của %2', $currentPage, $totalPages)) ?>
+        </div>
+        <div class="bookstore-page-actions">
+            <a class="bookstore-page-link<?= $currentPage <= 1 ? ' is-disabled' : '' ?>"
+               href="<?= $block->escapeUrl($pageUrl(1)) ?>"
+               data-tooltip="<?= $block->escapeHtmlAttr(__('Trang đầu')) ?>"
+               title="<?= $block->escapeHtmlAttr(__('Trang đầu')) ?>">&#171;</a>
+            <a class="bookstore-page-link<?= $currentPage <= 1 ? ' is-disabled' : '' ?>"
+               href="<?= $block->escapeUrl($pageUrl(max(1, $currentPage - 1))) ?>"
+               data-tooltip="<?= $block->escapeHtmlAttr(__('Trang trước')) ?>"
+               title="<?= $block->escapeHtmlAttr(__('Trang trước')) ?>">&#8249;</a>
+            <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>"
+               href="<?= $block->escapeUrl($pageUrl(min($totalPages, $currentPage + 1))) ?>"
+               data-tooltip="<?= $block->escapeHtmlAttr(__('Trang sau')) ?>"
+               title="<?= $block->escapeHtmlAttr(__('Trang sau')) ?>">&#8250;</a>
+            <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>"
+               href="<?= $block->escapeUrl($pageUrl($totalPages)) ?>"
+               data-tooltip="<?= $block->escapeHtmlAttr(__('Trang cuối')) ?>"
+               title="<?= $block->escapeHtmlAttr(__('Trang cuối')) ?>">&#187;</a>
+        </div>
+    </nav>
 <?php endif; ?>

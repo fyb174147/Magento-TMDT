@@ -9,7 +9,20 @@ if ($exist = ($block->getProductCollection() && $block->getProductCollection()->
     $type = 'widget-product-grid';
     $mode = 'grid';
     $image = 'category_page_grid'; // Dùng ID chuẩn để hiện ảnh placeholder
-    $items = $block->getProductCollection()->getItems();
+    $allItems = array_values($block->getProductCollection()->getItems());
+    $pageSize = 12;
+    $currentPage = max(1, (int)$block->getRequest()->getParam('p', 1));
+    $totalItems = count($allItems);
+    $totalPages = max(1, (int)ceil($totalItems / $pageSize));
+    $currentPage = min($currentPage, $totalPages);
+    $items = array_slice($allItems, ($currentPage - 1) * $pageSize, $pageSize);
+    $pageUrl = function (int $page) use ($block) {
+        return $block->getUrl('*/*/*', [
+            '_current' => true,
+            '_use_rewrite' => true,
+            '_query' => ['p' => $page],
+        ]);
+    };
 
     $showWishlist = true;
     $showCompare = true;
@@ -82,6 +95,17 @@ if ($exist = ($block->getProductCollection() && $block->getProductCollection()->
                         </li>
                     <?php endforeach ?>
                 </ol>
+                <nav class="bookstore-pagination" aria-label="<?= $escaper->escapeHtmlAttr(__('Phân trang')) ?>">
+                    <div class="bookstore-page-status">
+                        <?= $escaper->escapeHtml(__('Trang %1 của %2', $currentPage, $totalPages)) ?>
+                    </div>
+                    <div class="bookstore-page-actions">
+                        <a class="bookstore-page-link<?= $currentPage <= 1 ? ' is-disabled' : '' ?>" href="<?= $escaper->escapeUrl($pageUrl(1)) ?>" data-tooltip="<?= $escaper->escapeHtmlAttr(__('Trang đầu')) ?>" title="<?= $escaper->escapeHtmlAttr(__('Trang đầu')) ?>">&#171;</a>
+                        <a class="bookstore-page-link<?= $currentPage <= 1 ? ' is-disabled' : '' ?>" href="<?= $escaper->escapeUrl($pageUrl(max(1, $currentPage - 1))) ?>" data-tooltip="<?= $escaper->escapeHtmlAttr(__('Trang trước')) ?>" title="<?= $escaper->escapeHtmlAttr(__('Trang trước')) ?>">&#8249;</a>
+                        <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>" href="<?= $escaper->escapeUrl($pageUrl(min($totalPages, $currentPage + 1))) ?>" data-tooltip="<?= $escaper->escapeHtmlAttr(__('Trang sau')) ?>" title="<?= $escaper->escapeHtmlAttr(__('Trang sau')) ?>">&#8250;</a>
+                        <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>" href="<?= $escaper->escapeUrl($pageUrl($totalPages)) ?>" data-tooltip="<?= $escaper->escapeHtmlAttr(__('Trang cuối')) ?>" title="<?= $escaper->escapeHtmlAttr(__('Trang cuối')) ?>">&#187;</a>
+                    </div>
+                </nav>
             </div>
         </div>
     </div>

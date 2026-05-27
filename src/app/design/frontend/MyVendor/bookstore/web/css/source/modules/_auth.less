@@ -1,0 +1,207 @@
+// ==========================================================================
+// MODULE 5: AUTHENTICATION (LOGIN & REGISTER) - CHỐNG TRÀN & CĂN GIỮA NÚT
+// ==========================================================================
+
+.customer-account-login,
+.customer-account-create {
+    
+    .login-container-wrapper,
+    .login-container-wrapper * {
+        box-sizing: border-box !important;
+    }
+
+    .login-container-wrapper {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding: 40px 20px !important;
+
+        // Khung Bounding Box dùng chung cho cả 2 trang cực kỳ đồng bộ
+        .login-card {
+            max-width: 520px !important;
+            width: 100% !important;
+            border: 2px solid var(--primary) !important;
+            border-radius: 16px !important;
+            padding: 30px !important;
+            background: #ffffff !important;
+            box-shadow: 0 8px 24px rgba(0, 149, 255, 0.05) !important;
+        }
+
+        // ĐÈ BẸP FIELDSET CŨ CỦA MAGENTO
+        .fieldset-custom-register, 
+        .fieldset {
+            border: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: block !important;
+        }
+
+        // CẤU TRÚC HÀNG NGANG: NHÃN TRÁI - INPUT PHẢI (CHẶN ĐỨNG TRÀN VIỀN)
+        .field-group-custom,
+        .field {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            width: 100% !important;
+            margin-bottom: 16px !important;
+        }
+
+        .label-custom,
+        .label {
+            flex: 0 0 120px !important;
+            width: 120px !important;
+            min-width: 120px !important;
+            font-weight: 700 !important;
+            color: var(--text-main) !important;
+            font-size: 14px !important;
+            text-align: left !important;
+        }
+
+        .control-custom,
+        .control {
+            flex: 1 1 auto !important;
+            width: auto !important;
+            max-width: calc(100% - 120px) !important; // Khóa chết kích thước không cho tràn vạch đỏ
+            display: block !important;
+        }
+
+        .input-custom-field,
+        .input-text {
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 42px !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 8px !important;
+            padding: 0 14px !important;
+            font-size: 14px !important;
+            box-sizing: border-box !important;
+            outline: none !important;
+            transition: var(--transition) !important;
+            
+            &:focus {
+                border-color: var(--primary) !important;
+                box-shadow: 0 0 0 3px rgba(0, 149, 255, 0.1) !important;
+            }
+        }
+
+        // KHỐI HÀNH ĐỘNG CĂN GIỮA TÂM NGANG TUYỆT ĐỐI BẰNG FLEX
+        .login-actions-center-block,
+        .register-actions-center-block,
+        .actions-toolbar {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            flex-direction: column !important;
+            width: 100% !important;
+            margin: 28px 0 16px 0 !important;
+            gap: 12px !important;
+            float: none !important;
+            clear: both !important;
+        }
+
+        // STYLE NÚT BẤM CHÍNH (ĐĂNG NHẬP / ĐĂNG KÝ) ĐỒNG BỘ 100%
+        .btn-login-submit-custom,
+        .btn-register-submit-custom,
+        .action.submit {
+            width: 100% !important;
+            max-width: 280px !important; // Khóa độ rộng chuẩn, tự động nằm giữa
+            height: 45px !important;
+            background: var(--primary) !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 8px !important;
+            font-weight: 800 !important;
+            font-size: 14px !important;
+            cursor: pointer !important;
+            display: block !important;
+            margin: 0 auto !important;
+            transition: var(--transition) !important;
+
+            &:hover {
+                background: var(--primary-hover) !important;
+            }
+        }
+
+        // Nút Quên mật khẩu cảnh báo đỏ nằm giữa
+        .btn-forgot-password-red {
+            color: #ef4444 !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            &:hover {
+                color: #dc2626 !important;
+                text-decoration: underline !important;
+            }
+        }
+
+        // Khối Google Login
+        .social-divider-custom {
+            text-align: center !important;
+            position: relative !important;
+            margin: 20px 0 !important;
+            width: 100% !important;
+            &:before {
+                content: "" !important;
+                position: absolute !important;
+                top: 50% !important;
+                left: 0 !important;
+                right: 0 !important;
+                height: 1px !important;
+                background: var(--border) !important;
+                z-index: 1 !important;
+            }
+            span {
+                position: relative !important;
+                z-index: 2 !important;
+                background: #ffffff !important;
+                padding: 0 10px !important;
+                color: var(--text-sub) !important;
+                font-size: 13px;
+            }
+        }
+
+        .btn-google-login-custom {
+            width: 100% !important;
+            max-width: 280px !important;
+            height: 42px !important;
+            background: #ffffff !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 8px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+        }
+
+        // Khối chuyển hướng chân Form đổ về góc trái dưới gạch viền
+        .login-footer-left-align, 
+        .register-footer-left-align {
+            text-align: left !important;
+            width: 100% !important;
+            margin-top: 24px !important;
+            border-top: 1px solid var(--border) !important;
+            padding-top: 14px !important;
+            p { margin: 0 !important; font-size: 13px !important; color: var(--text-sub) !important; }
+            a { color: var(--primary) !important; text-decoration: none !important; margin-left: 4px !important; }
+        }
+    }
+}
+
+// Responsive Mobile cho Auth phân hệ
+@media only screen and (max-width: 480px) {
+    .customer-account-login .login-container-wrapper,
+    .customer-account-create .login-container-wrapper {
+        .field-group-custom, .field {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 4px !important;
+        }
+        .label-custom, .label { width: 100% !important; }
+        .control-custom, .control { max-width: 100% !important; width: 100% !important; }
+        .btn-login-submit-custom, .btn-register-submit-custom, .btn-google-login-custom { max-width: 100% !important; }
+    }
+}

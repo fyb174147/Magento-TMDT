@@ -5,10 +5,67 @@
  * @var $block \Magento\Framework\View\Element\Template
  */
 
-$categoryCollection = $block->getCategoryCollection();
-$query = $block->helper(\Magento\Search\Helper\Data::class)->getQueryText();
-$minPrice = isset($_GET['price']['from']) ? (int)$_GET['price']['from'] : 0;
-$maxPrice = isset($_GET['price']['to']) ? (int)$_GET['price']['to'] : 5000000;
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$categoryCollectionFactory = $objectManager->get(\Magento\Catalog\Model\ResourceModel\Category\CollectionFactory::class);
+$productCollectionFactory = $objectManager->get(\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory::class);
+$productStatus = $objectManager->get(\Magento\Catalog\Model\Product\Attribute\Source\Status::class);
+$productVisibility = $objectManager->get(\Magento\Catalog\Model\Product\Visibility::class);
+$categoryCollection = $categoryCollectionFactory->create()
+    ->addAttributeToSelect('name')
+    ->addAttributeToFilter('is_active', 1)
+    ->addAttributeToFilter('level', ['gt' => 1])
+    ->setOrder('position', 'ASC');
+
+$request = $block->getRequest();
+$selectedCategory = (int)$request->getParam('cat', 0);
+$queryText = trim((string)$request->getParam('q', ''));
+$priceParam = $request->getParam('price');
+$minPrice = 0;
+$maxPrice = 5000000;
+
+if (is_array($priceParam)) {
+    $minPrice = isset($priceParam['from']) ? (int)$priceParam['from'] : $minPrice;
+    $maxPrice = isset($priceParam['to']) ? (int)$priceParam['to'] : $maxPrice;
+} elseif (is_string($priceParam) && strpos($priceParam, '-') !== false) {
+    [$from, $to] = array_pad(explode('-', $priceParam, 2), 2, null);
+    $minPrice = (int)$from;
+    $maxPrice = $to !== null && $to !== '' ? (int)$to : $maxPrice;
+}
+
+$applySearchFilter = static function ($collection) use ($queryText) {
+    if ($queryText === '') {
+        return;
+    }
+
+    $likeQuery = '%' . $queryText . '%';
+    $collection->addAttributeToFilter([
+        ['attribute' => 'name', 'like' => $likeQuery],
+        ['attribute' => 'sku', 'like' => $likeQuery],
+    ]);
+};
+
+$countProducts = static function (?int $categoryId = null) use (
+    $productCollectionFactory,
+    $productStatus,
+    $productVisibility,
+    $applySearchFilter
+) {
+    $collection = $productCollectionFactory->create()
+        ->addAttributeToSelect('entity_id')
+        ->addAttributeToFilter('status', ['in' => $productStatus->getVisibleStatusIds()])
+        ->setVisibility($productVisibility->getVisibleInSiteIds())
+        ->addStoreFilter();
+
+    if ($categoryId) {
+        $collection->addCategoriesFilter(['in' => [$categoryId]]);
+    }
+
+    $applySearchFilter($collection);
+
+    return (int)$collection->getSize();
+};
+
+$allCategoryCount = $countProducts(null);
 ?>
 
 <div class="filter-sidebar">
@@ -16,7 +73,6 @@ $maxPrice = isset($_GET['price']['to']) ? (int)$_GET['price']['to'] : 5000000;
         <h2><?= __('Bộ lọc') ?></h2>
     </div>
 
-    <!-- CATEGORY FILTER -->
     <div class="filter-section filter-category">
         <div class="filter-title">
             <span><?= __('Danh mục') ?></span>
@@ -25,23 +81,22 @@ $maxPrice = isset($_GET['price']['to']) ? (int)$_GET['price']['to'] : 5000000;
         <div class="filter-content">
             <div class="category-filter-list">
                 <label class="filter-option">
-                    <input type="checkbox" name="cat" value="" onchange="filterSearch()"> 
-                    <?= __('Tất cả danh mục') ?>
+                    <input type="radio" name="cat" value="" <?= $selectedCategory === 0 ? 'checked' : '' ?> onchange="filterSearch()"> 
+                    <span><?= __('Tất cả danh mục') ?> (<?= (int)$allCategoryCount ?>)</span>
                 </label>
-                <?php if ($categoryCollection): ?>
-                    <?php foreach ($categoryCollection as $category): ?>
-                        <label class="filter-option">
-                            <input type="checkbox" name="cat" value="<?= $category->getId() ?>" 
-                                   onchange="filterSearch()"> 
-                            <?= $block->escapeHtml($category->getName()) ?>
-                        </label>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                <?php foreach ($categoryCollection as $category): ?>
+                    <?php $categoryProductCount = $countProducts((int)$category->getId()); ?>
+                    <label class="filter-option">
+                        <input type="radio" name="cat" value="<?= (int)$category->getId() ?>"
+                               <?= $selectedCategory === (int)$category->getId() ? 'checked' : '' ?>
+                               onchange="filterSearch()"> 
+                        <span><?= $block->escapeHtml($category->getName()) ?> (<?= (int)$categoryProductCount ?>)</span>
+                    </label>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
 
-    <!-- PRICE FILTER -->
     <div class="filter-section filter-price">
         <div class="filter-title">
             <span><?= __('Khoảng giá') ?></span>
@@ -64,7 +119,6 @@ $maxPrice = isset($_GET['price']['to']) ? (int)$_GET['price']['to'] : 5000000;
                     </div>
                 </div>
 
-                <!-- Price Range Slider -->
                 <div class="price-slider-container" id="priceSliderContainer">
                     <div class="price-slider-track">
                         <div class="price-slider-fill"></div>
@@ -170,15 +224,16 @@ $maxPrice = isset($_GET['price']['to']) ? (int)$_GET['price']['to'] : 5000000;
 
     // Function để apply filter
     window.filterSearch = function() {
-        var categories = Array.from(document.querySelectorAll('input[name="cat"]:checked')).map(e => e.value).filter(Boolean);
+        var selectedCategory = document.querySelector('input[name="cat"]:checked');
+        var category = selectedCategory ? selectedCategory.value : '';
         var priceFrom = parseInt(document.getElementById('priceFromInput').value || 0);
         var priceTo = parseInt(document.getElementById('priceToInput').value || 5000000);
         
         // Build URL query string
         var url = new URL(window.location);
         
-        if (categories.length > 0) {
-            url.searchParams.set('cat', categories[0]); // Magento thường lấy category đầu tiên
+        if (category) {
+            url.searchParams.set('cat', category);
         } else {
             url.searchParams.delete('cat');
         }
@@ -203,16 +258,18 @@ $maxPrice = isset($_GET['price']['to']) ? (int)$_GET['price']['to'] : 5000000;
 <style>
     .filter-sidebar {
         background: #fff;
-        border-radius: 16px;
-        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        border: 2px solid #0095ff;
         padding: 0;
         margin-bottom: 20px;
+        box-shadow: 0 10px 24px rgba(0, 149, 255, 0.08);
+        overflow: hidden;
     }
 
     .filter-header {
         padding: 16px;
-        border-bottom: 1px solid #e2e8f0;
-        background: #f8fafc;
+        border-bottom: 1px solid #d7ecff;
+        background: #f5fbff;
         border-radius: 16px 16px 0 0;
     }
 
@@ -224,7 +281,7 @@ $maxPrice = isset($_GET['price']['to']) ? (int)$_GET['price']['to'] : 5000000;
     }
 
     .filter-section {
-        border-bottom: 1px solid #e2e8f0;
+        border-bottom: 1px solid #d7ecff;
     }
 
     .filter-section:last-child {
@@ -237,17 +294,19 @@ $maxPrice = isset($_GET['price']['to']) ? (int)$_GET['price']['to'] : 5000000;
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
-        background: #fafbfc;
+        background: #ffffff;
         font-weight: 700;
         color: #1e293b;
     }
 
     .filter-toggle {
-        background: -none;
+        background: none;
         border: none;
         cursor: pointer;
         font-weight: bold;
         transition: transform 0.3s;
+        color: #0095ff;
+        padding: 0;
     }
 
     .filter-section.collapsed .filter-toggle {
@@ -256,7 +315,7 @@ $maxPrice = isset($_GET['price']['to']) ? (int)$_GET['price']['to'] : 5000000;
 
     .filter-content {
         padding: 12px 16px;
-        display: max-content;
+        display: block;
         max-height: 500px;
         overflow-y: auto;
     }
@@ -279,11 +338,14 @@ $maxPrice = isset($_GET['price']['to']) ? (int)$_GET['price']['to'] : 5000000;
         cursor: pointer;
         font-size: 14px;
         color: #1e293b;
+        line-height: 1.35;
     }
 
+    .filter-option input[type="radio"],
     .filter-option input[type="checkbox"] {
         cursor: pointer;
         accent-color: #0095ff;
+        flex: 0 0 auto;
     }
 
     /* Price Filter */

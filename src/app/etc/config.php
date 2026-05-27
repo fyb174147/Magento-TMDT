@@ -362,6 +362,7 @@ return [
         'Bookstore_CoreApi' => 1,
         'Bookstore_DemoData' => 1,
         'Bookstore_Payment' => 1,
+        'Bookstore_Sales' => 1,
         'Bookstore_Shipping' => 1,
         'Bookstore_Utility' => 1,
         'PayPal_Braintree' => 1,

@@ -1,29 +1,316 @@
+.bookstore-utility-custom .page-main {
+    max-width: 1200px;
+    padding: 18px 20px 56px;
+}
+
+.bookstore-cms-page,
 .bookstore-info-page {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 28px 16px 48px;
 }
 
-.bookstore-info-page h1 {
-    margin: 0 0 18px;
-    font-size: 32px;
+.bookstore-cms-hero,
+.bookstore-info-hero {
+    margin: 0 0 22px;
 }
 
-.bookstore-info-section {
-    border-top: 1px solid #e5e7eb;
-    padding: 18px 0;
+.bookstore-cms-hero p,
+.bookstore-info-hero p {
+    margin: 0 0 8px;
+    color: #0095ff;
+    font-weight: 900;
 }
 
-.bookstore-info-section h2 {
+.bookstore-cms-hero h1,
+.bookstore-info-hero h1 {
     margin: 0 0 10px;
-    font-size: 20px;
+    color: #1e293b;
+    font-size: 34px;
+    line-height: 1.15;
+    font-weight: 950;
 }
 
-.bookstore-info-section ul {
+.bookstore-cms-hero span,
+.bookstore-info-hero span {
+    color: #64748b;
+    font-weight: 650;
+}
+
+.store-toolbar,
+.store-feature,
+.bookstore-info-card,
+.utility-summary article {
+    border: 2px solid #0095ff;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(0, 149, 255, 0.08);
+}
+
+.store-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+}
+
+.store-toolbar strong,
+.store-toolbar span {
+    display: block;
+}
+
+.store-toolbar span {
+    margin-top: 4px;
+    color: #64748b;
+}
+
+.store-toolbar button {
+    min-height: 42px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 10px;
+    background: #0095ff;
+    color: #fff;
+    font-weight: 900;
+}
+
+.store-feature {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 22px;
+    padding: 18px;
+    margin-bottom: 22px;
+}
+
+.store-map {
+    min-height: 260px;
+    border-radius: 14px;
+    background:
+        linear-gradient(90deg, rgba(0,149,255,0.12) 1px, transparent 1px),
+        linear-gradient(rgba(0,149,255,0.12) 1px, transparent 1px),
+        #f5fbff;
+    background-size: 34px 34px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 22px;
+}
+
+.store-map span {
+    color: #64748b;
+    font-weight: 800;
+}
+
+.store-map strong {
+    color: #1e293b;
+    font-size: 28px;
+    font-weight: 950;
+}
+
+.store-feature-copy h2 {
+    margin: 6px 0 12px;
+    font-size: 28px;
+    font-weight: 950;
+}
+
+.store-feature-copy p {
+    color: #64748b;
+    line-height: 1.7;
+}
+
+.store-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.store-services span,
+.utility-chip {
+    display: inline-flex;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(0, 149, 255, 0.1);
+    color: #0076cc;
+    font-weight: 850;
+}
+
+.store-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.store-grid article {
+    border: 1px solid #d7ecff;
+    border-radius: 16px;
+    padding: 18px;
+    background: #fff;
+}
+
+.store-grid strong {
+    display: block;
+    color: #1e293b;
+    font-size: 17px;
+    font-weight: 950;
+}
+
+.store-grid p {
+    min-height: 44px;
+    color: #64748b;
+}
+
+.store-grid span,
+.store-grid small {
+    display: block;
+    color: #1e293b;
+    font-weight: 800;
+}
+
+.store-grid small {
+    margin-top: 6px;
+    color: #0095ff;
+}
+
+.utility-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.utility-summary article {
+    padding: 18px;
+}
+
+.utility-summary strong,
+.utility-summary span {
+    display: block;
+}
+
+.utility-summary strong {
+    color: #0095ff;
+    font-size: 26px;
+    font-weight: 950;
+}
+
+.utility-summary span {
+    color: #64748b;
+    font-weight: 800;
+}
+
+.bookstore-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.bookstore-info-card {
+    padding: 20px;
+}
+
+.rates-card,
+.news-card {
+    grid-column: 1 / -1;
+}
+
+.card-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.utility-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: #f5fbff;
+    color: #0095ff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 950;
+}
+
+.card-heading h2 {
     margin: 0;
-    padding-left: 18px;
+    color: #1e293b;
+    font-size: 22px;
+    font-weight: 950;
 }
 
-.bookstore-info-section li {
-    margin: 8px 0;
+.card-heading p,
+.muted {
+    margin: 4px 0 0;
+    color: #64748b;
+}
+
+.weather-temp {
+    color: #1e293b;
+    font-size: 40px;
+    font-weight: 950;
+}
+
+.utility-rate-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.utility-rate-table th {
+    padding: 12px;
+    background: #f5fbff;
+    color: #64748b;
+    text-align: left;
+}
+
+.utility-rate-table td {
+    padding: 13px 12px;
+    border-bottom: 1px solid #d7ecff;
+}
+
+.utility-rate-table td span {
+    display: block;
+    margin-top: 3px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.utility-news-list {
+    display: grid;
+    gap: 12px;
+}
+
+.utility-news-list article {
+    padding: 14px;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.utility-news-list a {
+    color: #0076cc;
+    font-weight: 900;
+    text-decoration: none;
+}
+
+.utility-news-list p {
+    margin: 6px 0 0;
+    color: #475569;
+    line-height: 1.55;
+}
+
+@media (max-width: 800px) {
+    .store-feature,
+    .store-grid,
+    .utility-summary,
+    .bookstore-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .store-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
 }

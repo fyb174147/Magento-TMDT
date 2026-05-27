@@ -1,19 +1,60 @@
-.products-grid .product-items .product-item {
-    background: #ffffff !important;
-    border: 3px solid #ff4d00 !important; /* Ép viền cam hiện lên */
-    border-radius: 20px !important;
-    padding: 20px !important;
-    box-shadow: 0 4px 10px rgba(255, 77, 0, 0.1) !important;
-    transition: all 0.3s ease !important;
+.cms-promotions .block-products-list .product-items,
+.cms-promotions .block-new-products .product-items {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 24px !important;
+    max-width: 860px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+.cms-promotions .block-products-list .product-item,
+.cms-promotions .block-new-products .product-item {
+    width: auto !important;
+    min-width: 0 !important;
+    border: 2px solid #0095ff !important;
+    border-radius: 18px !important;
+    padding: 16px !important;
+    background: #fff !important;
+    box-shadow: 0 4px 12px rgba(0, 149, 255, 0.06) !important;
     box-sizing: border-box !important;
+    aspect-ratio: auto !important;
 }
 
-.products-grid .product-items .product-item:hover {
-    transform: translateY(-8px) !important;
-    box-shadow: 0 15px 30px rgba(255, 77, 0, 0.2) !important;
+.cms-promotions .block-products-list .product-photo-container,
+.cms-promotions .block-new-products .product-photo-container,
+.cms-promotions .block-products-list .product-item-photo,
+.cms-promotions .block-new-products .product-item-photo {
+    display: block !important;
+    width: 100% !important;
+    aspect-ratio: 2 / 3 !important;
+    overflow: hidden !important;
+    border-radius: 12px !important;
+    background: #f8fafc !important;
 }
 
-/* Đổi màu gạch chân tiêu đề trang Khuyến mãi */
-.section-header h2:after {
-    background: #ff4d00 !important; /* Màu cam rực rỡ */
+.cms-promotions .block-products-list .product-photo-container img,
+.cms-promotions .block-new-products .product-photo-container img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+.cms-promotions .section-header h2:after {
+    background: #0095ff !important;
+}
+
+@media (max-width: 1100px) {
+    .cms-promotions .block-products-list .product-items,
+    .cms-promotions .block-new-products .product-items {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 560px) {
+    .cms-promotions .block-products-list .product-items,
+    .cms-promotions .block-new-products .product-items {
+        grid-template-columns: 1fr !important;
+    }
 }

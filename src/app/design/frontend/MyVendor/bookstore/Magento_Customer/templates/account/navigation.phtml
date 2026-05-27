@@ -1,0 +1,15 @@
+<?php
+/** @var $block \Magento\Framework\View\Element\Html\Links */
+?>
+<div class="block account-nav">
+    <div class="title">
+        <strong><?= $block->escapeHtml(__('Tài khoản')) ?></strong>
+    </div>
+    <div class="content">
+        <nav class="account-nav">
+            <ul class="nav items">
+                <?= $block->getChildHtml() ?>
+            </ul>
+        </nav>
+    </div>
+</div>

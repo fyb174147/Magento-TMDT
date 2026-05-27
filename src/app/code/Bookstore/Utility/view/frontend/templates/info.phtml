@@ -7,31 +7,37 @@ $news = $block->getNews();
 <div class="bookstore-info-page">
     <div class="bookstore-info-hero">
         <p>BookStore Market Dashboard</p>
-        <h1>Thong tin tien ich</h1>
+        <h1>Tiện ích đọc sách</h1>
+        <span>Theo dõi thời tiết, tỷ giá và tin kinh doanh để demo khu vực tiện ích của BookStore.</span>
+    </div>
+    <div class="utility-summary">
+        <article><strong>3</strong><span>Khối dữ liệu</span></article>
+        <article><strong>5</strong><span>Ngoại tệ phổ biến</span></article>
+        <article><strong>RSS</strong><span>Tin mới cập nhật</span></article>
     </div>
     <div class="bookstore-info-grid">
         <section class="bookstore-info-card weather-card">
             <div class="card-heading">
                 <span class="utility-icon">☀</span>
                 <div>
-                    <h2>Thoi tiet</h2>
-                    <p>Cap nhat tu OpenWeatherMap</p>
+                    <h2>Thời tiết</h2>
+                    <p>Cập nhật từ OpenWeatherMap</p>
                 </div>
             </div>
             <?php if (!empty($weather['temperature'])): ?>
                 <div class="weather-temp"><?= $block->escapeHtml((string)$weather['temperature']) ?> C</div>
                 <p><strong><?= $block->escapeHtml($weather['city']) ?></strong> · <?= $block->escapeHtml($weather['description'] ?? '') ?></p>
-                <span class="utility-chip">Do am <?= $block->escapeHtml((string)($weather['humidity'] ?? '')) ?>%</span>
+                <span class="utility-chip">Độ ẩm <?= $block->escapeHtml((string)($weather['humidity'] ?? '')) ?>%</span>
             <?php else: ?>
-                <p class="muted"><?= $block->escapeHtml($weather['message'] ?? 'Chua co du lieu') ?></p>
+                <p class="muted"><?= $block->escapeHtml($weather['message'] ?? 'Chưa có dữ liệu') ?></p>
             <?php endif; ?>
         </section>
         <section class="bookstore-info-card rates-card">
             <div class="card-heading">
                 <span class="utility-icon">₫</span>
                 <div>
-                    <h2>Ty gia Vietcombank</h2>
-                    <p>USD, EUR, JPY va cac ngoai te pho bien</p>
+                    <h2>Tỷ giá Vietcombank</h2>
+                    <p>USD, EUR, JPY và các ngoại tệ phổ biến</p>
                 </div>
             </div>
             <table class="utility-rate-table">
@@ -46,7 +52,7 @@ $news = $block->getNews();
                         <td><?= $block->escapeHtml($rate['sell']) ?></td>
                     </tr>
                 <?php endforeach; ?>
-                <?php if (!$rates): ?><tr><td colspan="3">Chua lay duoc du lieu ty gia.</td></tr><?php endif; ?>
+                <?php if (!$rates): ?><tr><td colspan="3">Chưa lấy được dữ liệu tỷ giá.</td></tr><?php endif; ?>
                 </tbody>
             </table>
         </section>
@@ -55,7 +61,7 @@ $news = $block->getNews();
                 <span class="utility-icon">↗</span>
                 <div>
                     <h2>Tin kinh doanh</h2>
-                    <p>RSS moi nhat tu VnExpress</p>
+                    <p>RSS mới nhất từ VnExpress</p>
                 </div>
             </div>
             <div class="utility-news-list">
@@ -65,7 +71,7 @@ $news = $block->getNews();
                         <p><?= $block->escapeHtml(mb_substr($item['description'] ?? '', 0, 150)) ?></p>
                     </article>
                 <?php endforeach; ?>
-                <?php if (!$news): ?><p class="muted">Chua lay duoc RSS VnExpress.</p><?php endif; ?>
+                <?php if (!$news): ?><p class="muted">Chưa lấy được RSS VnExpress.</p><?php endif; ?>
             </div>
         </section>
     </div>

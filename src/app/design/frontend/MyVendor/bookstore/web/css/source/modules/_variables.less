@@ -1,0 +1,26 @@
+// ==========================================================================
+// MODULE 1: DESIGN TOKENS & GLOBAL MIXINS
+// ==========================================================================
+
+@layout-max-width: 1200px;
+
+:root {
+    --primary: #0095ff;
+    --primary-hover: #0076cc;
+    --bg-body: #ffffff;
+    --bg-surface: #f8fafc;
+    --text-main: #1e293b;
+    --text-sub: #64748b;
+    --border: #e2e8f0;
+    --new-color: #10b981;  
+    --sale-color: #ff4d00; 
+    --transition: all 0.3s ease;
+}
+
+.container-center() {
+    max-width: @layout-max-width;
+    margin: 0 auto !important;
+    padding: 0 20px;
+    width: 100% !important;
+    box-sizing: border-box;
+}

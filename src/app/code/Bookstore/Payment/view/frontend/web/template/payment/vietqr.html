@@ -10,10 +10,19 @@
     </div>
     <div class="payment-method-content">
         <div class="bookstore-vietqr">
-            <img data-bind="attr: {src: getQrUrl(), alt: 'VietQR'}" width="220" height="220"/>
-            <p>Quet ma VietQR de chuyen khoan dung so tien don hang. Noi dung: MagentoBookstore.</p>
+            <div class="qr-code-wrapper">
+                <img data-bind="attr: {src: getQrUrl(), alt: 'VietQR'}" width="220" height="220"/>
+            </div>
+            <div class="qr-info">
+                <p><strong>Số tài khoản:</strong> 0123456789</p>
+                <p><strong>Ngân hàng:</strong> Vietcombank (VCB)</p>
+                <p><strong>Nội dung:</strong> MagentoBookstore</p>
+            </div>
+            <button type="button" class="btn-confirm-payment" data-bind="click: placeOrder">
+                <span>Xác nhận đã chuyển khoản</span>
+            </button>
         </div>
-        <div class="actions-toolbar">
+        <div class="actions-toolbar" style="display:none">
             <div class="primary">
                 <button class="action primary checkout"
                         type="submit"

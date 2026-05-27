@@ -19,6 +19,7 @@ $customerName = $isLoggedIn ? $customerSession->getCustomer()->getName() : '';
 
             <ul class="nav-menu">
                 <li><a href="<?= $block->getUrl('') ?>"><?= __('Trang chủ') ?></a></li>
+                <li><a href="<?= $block->getUrl('shop') ?>"><?= __('Tất cả sách') ?></a></li>
                 <li><a href="<?= $block->getUrl('new-books') ?>"><?= __('Sách mới') ?></a></li>
                 <li><a href="<?= $block->getUrl('promotions') ?>"><?= __('Khuyến mãi') ?></a></li>
                 <li><a href="<?= $block->getUrl('stores') ?>"><?= __('Cửa hàng') ?></a></li>

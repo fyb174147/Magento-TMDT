@@ -4,6 +4,8 @@
         <css src="Bookstore_Utility::css/utility.css"/>
     </head>
     <body>
+        <attribute name="class" value="bookstore-utility-custom"/>
+        <referenceBlock name="page.main.title" remove="true"/>
         <referenceContainer name="content">
             <block class="Bookstore\Utility\Block\Info" name="bookstore.utility.info" template="Bookstore_Utility::info.phtml"/>
         </referenceContainer>

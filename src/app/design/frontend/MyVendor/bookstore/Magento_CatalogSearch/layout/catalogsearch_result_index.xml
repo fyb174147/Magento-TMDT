@@ -1,33 +1,31 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
         <title>Kết quả tìm kiếm</title>
     </head>
     <body>
-        <referenceContainer name="page.wrapper" label="Page Wrapper">
-            <container name="page.main" label="Page Main" htmlTag="main" htmlClass="page-main">
-                <referenceContainer name="main.content" label="Main Content">
-                    <!-- Remove default Magento layout -->
-                    <referenceBlock name="search.result" remove="true" />
-                    <referenceBlock name="category.products" remove="true" />
-                </referenceContainer>
-            </container>
-        </referenceContainer>
+        <attribute name="class" value="catalogsearch-custom bookstore-listing-custom"/>
+
+        <referenceBlock name="page.main.title" remove="true" />
+        <referenceBlock name="search.result" remove="true" />
+        <referenceBlock name="category.products" remove="true" />
+        <referenceBlock name="catalog.compare.sidebar" remove="true" />
+        <referenceBlock name="wishlist_sidebar" remove="true" />
+        <referenceBlock name="sale.reorder.sidebar" remove="true" />
+        <referenceBlock name="catalog.leftnav" remove="true" />
+        <referenceBlock name="catalogsearch.leftnav" remove="true" />
+        <referenceBlock name="product_list_toolbar" remove="true" />
 
         <referenceContainer name="main.content">
-            <container name="catalog.search.container" label="Search Results Container" htmlClass="catalog-search-container">
-                <container name="catalog.search.sidebar" label="Search Sidebar" htmlClass="sidebar sidebar-main">
+            <container name="catalog.search.container" label="Search Results Container" htmlTag="div" htmlClass="catalog-search-container">
+                <container name="catalog.search.sidebar" label="Search Sidebar" htmlTag="aside" htmlClass="sidebar sidebar-main">
                     <block class="Magento\Framework\View\Element\Template" name="catalog.search.filter" 
                            template="Magento_CatalogSearch::filter.phtml" />
                 </container>
-                <container name="catalog.search.results" label="Search Results Content" htmlClass="search-results-content">
+                
+                <container name="catalog.search.results" label="Search Results Content" htmlTag="div" htmlClass="search-results-content">
                     <block class="Magento\Catalog\Block\Product\ListProduct" name="search.results" 
-                           template="Magento_Catalog::product/list.phtml">
-                        <container name="product.list.toolbar" label="Toolbar">
-                            <block class="Magento\Catalog\Block\Product\ProductList\Toolbar" name="product_list_toolbar" 
-                                   template="Magento_Catalog::product/list/toolbar.phtml" />
-                        </container>
-                    </block>
+                           template="Magento_Catalog::product/list.phtml" />
                 </container>
             </container>
         </referenceContainer>

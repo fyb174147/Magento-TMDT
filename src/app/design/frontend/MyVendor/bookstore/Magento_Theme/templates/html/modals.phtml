@@ -39,21 +39,49 @@
         <div id="registerView" class="auth-form-container">
             <form class="auth-form" action="<?= $block->getUrl('customer/account/createpost') ?>" method="post">
                 <?= $block->getBlockHtml('formkey') ?>
-                <div class="form-group">
-                    <label><?= $block->escapeHtml(__('Họ và tên')) ?></label>
-                    <input type="text" name="firstname" placeholder="<?= $block->escapeHtml(__('Nhập họ tên...')) ?>" required>
-                    <input type="hidden" name="lastname" value="User" />
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label><?= $block->escapeHtml(__('Họ')) ?></label>
+                        <input type="text" name="lastname" placeholder="<?= $block->escapeHtml(__('Nhập họ...')) ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label><?= $block->escapeHtml(__('Tên')) ?></label>
+                        <input type="text" name="firstname" placeholder="<?= $block->escapeHtml(__('Nhập tên...')) ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label><?= $block->escapeHtml(__('Tên người dùng')) ?></label>
+                        <input type="text" name="middlename" placeholder="<?= $block->escapeHtml(__('Tên hiển thị')) ?>">
+                    </div>
+                    <div class="form-group">
+                        <label><?= $block->escapeHtml(__('Số điện thoại')) ?></label>
+                        <input type="tel" name="telephone" placeholder="0xxxxxxxxx">
+                    </div>
+                    <div class="form-group full">
+                        <label><?= $block->escapeHtml(__('Email')) ?></label>
+                        <input type="email" name="email" placeholder="name@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label><?= $block->escapeHtml(__('Mật khẩu')) ?></label>
+                        <input type="password" name="password" placeholder="<?= $block->escapeHtml(__('Tối thiểu 8 ký tự')) ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label><?= $block->escapeHtml(__('Xác nhận mật khẩu')) ?></label>
+                        <input type="password" name="password_confirmation" id="password-confirmation" placeholder="<?= $block->escapeHtml(__('Nhập lại mật khẩu')) ?>" required>
+                    </div>
+                    <div class="form-group full">
+                        <label><?= $block->escapeHtml(__('Địa chỉ giao hàng')) ?></label>
+                        <input type="text" name="street[]" placeholder="<?= $block->escapeHtml(__('Số nhà, tên đường')) ?>">
+                        <input type="text" name="city" placeholder="<?= $block->escapeHtml(__('Thành phố')) ?>">
+                        <input type="text" name="postcode" placeholder="<?= $block->escapeHtml(__('Mã bưu chính')) ?>">
+                        <select name="country_id">
+                            <option value="VN">Vietnam</option>
+                            <option value="US">United States</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label><?= $block->escapeHtml(__('Email')) ?></label>
-                    <input type="email" name="email" placeholder="name@example.com" required>
+                <div class="form-actions">
+                    <button type="submit" class="btn-auth-submit"><?= $block->escapeHtml(__('Tạo tài khoản')) ?></button>
                 </div>
-                <div class="form-group">
-                    <label><?= $block->escapeHtml(__('Mật khẩu')) ?></label>
-                    <input type="password" name="password" placeholder="<?= $block->escapeHtml(__('Tối thiểu 8 ký tự')) ?>" required>
-                    <input type="hidden" name="password_confirmation" id="password-confirmation" />
-                </div>
-                <button type="submit" class="btn-auth-submit"><?= $block->escapeHtml(__('Tạo tài khoản')) ?></button>
             </form>
         </div>
 

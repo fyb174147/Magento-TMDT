@@ -1,0 +1,47 @@
+// ==========================================================================
+// MODULE 3: PRODUCT GRID, SEARCH RESULTS & SIDEBAR FILTERS
+// ==========================================================================
+
+// Product Grid & Cards
+.products-grid, 
+.products.list.items {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    gap: 24px !important;
+    margin: 20px 0 !important;
+}
+
+.product-item {
+    background: #ffffff !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    transition: var(--transition) !important;
+    
+    &:hover {
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+        border-color: var(--primary) !important;
+    }
+}
+
+// Custom Search Bar Layout
+.block.search {
+    width: 100% !important;
+    max-width: 600px !important;
+    margin: 0 auto 30px auto !important;
+    
+    .control {
+        position: relative !important;
+        input {
+            width: 100% !important;
+            height: 45px !important;
+            padding: 0 50px 0 20px !important;
+            border: 2px solid var(--border) !important;
+            border-radius: 25px !important;
+            
+            &:focus {
+                border-color: var(--primary) !important;
+            }
+        }
+    }
+}

@@ -1,0 +1,56 @@
+// ==========================================================================
+// MODULE 2: GLOBAL THEME STYLES, HEADER, FOOTER & TABLES
+// ==========================================================================
+
+.nav-sections,
+.sections.nav-sections {
+    display: none !important;
+}
+
+// Ép toàn bộ khung nội dung phải giãn rộng theo container chuẩn
+.page-main, .columns, .main, .block-content {
+    .container-center();
+    display: block !important;
+    clear: both;
+}
+
+header {
+    background: var(--bg-body); 
+    border-bottom: 1px solid var(--border);
+    padding: 15px 0;
+    margin-bottom: 30px;
+}
+
+footer {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    margin-top: 60px;
+}
+
+// Cấu trúc bảng biểu chuẩn hóa
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table.data.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    
+    th {
+        padding: 12px;
+        background: #f5fbff;
+        color: var(--text-main);
+        font-weight: 700;
+        text-align: left;
+        border-bottom: 2px solid var(--border);
+    }
+    
+    td {
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-main);
+        vertical-align: middle;
+    }
+}

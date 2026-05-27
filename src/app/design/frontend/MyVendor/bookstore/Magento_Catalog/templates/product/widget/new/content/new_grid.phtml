@@ -7,7 +7,20 @@ if ($exist = ($block->getProductCollection() && $block->getProductCollection()->
     $type = 'widget-new-grid';
     $mode = 'grid';
     $image = 'new_products_content_widget_grid';
-    $items = $block->getProductCollection()->getItems();
+    $allItems = array_values($block->getProductCollection()->getItems());
+    $pageSize = 12;
+    $currentPage = max(1, (int)$block->getRequest()->getParam('p', 1));
+    $totalItems = count($allItems);
+    $totalPages = max(1, (int)ceil($totalItems / $pageSize));
+    $currentPage = min($currentPage, $totalPages);
+    $items = array_slice($allItems, ($currentPage - 1) * $pageSize, $pageSize);
+    $pageUrl = function (int $page) use ($block) {
+        return $block->getUrl('*/*/*', [
+            '_current' => true,
+            '_use_rewrite' => true,
+            '_query' => ['p' => $page],
+        ]);
+    };
 }
 ?>
 
@@ -57,7 +70,8 @@ if ($exist = ($block->getProductCollection() && $block->getProductCollection()->
                                         <div class="actions-primary">
                                             <?php if ($_item->isSaleable()) :?>
                                                 <?php
-                                                    $postDataHelper = $this->helper(Magento\Framework\Data\Helper\PostHelper::class);
+                                                    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                                                    $postDataHelper = $objectManager->get(\Magento\Framework\Data\Helper\PostHelper::class);
                                                     $postData = $postDataHelper->getPostData(
                                                         $block->escapeUrl($block->getAddToCartUrl($_item)),
                                                         ['product' => (int) $_item->getEntityId()]
@@ -74,6 +88,17 @@ if ($exist = ($block->getProductCollection() && $block->getProductCollection()->
                         </li>
                     <?php endforeach ?>
                 </ol>
+                <nav class="bookstore-pagination" aria-label="<?= $block->escapeHtmlAttr(__('Phân trang')) ?>">
+                    <div class="bookstore-page-status">
+                        <?= $block->escapeHtml(__('Trang %1 của %2', $currentPage, $totalPages)) ?>
+                    </div>
+                    <div class="bookstore-page-actions">
+                        <a class="bookstore-page-link<?= $currentPage <= 1 ? ' is-disabled' : '' ?>" href="<?= $block->escapeUrl($pageUrl(1)) ?>" data-tooltip="<?= $block->escapeHtmlAttr(__('Trang đầu')) ?>" title="<?= $block->escapeHtmlAttr(__('Trang đầu')) ?>">&#171;</a>
+                        <a class="bookstore-page-link<?= $currentPage <= 1 ? ' is-disabled' : '' ?>" href="<?= $block->escapeUrl($pageUrl(max(1, $currentPage - 1))) ?>" data-tooltip="<?= $block->escapeHtmlAttr(__('Trang trước')) ?>" title="<?= $block->escapeHtmlAttr(__('Trang trước')) ?>">&#8249;</a>
+                        <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>" href="<?= $block->escapeUrl($pageUrl(min($totalPages, $currentPage + 1))) ?>" data-tooltip="<?= $block->escapeHtmlAttr(__('Trang sau')) ?>" title="<?= $block->escapeHtmlAttr(__('Trang sau')) ?>">&#8250;</a>
+                        <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>" href="<?= $block->escapeUrl($pageUrl($totalPages)) ?>" data-tooltip="<?= $block->escapeHtmlAttr(__('Trang cuối')) ?>" title="<?= $block->escapeHtmlAttr(__('Trang cuối')) ?>">&#187;</a>
+                    </div>
+                </nav>
             </div>
         </div>
     </div>

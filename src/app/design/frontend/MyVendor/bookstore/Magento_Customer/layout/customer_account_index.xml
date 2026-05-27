@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <attribute name="class" value="account bookstore-account-custom"/>
+        <referenceBlock name="page.main.title" remove="true"/>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceBlock name="customer_account_dashboard_info1" remove="true"/>
+        <referenceBlock name="customer_account_dashboard_info">
+            <arguments>
+                <argument name="template" xsi:type="string">Magento_Customer::account/dashboard/info.phtml</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="customer_account_dashboard_address">
+            <arguments>
+                <argument name="template" xsi:type="string">Magento_Customer::account/dashboard/address.phtml</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="customer_account_dashboard_top">
+            <arguments>
+                <argument name="template" xsi:type="string">Magento_Sales::order/recent.phtml</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

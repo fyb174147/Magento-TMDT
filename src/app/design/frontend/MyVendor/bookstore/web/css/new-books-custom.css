@@ -1,17 +1,71 @@
 /* Sử dụng selector cụ thể hơn để thắng CSS mặc định */
-.products-grid .product-items .product-item {
-    background: #ffffff !important;
-    border: 3px solid #10b981 !important; /* Ép viền xanh hiện lên */
-    border-radius: 20px !important;
-    padding: 20px !important;
-    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.1) !important;
-    transition: all 0.3s ease !important;
-    box-sizing: border-box !important; /* Đảm bảo viền không làm vỡ size */
+.cms-page-view .block-new-products .product-items {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 24px !important;
+    list-style: none !important;
+    max-width: 860px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
 }
 
-.products-grid .product-items .product-item:hover {
+.cms-page-view .block-new-products .product-items .product-item {
+    width: auto !important;
+    min-width: 0 !important;
+    background: #ffffff !important;
+    border: 2px solid #0095ff !important;
+    border-radius: 18px !important;
+    padding: 16px !important;
+    box-shadow: 0 4px 12px rgba(0, 149, 255, 0.06) !important;
+    transition: all 0.3s ease !important;
+    box-sizing: border-box !important;
+    aspect-ratio: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.cms-page-view .block-new-products .product-items .product-item:hover {
     transform: translateY(-8px) !important;
-    box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2) !important;
+    box-shadow: 0 15px 30px rgba(0, 149, 255, 0.14) !important;
+}
+
+.cms-page-view .block-new-products .product-item-info {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+}
+
+.cms-page-view .block-new-products .product-photo-container,
+.cms-page-view .block-new-products .product-item-photo,
+.cms-page-view .block-new-products .product-image-container,
+.cms-page-view .block-new-products .product-image-wrapper {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 2 / 3 !important;
+    overflow: hidden !important;
+    border-radius: 12px !important;
+    background: #f8fafc !important;
+    padding-bottom: 0 !important;
+}
+
+.cms-page-view .block-new-products .product-photo-container img,
+.cms-page-view .block-new-products .product-image-photo {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+}
+
+.cms-page-view .block-new-products .product-item-details {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    padding-top: 12px !important;
+}
+
+.cms-page-view .block-new-products .product-item-actions {
+    margin-top: auto !important;
 }
 
 /* Ẩn tiêu đề mặc định của Widget Sách mới */
@@ -36,6 +90,25 @@
     left: 0;
     width: 60px;
     height: 5px;
-    background: #10b981; /* Màu xanh Emerald khớp với viền sách */
+    background: #0095ff;
     border-radius: 10px;
+}
+
+@media (max-width: 1100px) {
+    .cms-page-view .block-new-products .product-items {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 760px) {
+    .cms-page-view .block-new-products .product-items {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 16px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .cms-page-view .block-new-products .product-items {
+        grid-template-columns: 1fr !important;
+    }
 }

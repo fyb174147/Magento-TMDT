@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <attribute name="class" value="account bookstore-account-custom"/>
+
+        <referenceBlock name="sidebar.main.account_nav">
+            <arguments>
+                <argument name="block_title" xsi:type="string">Tài khoản</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="customer-account-navigation-account-link">
+            <arguments>
+                <argument name="label" xsi:type="string">Tổng quan</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="customer-account-navigation-orders-link">
+            <arguments>
+                <argument name="label" xsi:type="string">Đơn hàng</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="customer-account-navigation-address-link">
+            <arguments>
+                <argument name="label" xsi:type="string">Sổ địa chỉ</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="customer-account-navigation-account-edit-link">
+            <arguments>
+                <argument name="label" xsi:type="string">Thông tin tài khoản</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="customer-account-navigation-newsletter-subscriptions-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-downloadable-products-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-wish-list-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-product-reviews-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-my-credit-cards-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-billing-agreements-link" remove="true"/>
+        <referenceBlock name="customer-account-navigation-delimiter-1" remove="true"/>
+        <referenceBlock name="customer-account-navigation-delimiter-2" remove="true"/>
+    </body>
+</page>

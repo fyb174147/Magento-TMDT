@@ -1,0 +1,26 @@
+<?php
+/** @var \Magento\Customer\Block\Account\Dashboard\Info $block */
+?>
+<section class="bookstore-account-card block-dashboard-info">
+    <div class="bookstore-account-card-title">
+        <strong><?= $block->escapeHtml(__('Thông tin cá nhân')) ?></strong>
+    </div>
+    <div class="bookstore-account-card-grid">
+        <article>
+            <span class="account-card-label"><?= $block->escapeHtml(__('Họ tên')) ?></span>
+            <strong><?= $block->escapeHtml($block->getName()) ?></strong>
+        </article>
+        <article>
+            <span class="account-card-label"><?= $block->escapeHtml(__('Email')) ?></span>
+            <strong><?= $block->escapeHtml($block->getCustomer()->getEmail()) ?></strong>
+        </article>
+    </div>
+    <div class="bookstore-account-actions">
+        <a class="action edit" href="<?= $block->escapeUrl($block->getUrl('customer/account/edit')) ?>">
+            <?= $block->escapeHtml(__('Cập nhật thông tin')) ?>
+        </a>
+        <a class="action change-password" href="<?= $block->escapeUrl($block->getChangePasswordUrl()) ?>">
+            <?= $block->escapeHtml(__('Đổi mật khẩu')) ?>
+        </a>
+    </div>
+</section>

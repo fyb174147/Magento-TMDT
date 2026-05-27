@@ -1,0 +1,49 @@
+<?php
+/** @var \Magento\Sales\Block\Order\Recent $block */
+$_orders = $block->getOrders();
+$count = count($_orders);
+?>
+<section class="bookstore-account-card block-dashboard-orders">
+    <div class="bookstore-account-card-title">
+        <strong><?= $block->escapeHtml(__('Đơn hàng gần đây')) ?></strong>
+        <?php if ($count > 0): ?>
+            <a class="action view" href="<?= $block->escapeUrl($block->getUrl('sales/order/history')) ?>">
+                <?= $block->escapeHtml(__('Xem tất cả')) ?>
+            </a>
+        <?php endif; ?>
+    </div>
+    <?php if ($count > 0): ?>
+        <div class="table-wrapper orders-recent">
+            <table class="data table table-order-items recent" id="my-orders-table">
+                <thead>
+                    <tr>
+                        <th scope="col"><?= $block->escapeHtml(__('Mã đơn')) ?></th>
+                        <th scope="col"><?= $block->escapeHtml(__('Ngày đặt')) ?></th>
+                        <th scope="col"><?= $block->escapeHtml(__('Người nhận')) ?></th>
+                        <th scope="col"><?= $block->escapeHtml(__('Tổng tiền')) ?></th>
+                        <th scope="col"><?= $block->escapeHtml(__('Trạng thái')) ?></th>
+                        <th scope="col"><?= $block->escapeHtml(__('Thao tác')) ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($_orders as $_order): ?>
+                        <tr>
+                            <td><?= $block->escapeHtml($_order->getRealOrderId()) ?></td>
+                            <td><?= $block->escapeHtml($block->formatDate($_order->getCreatedAt())) ?></td>
+                            <td><?= $_order->getShippingAddress() ? $block->escapeHtml($_order->getShippingAddress()->getName()) : '-' ?></td>
+                            <td><?= /* @noEscape */ $_order->formatPrice($_order->getGrandTotal()) ?></td>
+                            <td><?= $block->escapeHtml($_order->getStatusLabel()) ?></td>
+                            <td>
+                                <a class="action view" href="<?= $block->escapeUrl($block->getViewUrl($_order)) ?>">
+                                    <?= $block->escapeHtml(__('Chi tiết')) ?>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php else: ?>
+        <div class="message info empty"><span><?= $block->escapeHtml(__('Bạn chưa có đơn hàng nào.')) ?></span></div>
+    <?php endif; ?>
+</section>
