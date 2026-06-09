@@ -3,80 +3,190 @@
 $_product = $block->getProduct();
 ?>
 <div class="product-detail-container">
+    <!-- Breadcrumb -->
+    <div class="product-breadcrumb-nav">
+        <a href="<?= $block->getUrl('') ?>">Trang chủ</a> / <span>Chi tiết sách</span>
+    </div>
+
+    <!-- Main Product Content -->
     <div class="product-view-main">
-        <div class="product-media">
-            <div class="image-wrapper">
-                <img src="<?= $block->getImage($_product, 'product_page_image_medium')->getImageUrl() ?>" 
-                     alt="<?= $_product->getName() ?>">
+        
+        <!-- LEFT COLUMN: Image Gallery -->
+        <div class="product-media-column">
+            <div class="product-media">
+                <div class="image-wrapper">
+                    <img src="<?= $block->getImage($_product, 'product_page_image_medium')->getImageUrl() ?>" 
+                         alt="<?= $_product->getName() ?>"
+                         class="product-image-main">
+                </div>
+            </div>
+            <!-- Thumbnails placeholder -->
+            <div class="product-thumbnails">
+                <div class="thumbnail-item active">
+                    <img src="<?= $block->getImage($_product, 'product_page_image_medium')->getImageUrl() ?>" 
+                         alt="Thumb">
+                </div>
             </div>
         </div>
 
-        <div class="product-info-main">
-            <div class="product-breadcrumb">
-                <a href="<?= $block->getUrl('') ?>">Trang chủ</a> / <span>Chi tiết sách</span>
-            </div>
+        <!-- RIGHT COLUMN: Product Info -->
+        <div class="product-info-column">
             
+            <!-- Product Title -->
             <h1 class="product-title"><?= $_product->getName() ?></h1>
-            
-            <div class="product-meta">
-                <span class="author">
-                    Tác giả: <strong><?= $_product->getAttributeText('author') ?: 'Đang cập nhật' ?></strong>
-                </span>
+
+            <!-- Author & Publisher -->
+            <div class="product-meta-block">
+                <?php 
+                    $author = null;
+                    try {
+                        $authorAttr = $_product->getResource()->getAttribute('author');
+                        if ($authorAttr) {
+                            $author = $_product->getData('author');
+                        }
+                    } catch (\Exception $e) {
+                        $author = null;
+                    }
+                ?>
+                <?php if ($author): ?>
+                    <div class="meta-item">
+                        <span class="meta-label">Tác giả:</span>
+                        <span class="meta-value"><?= $author ?></span>
+                    </div>
+                <?php endif; ?>
+                
+                <?php
+                    $publisher = null;
+                    try {
+                        $publisherAttr = $_product->getResource()->getAttribute('publisher');
+                        if ($publisherAttr) {
+                            $publisher = $_product->getData('publisher');
+                        }
+                    } catch (\Exception $e) {
+                        $publisher = null;
+                    }
+                ?>
+                <?php if ($publisher): ?>
+                    <div class="meta-item">
+                        <span class="meta-label">Nhà xuất bản:</span>
+                        <span class="meta-value"><?= $publisher ?></span>
+                    </div>
+                <?php endif; ?>
             </div>
 
-            <div class="bookstore-product-badges">
+            <!-- Stock & SKU Badges -->
+            <div class="product-badges-section">
                 <span class="stock-badge <?= $_product->isAvailable() ? 'is-in-stock' : 'is-out-stock' ?>">
-                    <?= $_product->isAvailable() ? 'Còn hàng' : 'Hết hàng' ?>
+                    <?= $_product->isAvailable() ? 'CÒN HÀNG' : 'HẾT HÀNG' ?>
                 </span>
                 <span class="sku-badge">SKU: <?= $block->escapeHtml($_product->getSku()) ?></span>
             </div>
 
-            <div class="product-price-box">
-                <span class="price"><?= number_format($_product->getFinalPrice(), 0, ',', '.') ?>đ</span>
+            <!-- Price Section -->
+            <div class="product-price-block">
+                <div class="price-label">Giá Cũ</div>
+                <div class="price-row">
+                    <span class="price-name">Giá Gốc:</span>
+                    <span class="price-value"><?= number_format($_product->getPrice(), 0, ',', '.') ?> đ</span>
+                </div>
                 <?php if ($_product->getSpecialPrice()): ?>
-                    <span class="old-price"><?= number_format($_product->getPrice(), 0, ',', '.') ?>đ</span>
+                    <div class="price-row sale-price">
+                        <span class="price-name">Giá Khuyến Mãi:</span>
+                        <span class="price-value"><?= number_format($_product->getFinalPrice(), 0, ',', '.') ?> đ</span>
+                    </div>
+                <?php else: ?>
+                    <div class="price-row sale-price">
+                        <span class="price-name">Giá Bán:</span>
+                        <span class="price-value"><?= number_format($_product->getFinalPrice(), 0, ',', '.') ?> đ</span>
+                    </div>
                 <?php endif; ?>
             </div>
 
-            <div class="product-short-description">
-                <h3>Tóm tắt nội dung</h3>
-                <p><?= $_product->getShortDescription() ?: 'Đang cập nhật nội dung cho cuốn sách này...' ?></p>
-            </div>
-
-            <?php
-            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-            $customerSession = $objectManager->create(\Magento\Customer\Model\Session::class);
-            $isLoggedIn = $customerSession->isLoggedIn();
-            ?>
-            <div class="product-actions">
-                <form data-role="tocart-form" action="<?= $block->getSubmitUrl($_product) ?>" method="post">
+            <!-- Add to Cart Section -->
+            <div class="product-actions-block">
+                <form data-role="tocart-form" action="<?= $block->getSubmitUrl($_product) ?>" method="post" class="product-action-form">
                     <?= $block->getBlockHtml('formkey') ?>
-                    <div class="qty-selector">
-                        <label>Số lượng:</label>
-                        <input type="number" name="qty" value="1" min="1">
+                    
+                    <div class="qty-section">
+                        <label class="qty-label">Số Lượng:</label>
+                        <input type="number" name="qty" value="1" min="1" max="999" class="qty-input">
                     </div>
-                    <?php if (!$isLoggedIn): ?>
-                        <button type="button" class="btn-add-to-cart" onclick="window.location.href='<?= $block->getUrl('customer/account/login') ?>';">
-                            Thêm vào giỏ hàng
-                        </button>
-                    <?php else: ?>
-                        <button type="submit" class="btn-add-to-cart">
-                            Thêm vào giỏ hàng
-                        </button>
-                    <?php endif; ?>
+
+                    <button type="submit" class="btn-add-to-cart">
+                        Thêm vào giỏ hàng
+                    </button>
                 </form>
             </div>
+
+            <!-- Product Specs -->
+            <div class="product-specs-block">
+                <h3 class="specs-title">Thông Số Chi Tiết</h3>
+                <div class="specs-grid">
+                    <div class="spec-row">
+                        <span class="spec-label">Thể loại:</span>
+                        <span class="spec-value"><?php 
+                            $category = '';
+                            try {
+                                $categoryAttr = $_product->getResource()->getAttribute('category');
+                                if ($categoryAttr) {
+                                    $category = $_product->getData('category') ?: 'N/A';
+                                } else {
+                                    $category = 'N/A';
+                                }
+                            } catch (\Exception $e) {
+                                $category = 'N/A';
+                            }
+                            echo $category;
+                        ?></span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Năm xuất bản:</span>
+                        <span class="spec-value"><?= $_product->getData('published_year') ?: 'N/A' ?></span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Số trang:</span>
+                        <span class="spec-value"><?= $_product->getData('pages') ?: 'N/A' ?></span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Loại bìa:</span>
+                        <span class="spec-value"><?php 
+                            $bookType = '';
+                            try {
+                                $bookTypeAttr = $_product->getResource()->getAttribute('book_type');
+                                if ($bookTypeAttr) {
+                                    $bookType = $_product->getData('book_type') ?: 'N/A';
+                                } else {
+                                    $bookType = 'N/A';
+                                }
+                            } catch (\Exception $e) {
+                                $bookType = 'N/A';
+                            }
+                            echo $bookType;
+                        ?></span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Kích thước:</span>
+                        <span class="spec-value"><?= $_product->getData('book_size') ?: 'N/A' ?></span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">Khối lượng:</span>
+                        <span class="spec-value"><?= $_product->getData('weight') ?: 'N/A' ?></span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="related-products-section">
-        <div class="section-header">
-            <h2>Sách bạn có thể thích</h2>
+    <!-- Product Description (Full width) -->
+    <div class="product-description-block">
+        <h3 class="description-title">Mô Tả Sách</h3>
+        <div class="description-content">
+            <?php if ($_product->getDescription()): ?>
+                <?= $_product->getDescription() ?>
+            <?php else: ?>
+                <p><?= $_product->getShortDescription() ?: 'Đang cập nhật thông tin mô tả cho cuốn sách này...' ?></p>
+            <?php endif; ?>
         </div>
-        <?php /* <?= $block->getChildHtml('catalog.product.related') ?> */ ?>
     </div>
 
-    <div class="product-reviews-section">
-        <?= $block->getChildHtml('reviews') ?>
-    </div>
 </div>

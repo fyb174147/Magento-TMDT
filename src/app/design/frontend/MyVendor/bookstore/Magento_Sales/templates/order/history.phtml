@@ -1,0 +1,61 @@
+<?php
+/** @var \Magento\Sales\Block\Order\History $block */
+$_orders = $block->getOrders(); // Lấy danh sách đơn hàng
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+// Gọi Helper kiểm tra reorder trực tiếp từ môi trường lõi
+$salesHelper = $objectManager->get(\Magento\Sales\Helper\Reorder::class);
+?>
+<div class="bookstore-unified-account-card">
+    <div class="bookstore-account-card-header">
+        <strong>Lịch sử mua hàng</strong>
+    </div>
+
+    <?php if ($_orders && count($_orders)): ?>
+        <div class="table-wrapper orders-history" style="overflow-x: auto; width: 100%;">
+            <table class="data table table-order-items history bookstore-table" id="my-orders-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Mã đơn</th>
+                        <th scope="col">Ngày đặt</th>
+                        <th scope="col">Người nhận</th>
+                        <th scope="col">Tổng tiền</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($_orders as $_order): ?>
+                        <tr>
+                            <td class="order-id">#<?= $block->escapeHtml($_order->getRealOrderId()) ?></td>
+                            <td><?= $block->escapeHtml($block->formatDate($_order->getCreatedAt())) ?></td>
+                            <td><?= $_order->getShippingAddress() ? $block->escapeHtml($_order->getShippingAddress()->getName()) : '-' ?></td>
+                            <td class="order-price"><?= /* @noEscape */ $_order->formatPrice($_order->getGrandTotal()) ?></td>
+                            <td>
+                                <span class="status-badge" style="background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">
+                                    <?= $block->escapeHtml($_order->getStatusLabel()) ?>
+                                </span>
+                            </td>
+                            <td>
+                                <a href="<?= $block->escapeUrl($block->getViewUrl($_order)) ?>" class="link-action">
+                                    Chi tiết
+                                </a>
+                                <?php if ($salesHelper->canReorder($_order->getId())): ?>
+                                    <a href="#" data-post='<?= /* @noEscape */ $block->getReorderPostData($_order) ?>' class="link-action action reorder" style="margin-left: 12px; color: #10b981; font-weight: 600; text-decoration: none;">
+                                        Mua lại
+                                    </a>
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php if ($block->getPagerHtml()): ?>
+            <div class="order-products-toolbar toolbar bottom"><?= $block->getPagerHtml() ?></div>
+        <?php endif ?>
+    <?php else: ?>
+        <div class="empty-state" style="padding: 32px; text-align: center; color: #64748b;">
+            <span>Bạn chưa có đơn hàng nào tại BookStore.</span>
+        </div>
+    <?php endif ?>
+</div>

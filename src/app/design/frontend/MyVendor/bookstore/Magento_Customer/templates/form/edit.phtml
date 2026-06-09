@@ -1,0 +1,86 @@
+<?php
+/** @var \Magento\Customer\Block\Form\Edit $block */
+/** @var $escaper \Magento\Framework\Escaper */
+?>
+<div class="bookstore-unified-account-card">
+    <div class="bookstore-account-card-header">
+        <strong>Cập nhật thông tin tài khoản cá nhân</strong>
+    </div>
+
+    <form class="form form-edit-account css-form-modern-wrapper" 
+          action="<?= $escaper->escapeUrl($block->getUrl('customer/account/editPost')) ?>" 
+          method="post" id="form-validate" enctype="multipart/form-data" 
+          data-hasrequired="* Trường bắt buộc" autocomplete="off">
+        
+        <?= $block->getBlockHtml('formkey') ?>
+
+        <fieldset class="fieldset info-group-fields" style="border:none; padding:0; margin:0;">
+            <?= $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Name::class)->setObject($block->getCustomer())->toHtml() ?>
+
+            <div class="field choice-checkbox-wrapper" style="margin: 20px 0;">
+                <input type="checkbox" name="change_email" id="change-email" data-role="change-email" value="1" class="checkbox" />
+                <label class="label" for="change-email"><span>Thay đổi địa chỉ Email đăng nhập</span></label>
+            </div>
+            <div class="field choice-checkbox-wrapper" style="margin: 20px 0;">
+                <input type="checkbox" name="change_password" id="change-password" data-role="change-password" value="1" class="checkbox" <?php if ($block->getChangePassword()): ?> checked="checked"<?php endif; ?> />
+                <label class="label" for="change-password"><span>Thay đổi Mật khẩu bảo mật</span></label>
+            </div>
+        </fieldset>
+
+        <fieldset class="fieldset password-sub-fields" data-container="change-email-password" style="display: none; border-top: 1px dashed #cbd5e1; padding-top: 20px; margin-top: 20px;">
+            <div class="field email required" data-container="change-email">
+                <label class="label" for="email"><span>Địa chỉ Email mới</span></label>
+                <div class="control">
+                    <input type="email" name="email" id="email" autocomplete="email" data-input="change-email" value="<?= $escaper->escapeHtmlAttr($block->getCustomer()->getEmail()) ?>" class="input-text" data-validate="{required:true, 'validate-email':true}" />
+                </div>
+            </div>
+            <div class="field password current required">
+                <label class="label" for="current-password"><span>Mật khẩu hiện tại (Bắt buộc xác thực)</span></label>
+                <div class="control">
+                    <input type="password" class="input-text" name="current_password" id="current-password" data-input="current-password" autocomplete="off" />
+                </div>
+            </div>
+            <div class="field new password required" data-container="new-password">
+                <label class="label" for="password"><span>Mật khẩu mới</span></label>
+                <div class="control">
+                    <input type="password" class="input-text" name="password" id="password" data-password-min-length="<?= $escaper->escapeHtml($block->getMinimumPasswordLength()) ?>" data-password-min-character-sets="<?= $escaper->escapeHtml($block->getRequiredCharacterClassesNumber()) ?>" data-input="new-password" data-validate="{required:true, 'validate-customer-password':true}" autocomplete="off" />
+                    <div id="password-strength-meter-container" data-role="password-strength-meter" aria-live="polite">
+                        <div id="password-strength-meter" style="font-size:12px; color:#64748b; margin-top:6px;">
+                            Mức độ an toàn: <span id="password-strength-meter-label" data-role="password-strength-meter-label">Chưa nhập</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field confirmation password required" data-container="confirm-password">
+                <label class="label" for="password-confirmation"><span>Xác nhận mật khẩu mới</span></label>
+                <div class="control">
+                    <input type="password" class="input-text" name="password_confirmation" id="password-confirmation" data-input="confirm-password" autocomplete="off" />
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="actions-toolbar" style="margin-top: 28px; display: flex; gap: 16px; align-items: center;">
+            <button type="submit" class="action save primary" style="background:#0095ff; color:#fff; border:none; padding:12px 24px; border-radius:8px; font-weight:700; cursor:pointer;">
+                <span>Lưu thay đổi thông tin</span>
+            </button>
+            <a class="action back" href="<?= $escaper->escapeUrl($block->getBackUrl()) ?>" style="color:#64748b; text-decoration:none; font-weight:600; font-size:14px;">Quay lại</a>
+        </div>
+    </form>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "[data-role=change-email], [data-role=change-password]": {
+            "changeEmailPassword": {
+                "titleChangeEmail": "Thay đổi địa chỉ Email đăng nhập",
+                "titleChangePassword": "Thay đổi Mật khẩu bảo mật",
+                "titleChangeEmailAndPassword": "Thay đổi đồng thời Email và Mật khẩu"
+            }
+        },
+        "[data-container=new-password]": {
+            "passwordStrengthIndicator": {
+                "formSelector": "form.form-edit-account"
+            }
+        }
+    }
+</script>

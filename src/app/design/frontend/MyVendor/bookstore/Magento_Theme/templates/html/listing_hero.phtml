@@ -1,0 +1,151 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+$accent = (string)($block->getData('accent') ?: '#0095ff');
+?>
+<style>
+    /* ===== RESET MẠNH MẼ - LOẠI BỎ MỌI MARGIN/PADDING CỦA HERO ===== */
+    .bookstore-listing-hero,
+    .bookstore-cms-hero,
+    section.bookstore-listing-hero,
+    section.bookstore-cms-hero {
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+        text-align: left !important;
+        box-sizing: border-box !important;
+        display: block !important;
+    }
+
+    .bookstore-listing-hero p,
+    .bookstore-cms-hero p {
+        margin: 0 0 6px !important;
+        padding: 0 !important;
+        color: <?= $block->escapeHtml($accent) ?> !important;
+        font-size: 14px !important;
+        line-height: 1.2 !important;
+        font-weight: 900 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        text-align: left !important;
+    }
+
+    .bookstore-listing-hero h1,
+    .bookstore-cms-hero h1 {
+        margin: 0 0 10px !important;
+        padding: 0 !important;
+        color: #1e293b !important;
+        font-size: 34px !important;
+        line-height: 1.15 !important;
+        font-weight: 950 !important;
+        text-align: left !important;
+    }
+
+    .bookstore-listing-hero span,
+    .bookstore-cms-hero span {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        color: #64748b !important;
+        font-size: 15px !important;
+        line-height: 1.55 !important;
+        font-weight: 650 !important;
+        text-align: left !important;
+    }
+
+    /* ===== TRIỆT TIÊU 100% KHOẢNG TRẮNG GIỮA HERO VÀ CATALOG-SEARCH-CONTAINER ===== */
+    /* Adjacent sibling - phần tử ngay sau hero */
+    .bookstore-listing-hero + .catalog-search-container,
+    .bookstore-cms-hero + .catalog-search-container,
+    .bookstore-listing-hero + div,
+    .bookstore-cms-hero + div,
+    .bookstore-listing-hero + .block,
+    .bookstore-cms-hero + .block,
+    .bookstore-listing-hero + .container,
+    .bookstore-cms-hero + .container,
+    .bookstore-listing-hero + aside,
+    .bookstore-cms-hero + aside,
+    .bookstore-listing-hero + main,
+    .bookstore-cms-hero + main,
+    .bookstore-listing-hero + .columns,
+    .bookstore-cms-hero + .columns {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* Triệt tiêu trên TẤT CẢ các wrapper có thể có */
+    .main.content .bookstore-listing-hero + *,
+    .main.content .bookstore-cms-hero + *,
+    .maincontent .bookstore-listing-hero + *,
+    .maincontent .bookstore-cms-hero + *,
+    .page-main .bookstore-listing-hero + *,
+    .page-main .bookstore-cms-hero + *,
+    .page-main .columns .bookstore-listing-hero + *,
+    .page-main .columns .bookstore-cms-hero + *,
+    .page-main .column.main .bookstore-listing-hero + *,
+    .page-main .column.main .bookstore-cms-hero + *,
+    .page-wrapper .bookstore-listing-hero + *,
+    .page-wrapper .bookstore-cms-hero + * {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* Triệt tiêu trên TẤT CẢ class body có thể có */
+    body .bookstore-listing-hero + *,
+    body .bookstore-cms-hero + * {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* ĐẢM BẢO catalog-search-container không có margin-top */
+    .catalog-search-container,
+    div.catalog-search-container,
+    aside.catalog-search-container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* Triệt tiêu mọi block Magento có thể chứa widget, page builder */
+    .block.widget,
+    .pagebuilder-column-group,
+    .pagebuilder-column,
+    .pagebuilder-html-block,
+    .cms-content {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* Ẩn thẻ p rỗng có thể gây khoảng trắng */
+    p:empty, .empty-paragraph {
+        display: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Triệt tiêu trên 4 class body cụ thể */
+    .bookstore-listing-custom,
+    .bookstore-cms-listing-custom,
+    .cms-new-books,
+    .cms-promotions,
+    .catalogsearch-custom {
+        .bookstore-listing-hero,
+        .bookstore-cms-hero {
+            margin: 0 auto !important;
+            padding: 0 !important;
+        }
+        .bookstore-listing-hero + *,
+        .bookstore-cms-hero + *,
+        .catalog-search-container {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+    }
+</style>
+
+<section class="bookstore-cms-hero bookstore-listing-hero">
+    <p><?= $block->escapeHtml((string)$block->getData('eyebrow')) ?></p>
+    <h1><?= $block->escapeHtml((string)$block->getData('title')) ?></h1>
+    <span><?= $block->escapeHtml((string)$block->getData('description')) ?></span>
+</section>

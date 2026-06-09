@@ -13,5 +13,8 @@
         <route id="bookstore_about" frontName="about-us">
             <module name="Bookstore_Utility"/>
         </route>
+        <route id="bookstore_utility_ajax" frontName="bookstore-utility-ajax">
+            <module name="Bookstore_Utility"/>
+        </route>
     </router>
 </config>

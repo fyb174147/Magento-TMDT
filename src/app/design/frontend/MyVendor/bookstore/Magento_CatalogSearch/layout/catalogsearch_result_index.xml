@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
+        <css src="css/search-custom.css"/>
         <title>Kết quả tìm kiếm</title>
     </head>
     <body>
-        <attribute name="class" value="catalogsearch-custom bookstore-listing-custom"/>
+        <attribute name="class" value="catalogsearch-custom bookstore-cms-listing-custom"/>
 
         <referenceBlock name="page.main.title" remove="true" />
         <referenceBlock name="search.result" remove="true" />
@@ -17,14 +18,23 @@
         <referenceBlock name="product_list_toolbar" remove="true" />
 
         <referenceContainer name="main.content">
+            <block class="Magento\Framework\View\Element\Template" name="search.listing.hero" template="Magento_Theme::html/listing_hero.phtml" before="-">
+                <arguments>
+                    <argument name="eyebrow" xsi:type="string">BookStore Network</argument>
+                    <argument name="accent" xsi:type="string">#0095ff</argument>
+                    <argument name="title" xsi:type="string">Kết quả tìm kiếm</argument>
+                    <argument name="description" xsi:type="string">Tìm kiếm nhanh chóng các đầu sách theo tên hoặc tác giả mà bạn yêu thích.</argument>
+                </arguments>
+            </block>
+
             <container name="catalog.search.container" label="Search Results Container" htmlTag="div" htmlClass="catalog-search-container">
                 <container name="catalog.search.sidebar" label="Search Sidebar" htmlTag="aside" htmlClass="sidebar sidebar-main">
-                    <block class="Magento\Framework\View\Element\Template" name="catalog.search.filter" 
+                    <block class="Magento\Framework\View\Element\Template" name="catalog.search.filter"
                            template="Magento_CatalogSearch::filter.phtml" />
                 </container>
-                
+
                 <container name="catalog.search.results" label="Search Results Content" htmlTag="div" htmlClass="search-results-content">
-                    <block class="Magento\Catalog\Block\Product\ListProduct" name="search.results" 
+                    <block class="Magento\Catalog\Block\Product\ListProduct" name="search.results"
                            template="Magento_Catalog::product/list.phtml" />
                 </container>
             </container>

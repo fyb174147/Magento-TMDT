@@ -3,8 +3,9 @@
     display: grid !important;
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 24px !important;
-    max-width: 860px !important;
-    margin: 0 auto !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
     padding: 0 !important;
     list-style: none !important;
 }
@@ -56,5 +57,63 @@
     .cms-promotions .block-products-list .product-items,
     .cms-promotions .block-new-products .product-items {
         grid-template-columns: 1fr !important;
+    }
+}
+
+/* ==========================================================================
+   CĂN CHỈNH LẠI CẤU TRÚC 2 CỘT (SIDEBAR VÀ LƯỚI SẢN PHẨM) VÀ XÓA KHOẢNG TRẮNG
+   ========================================================================== */
+
+/* Ép container chính thu hẹp khoảng cách với Hero banner */
+.cms-promotions .page-main {
+    padding-top: 0 !important;
+    margin-top: 10px !important;
+}
+
+/* Biến container thành Flexbox giúp Sidebar và Content nằm ngang hàng */
+.cms-promotions .catalog-search-container.theme-orange {
+    display: flex !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    gap: 24px !important;
+    align-items: flex-start !important;
+    padding-top: 10px !important;
+}
+
+/* Định dạng độ rộng Sidebar bộ lọc bên trái */
+.cms-promotions .catalog-search-container.theme-orange .sidebar-main {
+    width: 23% !important;
+    flex: 0 0 23% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Định dạng phần Lưới kết quả bên phải chiếm phần còn lại */
+.cms-promotions .catalog-search-container.theme-orange .search-results-content {
+    width: 77% !important;
+    flex: 0 0 77% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Đảm bảo khối widget lồng bên trong kéo giãn 100% */
+.cms-promotions .search-results-content .block-products-list,
+.cms-promotions .search-results-content .block-new-products {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+/* Responsive cho Mobile & Tablet */
+@media (max-width: 992px) {
+    .cms-promotions .catalog-search-container.theme-orange {
+        flex-direction: column !important;
+        padding: 0 16px !important;
+    }
+    .cms-promotions .catalog-search-container.theme-orange .sidebar-main,
+    .cms-promotions .catalog-search-container.theme-orange .search-results-content {
+        width: 100% !important;
+        flex: 0 0 100% !important;
     }
 }

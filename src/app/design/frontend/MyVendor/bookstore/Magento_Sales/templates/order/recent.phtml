@@ -1,41 +1,56 @@
 <?php
 /** @var \Magento\Sales\Block\Order\Recent $block */
-$_orders = $block->getOrders();
-$count = count($_orders);
+$_orders = $block->getOrders(); // Lấy danh sách đơn hàng 
+$count = count($_orders); // Đếm số lượng đơn 
 ?>
-<section class="bookstore-account-card block-dashboard-orders">
-    <div class="bookstore-account-card-title">
-        <strong><?= $block->escapeHtml(__('Đơn hàng gần đây')) ?></strong>
+
+<div class="bookstore-unified-account-card" style="margin-top: 24px;">
+    
+    <div class="bookstore-account-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <strong>Đơn hàng gần đây</strong>
         <?php if ($count > 0): ?>
-            <a class="action view" href="<?= $block->escapeUrl($block->getUrl('sales/order/history')) ?>">
-                <?= $block->escapeHtml(__('Xem tất cả')) ?>
+            <a class="action-edit-inline" href="<?= $block->escapeUrl($block->getUrl('sales/order/history')) ?>">
+                Xem tất cả
             </a>
         <?php endif; ?>
     </div>
+
     <?php if ($count > 0): ?>
-        <div class="table-wrapper orders-recent">
-            <table class="data table table-order-items recent" id="my-orders-table">
+        <div class="table-wrapper orders-recent" style="overflow-x: auto; width: 100%;">
+            <table class="data table table-order-items recent" id="my-orders-table" style="width: 100%; border-collapse: collapse; font-size: 14px;">
                 <thead>
-                    <tr>
-                        <th scope="col"><?= $block->escapeHtml(__('Mã đơn')) ?></th>
-                        <th scope="col"><?= $block->escapeHtml(__('Ngày đặt')) ?></th>
-                        <th scope="col"><?= $block->escapeHtml(__('Người nhận')) ?></th>
-                        <th scope="col"><?= $block->escapeHtml(__('Tổng tiền')) ?></th>
-                        <th scope="col"><?= $block->escapeHtml(__('Trạng thái')) ?></th>
-                        <th scope="col"><?= $block->escapeHtml(__('Thao tác')) ?></th>
+                    <tr style="border-bottom: 2px solid #e2e8f0; text-align: left;">
+                        <th scope="col" style="padding: 12px 8px; color: #64748b; font-weight: 600;">Mã đơn</th>
+                        <th scope="col" style="padding: 12px 8px; color: #64748b; font-weight: 600;">Ngày đặt</th>
+                        <th scope="col" style="padding: 12px 8px; color: #64748b; font-weight: 600;">Người nhận</th>
+                        <th scope="col" style="padding: 12px 8px; color: #64748b; font-weight: 600;">Tổng tiền</th>
+                        <th scope="col" style="padding: 12px 8px; color: #64748b; font-weight: 600;">Trạng thái</th>
+                        <th scope="col" style="padding: 12px 8px; color: #64748b; font-weight: 600;">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($_orders as $_order): ?>
-                        <tr>
-                            <td><?= $block->escapeHtml($_order->getRealOrderId()) ?></td>
-                            <td><?= $block->escapeHtml($block->formatDate($_order->getCreatedAt())) ?></td>
-                            <td><?= $_order->getShippingAddress() ? $block->escapeHtml($_order->getShippingAddress()->getName()) : '-' ?></td>
-                            <td><?= /* @noEscape */ $_order->formatPrice($_order->getGrandTotal()) ?></td>
-                            <td><?= $block->escapeHtml($_order->getStatusLabel()) ?></td>
-                            <td>
-                                <a class="action view" href="<?= $block->escapeUrl($block->getViewUrl($_order)) ?>">
-                                    <?= $block->escapeHtml(__('Chi tiết')) ?>
+                        <tr style="border-bottom: 1px solid #f1f5f9; transition: background-color 0.2s ease;">
+                            <td style="padding: 12px 8px; font-weight: 700; color: #0f172a;">
+                                <?= $block->escapeHtml($_order->getRealOrderId()) ?>
+                            </td>
+                            <td style="padding: 12px 8px; color: #334155;">
+                                <?= $block->escapeHtml($block->formatDate($_order->getCreatedAt())) ?>
+                            </td>
+                            <td style="padding: 12px 8px; color: #334155;">
+                                <?= $_order->getShippingAddress() ? $block->escapeHtml($_order->getShippingAddress()->getName()) : '-' ?>
+                            </td>
+                            <td style="padding: 12px 8px; font-weight: 700; color: #0f172a;">
+                                <?= /* @noEscape */ $_order->formatPrice($_order->getGrandTotal()) ?>
+                            </td>
+                            <td style="padding: 12px 8px;">
+                                <span class="status-label-custom" style="background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; display: inline-block;">
+                                    <?= $block->escapeHtml($_order->getStatusLabel()) ?>
+                                </span>
+                            </td>
+                            <td style="padding: 12px 8px;">
+                                <a class="action-edit-inline" href="<?= $block->escapeUrl($block->getViewUrl($_order)) ?>">
+                                    Chi tiết
                                 </a>
                             </td>
                         </tr>
@@ -44,6 +59,12 @@ $count = count($_orders);
             </table>
         </div>
     <?php else: ?>
-        <div class="message info empty"><span><?= $block->escapeHtml(__('Bạn chưa có đơn hàng nào.')) ?></span></div>
+        <div class="message info empty" style="padding: 20px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; color: #64748b; text-align: center; margin-top: 10px;">
+            <span>Bạn chưa có đơn hàng nào hành trình tại hệ thống.</span>
+        </div>
     <?php endif; ?>
-</section>
+</div>
+
+<script type="text/javascript">
+    console.log("=== CHECK LAYOUT: File recent.phtml của THEME đang chạy thành công! ===");
+</script>

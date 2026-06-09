@@ -1,112 +1,143 @@
 <?php
-use Magento\Framework\App\Action\Action;
-
-/** @var \Magento\Framework\Escaper $escaper */
 /** @var \Magento\CatalogWidget\Block\Product\ProductsList $block */
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$postDataHelper = $objectManager->get(\Magento\Framework\Data\Helper\PostHelper::class);
 
-if ($exist = ($block->getProductCollection() && $block->getProductCollection()->count())): ?>
-    <?php
-    $type = 'widget-product-grid';
-    $mode = 'grid';
-    $image = 'category_page_grid'; // Dùng ID chuẩn để hiện ảnh placeholder
+if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())) {
     $allItems = array_values($block->getProductCollection()->getItems());
+    
+    // BỘ LỌC CƯỠNG CHẾ: Chỉ lấy sách có Khuyến mãi (Giá cuối < Giá gốc)
+    $promoItems = array_filter($allItems, function($_product) {
+        $regular = (float)$_product->getPrice();
+        $final = (float)$_product->getFinalPrice();
+        return ($final < $regular && $final > 0);
+    });
+    $promoItems = array_values($promoItems);
+
     $pageSize = 12;
     $currentPage = max(1, (int)$block->getRequest()->getParam('p', 1));
-    $totalItems = count($allItems);
+    $totalItems = count($promoItems);
     $totalPages = max(1, (int)ceil($totalItems / $pageSize));
     $currentPage = min($currentPage, $totalPages);
-    $items = array_slice($allItems, ($currentPage - 1) * $pageSize, $pageSize);
+    $items = array_slice($promoItems, ($currentPage - 1) * $pageSize, $pageSize);
     $pageUrl = function (int $page) use ($block) {
-        return $block->getUrl('*/*/*', [
-            '_current' => true,
-            '_use_rewrite' => true,
-            '_query' => ['p' => $page],
-        ]);
+        return $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true, '_query' => ['p' => $page]]);
     };
+    $exist = count($items) > 0;
+}
+?>
 
-    $showWishlist = true;
-    $showCompare = true;
-    $showCart = true;
-    // ĐÃ SỬA: Thay Model bằng Block
-    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
-    
-    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-    $customerSession = $objectManager->create(\Magento\Customer\Model\Session::class);
-    $isLoggedIn = $customerSession->isLoggedIn();
-    ?>
-    <div class="block widget block-products-list <?= $mode ?>">
+<?php if ($exist): ?>
+    <style>
+        /* 1. XÓA KHOẢNG TRẮNG ĐẦU TRANG & ẨN TITLE THỪA */
+        .cms-promotions .page-main { padding-top: 0 !important; margin-top: 0 !important; max-width: 1200px !important; margin: 0 auto !important; }
+        .cms-promotions .page-title-wrapper { display: none !important; }
+        .cms-promotions .block.widget .block-title { display: none !important; }
+
+        /* 2. ÉP LAYOUT 2 CỘT CHUẨN XÁC */
+        .cms-promotions .catalog-search-container { display: flex !important; gap: 28px !important; align-items: flex-start !important; width: 100% !important; margin-top: 0 !important;}
+        .cms-promotions .sidebar.sidebar-main { flex: 0 0 25% !important; min-width: 240px !important; width: 25% !important; margin-top: 0 !important; }
+        .cms-promotions .search-results-content { flex: 1 1 72% !important; width: 72% !important; min-width: 0 !important; margin-top: 0 !important; }
+
+        /* 3. TIÊU DIỆT KHOẢNG TRẮNG DO MAGENTO TỰ SINH */
+        .cms-promotions .search-results-content .cms-content,
+        .cms-promotions .search-results-content .block.widget,
+        .cms-promotions .search-results-content .block-content { 
+            margin-top: 0 !important; 
+            padding-top: 0 !important; 
+        }
+        /* Ẩn mọi thẻ rác (như thẻ <p> rỗng) bọc ngoài Widget */
+        .cms-promotions .search-results-content .cms-content > p { display: none !important; height: 0 !important; margin: 0 !important; }
+
+        /* 4. NHUỘM MÀU CAM CHO THANH LỌC BÊN TRÁI (CHUẨN CLASS) */
+        .cms-promotions .sidebar-main .filter-sidebar { border: 2px solid #ff4d00 !important; border-radius: 12px !important; padding: 16px !important; background: #fff !important; }
+        .cms-promotions .sidebar-main .filter-sidebar .filter-options-title { color: #ff4d00 !important; font-weight: 800 !important; }
+        .cms-promotions .sidebar-main .filter-sidebar .action.primary { background: #ff4d00 !important; border-color: #ff4d00 !important; color: #fff !important; border-radius: 8px !important; width: 100%; height: 40px;}
+        .cms-promotions .sidebar-main .filter-sidebar .action.primary:hover { filter: brightness(0.9); }
+        .cms-promotions .sidebar-main .filter-sidebar .ui-slider-range { background: #ff4d00 !important; }
+        .cms-promotions .sidebar-main .filter-sidebar .ui-slider-handle { border: 4px solid #ff4d00 !important; }
+
+        /* 5. LƯỚI SẢN PHẨM KHÔNG BỊ BÓP DỌC (Căn theo dạng trang Tất cả sách) */
+        .cms-promotions .product-items.products-grid { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 24px !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; list-style: none !important; }
+        .cms-promotions .product-item { width: 100% !important; max-width: none !important; margin: 0 !important; border: 2px solid #ff4d00 !important; border-radius: 16px !important; box-sizing: border-box !important; float: none !important; }
+        .cms-promotions .action.tocart { background: #ff4d00 !important; color: #fff !important; border: none !important; }
+        .cms-promotions .action.tocart:hover { filter: brightness(0.9); }
+
+        /* 6. CĂN GIỮA PHÂN TRANG */
+        .bookstore-pagination { display: flex; justify-content: center; align-items: center; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px; clear: both; width: 100%; }
+        .bookstore-pagination .bookstore-page-actions { display: flex; gap: 8px; margin-left: 15px; }
+        .bookstore-pagination .bookstore-page-link { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; font-weight: bold; text-decoration: none; border: 2px solid #ff4d00; color: #ff4d00; transition: 0.3s; }
+        .bookstore-pagination .bookstore-page-link:hover:not(.is-disabled) { background: #ff4d00; color: #fff; }
+        .bookstore-pagination .bookstore-page-link.is-disabled { border-color: #cbd5e1; color: #94a3b8; pointer-events: none; }
+    </style>
+
+    <div class="bookstore-grid-wrapper block widget">
         <div class="block-content">
-            <div class="products-<?= $mode ?> <?= $mode ?>">
-                <ol class="product-items <?= $type ?>">
-                    <?php foreach ($items as $_item): ?>
-                        <?php 
-                            $price = $_item->getPrice();
-                            $specialPrice = $_item->getSpecialPrice();
-                            $discount = ($specialPrice > 0 && $price > $specialPrice) ? round((($price - $specialPrice) / $price) * 100) : 0;
-                            $itemClass = ($discount > 0) ? 'is-sale-item' : 'is-new-item';
-                        ?>
-                        <li class="product-item <?= $itemClass ?>">
-                            <div class="product-item-info">
-                                <div class="product-photo-container">
-                                    <a href="<?= $escaper->escapeUrl($block->getProductUrl($_item)) ?>" class="product-item-photo">
-                                        <?= $block->getImage($_item, $image)->toHtml() ?>
+            <div class="product-items products-grid">
+                <?php foreach ($items as $_product): ?>
+                    <?php
+                        $regularPrice = (float)$_product->getPrice();
+                        $finalPrice = (float)$_product->getFinalPrice();
+                        $postData = $postDataHelper->getPostData(
+                            $block->escapeUrl($block->getAddToCartUrl($_product)),
+                            ['product' => (int)$_product->getEntityId()]
+                        );
+                    ?>
+                    <div class="book-card product-item">
+                        <div class="product-item-info">
+                            <div class="product-photo-container">
+                                <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>" class="product-item-photo">
+                                    <img src="<?= $block->escapeUrl($block->getImage($_product, 'category_page_grid')->getImageUrl()) ?>"
+                                         alt="<?= $block->escapeHtmlAttr($_product->getName()) ?>" style="width: 100%; height: auto; aspect-ratio: 3/4; object-fit: contain;">
+                                </a>
+                            </div>
+
+                            <div class="product-item-details" style="display: flex; flex-direction: column; flex: 1; padding-top: 12px; justify-content: space-between;">
+                                <strong class="product-item-name" style="min-height: 44px; margin-bottom: 8px;">
+                                    <a href="<?= $block->escapeUrl($_product->getProductUrl()) ?>" class="product-item-link" style="color: var(--text-main); font-weight: 700; text-decoration: none;">
+                                        <?= $block->escapeHtml($_product->getName()) ?>
                                     </a>
-                                    <?php if ($discount > 0): ?>
-                                        <div class="product-badge-sale">-<?= (int)$discount ?>%</div>
+                                </strong>
+
+                                <div class="price-box" style="min-height: 40px; margin-bottom: 12px;">
+                                    <?php if ($regularPrice > $finalPrice): ?>
+                                        <span class="old-price" style="text-decoration: line-through; color: #94a3b8; font-size: 13px; display: block; margin-bottom: 4px;">
+                                            <?= number_format($regularPrice, 0, ',', '.') ?> đ
+                                        </span>
                                     <?php endif; ?>
+                                    <span class="price" style="font-weight: 900; font-size: 16px;">
+                                        <?= number_format($finalPrice, 0, ',', '.') ?> đ
+                                    </span>
                                 </div>
 
-                                <div class="product-item-details">
-                                    <strong class="product-item-name">
-                                        <a title="<?= $escaper->escapeHtml($_item->getName()) ?>"
-                                           href="<?= $escaper->escapeUrl($block->getProductUrl($_item)) ?>"
-                                           class="product-item-link">
-                                            <?= $escaper->escapeHtml($_item->getName()) ?>
-                                        </a>
-                                    </strong>
-
-                                    <?php if ($templateType): ?>
-                                        <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
+                                <div class="product-item-actions" style="margin-top: auto;">
+                                    <?php if ($_product->isSaleable()): ?>
+                                        <button class="action tocart primary"
+                                                data-post='<?= $block->escapeHtmlAttr($postData) ?>'
+                                                type="button" style="width: 100%; height: 42px; border-radius: 10px; font-weight: 800; cursor: pointer;">
+                                            <span><?= __('Thêm vào giỏ') ?></span>
+                                        </button>
                                     <?php endif; ?>
-
-                                    <?= $block->getProductPriceHtml($_item, $type) ?>
-
-                                    <div class="product-item-actions">
-                                        <div class="actions-primary">
-                                            <?php if ($_item->isSaleable()): ?>
-                                                <?php $postParams = $block->getAddToCartPostParams($_item); ?>
-                                                <form data-role="tocart-form" action="<?= $escaper->escapeUrl($postParams['action']) ?>" method="post">
-                                                    <input type="hidden" name="product" value="<?= $escaper->escapeHtmlAttr($postParams['data']['product']) ?>">
-                                                    <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
-                                                    <?= $block->getBlockHtml('formkey') ?>
-                                                    <button type="submit" class="action tocart primary"
-                                                        <?php if (!$isLoggedIn): ?>
-                                                            onclick="window.location.href='<?= $block->getUrl('customer/account/login') ?>'; return false;"
-                                                        <?php endif; ?>
-                                                    >
-                                                        <span><?= $escaper->escapeHtml(__('Thêm vào giỏ')) ?></span>
-                                                    </button>
-                                                </form>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
-                        </li>
-                    <?php endforeach ?>
-                </ol>
-                <nav class="bookstore-pagination" aria-label="<?= $escaper->escapeHtmlAttr(__('Phân trang')) ?>">
-                    <div class="bookstore-page-status">
-                        <?= $escaper->escapeHtml(__('Trang %1 của %2', $currentPage, $totalPages)) ?>
+                        </div>
                     </div>
-                    <div class="bookstore-page-actions">
-                        <a class="bookstore-page-link<?= $currentPage <= 1 ? ' is-disabled' : '' ?>" href="<?= $escaper->escapeUrl($pageUrl(1)) ?>" data-tooltip="<?= $escaper->escapeHtmlAttr(__('Trang đầu')) ?>" title="<?= $escaper->escapeHtmlAttr(__('Trang đầu')) ?>">&#171;</a>
-                        <a class="bookstore-page-link<?= $currentPage <= 1 ? ' is-disabled' : '' ?>" href="<?= $escaper->escapeUrl($pageUrl(max(1, $currentPage - 1))) ?>" data-tooltip="<?= $escaper->escapeHtmlAttr(__('Trang trước')) ?>" title="<?= $escaper->escapeHtmlAttr(__('Trang trước')) ?>">&#8249;</a>
-                        <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>" href="<?= $escaper->escapeUrl($pageUrl(min($totalPages, $currentPage + 1))) ?>" data-tooltip="<?= $escaper->escapeHtmlAttr(__('Trang sau')) ?>" title="<?= $escaper->escapeHtmlAttr(__('Trang sau')) ?>">&#8250;</a>
-                        <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>" href="<?= $escaper->escapeUrl($pageUrl($totalPages)) ?>" data-tooltip="<?= $escaper->escapeHtmlAttr(__('Trang cuối')) ?>" title="<?= $escaper->escapeHtmlAttr(__('Trang cuối')) ?>">&#187;</a>
-                    </div>
-                </nav>
+                <?php endforeach; ?>
             </div>
+
+            <nav class="bookstore-pagination" aria-label="<?= $block->escapeHtmlAttr(__('Phân trang')) ?>">
+                <div class="bookstore-page-status">
+                    <?= $block->escapeHtml(__('Trang %1 của %2', $currentPage, $totalPages)) ?>
+                </div>
+                <div class="bookstore-page-actions">
+                    <a class="bookstore-page-link<?= $currentPage <= 1 ? ' is-disabled' : '' ?>" href="<?= $block->escapeUrl($pageUrl(1)) ?>">&#171;</a>
+                    <a class="bookstore-page-link<?= $currentPage <= 1 ? ' is-disabled' : '' ?>" href="<?= $block->escapeUrl($pageUrl(max(1, $currentPage - 1))) ?>">&#8249;</a>
+                    <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>" href="<?= $block->escapeUrl($pageUrl(min($totalPages, $currentPage + 1))) ?>">&#8250;</a>
+                    <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>" href="<?= $block->escapeUrl($pageUrl($totalPages)) ?>">&#187;</a>
+                </div>
+            </nav>
         </div>
     </div>
-<?php endif;?>
+<?php else: ?>
+    <div class="message info empty"><div><?= __('Hiện tại không có chương trình khuyến mãi nào.') ?></div></div>
+<?php endif; ?>

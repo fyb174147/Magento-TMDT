@@ -111,11 +111,22 @@ $pageUrl = function (int $page) use ($block) {
 
                         <div class="product-item-actions">
                             <?php if ($_product->isSaleable()): ?>
-                                <button class="action tocart primary"
-                                        data-post='<?= $block->escapeHtmlAttr($postData) ?>'
-                                        type="button">
-                                    <span><?= __('Thêm vào giỏ') ?></span>
-                                </button>
+                                <?php 
+                                    // Kiểm tra session khách hàng trực tiếp từ tầng Backend
+                                    $customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+                                    if ($customerSession->isLoggedIn()): 
+                                ?>
+                                    <button class="action tocart primary"
+                                            data-post='<?= $block->escapeHtmlAttr($postData) ?>'
+                                            type="button">
+                                        <span><?= __('Thêm vào giỏ') ?></span>
+                                    </button>
+                                <?php else: ?>
+                                    <button class="action tocart primary js-fake-login-trigger"
+                                            type="button">
+                                        <span><?= __('Thêm vào giỏ') ?></span>
+                                    </button>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -123,6 +134,7 @@ $pageUrl = function (int $page) use ($block) {
             </div>
         <?php endforeach; ?>
     </div>
+    
     <nav class="bookstore-pagination" aria-label="<?= $block->escapeHtmlAttr(__('Phân trang')) ?>">
         <div class="bookstore-page-status">
             <?= $block->escapeHtml(__('Trang %1 của %2', $currentPage, $totalPages)) ?>
@@ -139,7 +151,7 @@ $pageUrl = function (int $page) use ($block) {
             <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>"
                href="<?= $block->escapeUrl($pageUrl(min($totalPages, $currentPage + 1))) ?>"
                data-tooltip="<?= $block->escapeHtmlAttr(__('Trang sau')) ?>"
-               title="<?= $block->escapeHtmlAttr(__('Trang sau')) ?>">&#8250;</a>
+               title="<?= $block->escapeHtmlAttr(__('Trang sau')) ?>">&#8249;</a>
             <a class="bookstore-page-link<?= $currentPage >= $totalPages ? ' is-disabled' : '' ?>"
                href="<?= $block->escapeUrl($pageUrl($totalPages)) ?>"
                data-tooltip="<?= $block->escapeHtmlAttr(__('Trang cuối')) ?>"
@@ -147,3 +159,34 @@ $pageUrl = function (int $page) use ($block) {
         </div>
     </nav>
 <?php endif; ?>
+
+<script>
+require([
+    'jquery',
+    'mage/translate'
+], function ($, $t) {
+    'use strict';
+
+    // 1. Xử lý ép đăng nhập khi khách vãng lai bấm nút giả
+    $(document).on('click', '.js-fake-login-trigger', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        alert($t('Vui lòng đăng nhập tài khoản để trải nghiệm mua sách tại BookStore!'));
+        window.location.href = '<?= $block->getUrl('customer/account/login') ?>';
+        return false;
+    });
+
+    // 2. VÁ LỖI THIẾU THÔNG BÁO: Bắt sự kiện AJAX thêm vào giỏ thành công của Magento
+    $(document).on('ajax:addToCart', function (event, data) {
+        // Nếu Server phản hồi thêm thành công và không yêu cầu điều hướng đặc biệt
+        if (data && data.response && !data.response.backUrl) {
+            alert($t('Chúc mừng! Cuốn sách đã được thêm vào giỏ hàng thành công.'));
+            
+            // Tùy chọn: Tự động tải lại trang sau 1 giây để Header cập nhật lại số lượng giỏ hàng nếu cần
+            setTimeout(function() {
+                window.location.reload();
+            }, 1000);
+        }
+    });
+});
+</script>

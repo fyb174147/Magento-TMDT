@@ -1,7 +1,7 @@
 define([], function () {
     'use strict';
 
-    return function () {
+    return function (config, element) {
         const htmlElement = document.documentElement;
         
         // 1. Kiểm tra và áp dụng theme ngay khi script load
@@ -12,7 +12,6 @@ define([], function () {
 
         // 2. Sử dụng Event Delegation để tránh lỗi nút chưa render xong
         document.addEventListener('click', function (e) {
-            // Tìm phần tử gần nhất có ID là theme-toggle
             const toggleBtn = e.target.closest('#theme-toggle');
             
             if (toggleBtn) {

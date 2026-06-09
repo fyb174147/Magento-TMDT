@@ -1,8 +1,8 @@
 <?php
 /** @var \Bookstore\Utility\Block\Info $block */
 $weather = $block->getWeather();
-$rates = $block->getRates();
-$news = $block->getNews();
+$rates   = $block->getRates();
+$news    = $block->getNews();
 ?>
 <div class="bookstore-info-page">
     <div class="bookstore-info-hero">
@@ -10,11 +10,7 @@ $news = $block->getNews();
         <h1>Tiện ích đọc sách</h1>
         <span>Theo dõi thời tiết, tỷ giá và tin kinh doanh để demo khu vực tiện ích của BookStore.</span>
     </div>
-    <div class="utility-summary">
-        <article><strong>3</strong><span>Khối dữ liệu</span></article>
-        <article><strong>5</strong><span>Ngoại tệ phổ biến</span></article>
-        <article><strong>RSS</strong><span>Tin mới cập nhật</span></article>
-    </div>
+
     <div class="bookstore-info-grid">
         <section class="bookstore-info-card weather-card">
             <div class="card-heading">
@@ -23,39 +19,66 @@ $news = $block->getNews();
                     <h2>Thời tiết</h2>
                     <p>Cập nhật từ OpenWeatherMap</p>
                 </div>
+                <button type="button" class="utility-refresh-btn" data-section="weather" title="Làm mới">↻</button>
             </div>
-            <?php if (!empty($weather['temperature'])): ?>
-                <div class="weather-temp"><?= $block->escapeHtml((string)$weather['temperature']) ?> C</div>
-                <p><strong><?= $block->escapeHtml($weather['city']) ?></strong> · <?= $block->escapeHtml($weather['description'] ?? '') ?></p>
-                <span class="utility-chip">Độ ẩm <?= $block->escapeHtml((string)($weather['humidity'] ?? '')) ?>%</span>
-            <?php else: ?>
-                <p class="muted"><?= $block->escapeHtml($weather['message'] ?? 'Chưa có dữ liệu') ?></p>
-            <?php endif; ?>
+            <div id="utility-weather-content">
+                <?php if (!empty($weather['temperature'])): ?>
+                    <div class="weather-main">
+                        <div class="weather-icon-wrap">
+                            <img src="https://openweathermap.org/img/wn/<?= $block->escapeHtml($weather['icon'] ?? '01d') ?>@2x.png" alt="<?= $block->escapeHtml($weather['description'] ?? '') ?>" class="weather-icon-img"/>
+                        </div>
+                        <div class="weather-temp-block">
+                            <span class="weather-temp-value"><?= $block->escapeHtml((string)$weather['temperature']) ?>°C</span>
+                            <span class="weather-desc"><?= $block->escapeHtml($weather['description'] ?? '') ?></span>
+                        </div>
+                    </div>
+                    <div class="weather-details">
+                        <div class="weather-detail-item"><span class="wd-label">Thành phố</span><span class="wd-value"><?= $block->escapeHtml($weather['city']) ?></span></div>
+                        <div class="weather-detail-item"><span class="wd-label">Cảm giác như</span><span class="wd-value"><?= $block->escapeHtml((string)($weather['feels_like'] ?? '')) ?>°C</span></div>
+                        <div class="weather-detail-item"><span class="wd-label">Độ ẩm</span><span class="wd-value"><?= $block->escapeHtml((string)($weather['humidity'] ?? '')) ?>%</span></div>
+                        <div class="weather-detail-item"><span class="wd-label">Gió</span><span class="wd-value"><?= $block->escapeHtml((string)($weather['wind_speed'] ?? '')) ?> m/s</span></div>
+                        <div class="weather-detail-item"><span class="wd-label">Áp suất</span><span class="wd-value"><?= $block->escapeHtml((string)($weather['pressure'] ?? '')) ?> hPa</span></div>
+                    </div>
+                <?php else: ?>
+                    <p class="utility-muted"><?= $block->escapeHtml($weather['message'] ?? 'Chưa có dữ liệu') ?></p>
+                <?php endif; ?>
+            </div>
         </section>
+
         <section class="bookstore-info-card rates-card">
             <div class="card-heading">
                 <span class="utility-icon">₫</span>
                 <div>
                     <h2>Tỷ giá Vietcombank</h2>
-                    <p>USD, EUR, JPY và các ngoại tệ phổ biến</p>
+                    <p>Tất cả ngoại tệ • Cập nhật <?= $block->escapeHtml(date('H:i d/m/Y')) ?></p>
                 </div>
+                <button type="button" class="utility-refresh-btn" data-section="rates" title="Làm mới">↻</button>
             </div>
-            <table class="utility-rate-table">
-                <thead>
-                    <tr><th>Ma</th><th>Mua</th><th>Ban</th></tr>
-                </thead>
-                <tbody>
-                <?php foreach ($rates as $rate): ?>
-                    <tr>
-                        <td><strong><?= $block->escapeHtml($rate['code']) ?></strong><span><?= $block->escapeHtml($rate['name']) ?></span></td>
-                        <td><?= $block->escapeHtml($rate['buy']) ?></td>
-                        <td><?= $block->escapeHtml($rate['sell']) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                <?php if (!$rates): ?><tr><td colspan="3">Chưa lấy được dữ liệu tỷ giá.</td></tr><?php endif; ?>
-                </tbody>
-            </table>
+            <div id="utility-rates-content">
+                <?php if ($rates): ?>
+                    <div class="utility-rates-scroll">
+                        <table class="utility-rate-table">
+                            <thead>
+                                <tr><th>Loại tiền</th><th>Mua</th><th>Chuyển khoản</th><th>Bán</th></tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($rates as $rate): ?>
+                                <tr>
+                                    <td><strong><?= $block->escapeHtml($rate['code']) ?></strong><span><?= $block->escapeHtml($rate['name']) ?></span></td>
+                                    <td><?= $block->escapeHtml($rate['buy'] === '-' ? '—' : $rate['buy']) ?></td>
+                                    <td><?= $block->escapeHtml($rate['transfer']) ?></td>
+                                    <td><?= $block->escapeHtml($rate['sell']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="utility-muted">Chưa lấy được dữ liệu tỷ giá.</p>
+                <?php endif; ?>
+            </div>
         </section>
+
         <section class="bookstore-info-card news-card">
             <div class="card-heading">
                 <span class="utility-icon">↗</span>
@@ -63,16 +86,42 @@ $news = $block->getNews();
                     <h2>Tin kinh doanh</h2>
                     <p>RSS mới nhất từ VnExpress</p>
                 </div>
+                <button type="button" class="utility-refresh-btn" data-section="news" title="Làm mới">↻</button>
             </div>
-            <div class="utility-news-list">
-                <?php foreach ($news as $item): ?>
-                    <article>
-                        <a href="<?= $block->escapeUrl($item['link']) ?>" target="_blank" rel="noopener"><?= $block->escapeHtml($item['title']) ?></a>
-                        <p><?= $block->escapeHtml(mb_substr($item['description'] ?? '', 0, 150)) ?></p>
-                    </article>
-                <?php endforeach; ?>
-                <?php if (!$news): ?><p class="muted">Chưa lấy được RSS VnExpress.</p><?php endif; ?>
+            <div id="utility-news-content">
+                <?php if ($news): ?>
+                    <div class="utility-news-grid">
+                        <?php foreach ($news as $item): ?>
+                            <article class="news-item">
+                                <?php if (!empty($item['image'])): ?>
+                                    <div class="news-thumb">
+                                        <a href="<?= $block->escapeUrl($item['link']) ?>" target="_blank" rel="noopener">
+                                            <img src="<?= $block->escapeUrl($item['image']) ?>" alt="" loading="lazy"/>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="news-body">
+                                    <a href="<?= $block->escapeUrl($item['link']) ?>" target="_blank" rel="noopener" class="news-title"><?= $block->escapeHtml($item['title']) ?></a>
+                                    <p class="news-desc"><?= $block->escapeHtml($item['description'] ?? '') ?></p>
+                                    <span class="news-date"><?= $block->escapeHtml($item['date'] ?? '') ?></span>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <p class="utility-muted">Chưa lấy được RSS VnExpress.</p>
+                <?php endif; ?>
             </div>
         </section>
     </div>
 </div>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Bookstore_Utility/js/utility-widgets": {
+            "ajaxUrl": "<?= $block->escapeUrl($block->getAjaxFeedUrl()) ?>"
+        }
+    }
+}
+</script>

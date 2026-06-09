@@ -1,0 +1,310 @@
+/* ==========================================================================
+   TRANG TẤT CẢ SÁCH - CHỈNH Y HỆT TRANG SÁCH MỚI (CARD TO, ẢNH CĂN GIỮA)
+   ========================================================================== */
+
+/* 1. LƯỚI SẢN PHẨM 3 CỘT (3 CỘT TO GIỐNG TRANG SÁCH MỚI) */
+.bookstore-listing-custom .product-items,
+.bookstore-listing-custom .products-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 24px !important;
+    list-style: none !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+}
+
+/* 2. CARD SẢN PHẨM - TO HƠN, BO GÓC LỚN HƠN */
+.bookstore-listing-custom .product-items .product-item,
+.bookstore-listing-custom .product-item {
+    width: auto !important;
+    min-width: 0 !important;
+    background: #ffffff !important;
+    border: 2px solid #0095ff !important;
+    border-radius: 18px !important;
+    padding: 20px !important;
+    box-shadow: 0 4px 12px rgba(0, 149, 255, 0.06) !important;
+    transition: all 0.3s ease !important;
+    box-sizing: border-box !important;
+    aspect-ratio: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.bookstore-listing-custom .product-items .product-item:hover,
+.bookstore-listing-custom .product-item:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 15px 30px rgba(0, 149, 255, 0.14) !important;
+}
+
+.bookstore-listing-custom .product-item-info {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+/* 3. ẢNH SẢN PHẨM - TO, CĂN GIỮA, CHIẾM GẦN HẾT CARD */
+.bookstore-listing-custom .product-photo-container,
+.bookstore-listing-custom .product-item-photo,
+.bookstore-listing-custom .product-image-container,
+.bookstore-listing-custom .product-image-wrapper {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 2 / 3 !important;
+    overflow: hidden !important;
+    border-radius: 12px !important;
+    background: #f8fafc !important;
+    padding-bottom: 0 !important;
+    margin: 0 auto !important;
+}
+
+.bookstore-listing-custom .product-photo-container img,
+.bookstore-listing-custom .product-image-photo {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+/* 4. CHI TIẾT SẢN PHẨM */
+.bookstore-listing-custom .product-item-details {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    padding-top: 16px !important;
+    width: 100% !important;
+}
+
+.bookstore-listing-custom .product-item-name {
+    min-height: 48px !important;
+    margin-bottom: 10px !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    line-height: 1.35 !important;
+    color: #1e293b !important;
+}
+
+.bookstore-listing-custom .product-item-name a {
+    color: #1e293b !important;
+    text-decoration: none !important;
+}
+
+.bookstore-listing-custom .price-box {
+    min-height: 44px !important;
+    margin-bottom: 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+}
+
+.bookstore-listing-custom .price-box .price {
+    font-weight: 900 !important;
+    font-size: 17px !important;
+    color: #1e293b !important;
+}
+
+.bookstore-listing-custom .price-box .old-price {
+    text-decoration: line-through !important;
+    color: #94a3b8 !important;
+    font-size: 13px !important;
+}
+
+.bookstore-listing-custom .product-item-actions {
+    margin-top: auto !important;
+    width: 100% !important;
+}
+
+/* 5. CĂN CHỈNH 2 CỘT (SIDEBAR VÀ CONTENT) VÀ XÓA KHOẢNG TRẮNG */
+.bookstore-listing-custom .page-main {
+    padding-top: 0 !important;
+    margin-top: 10px !important;
+}
+
+.bookstore-listing-custom .page-title-wrapper,
+.bookstore-listing-custom .page.messages,
+.bookstore-listing-custom .breadcrumbs {
+    display: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Triệt tiêu khoảng trắng giữa hero và content */
+.bookstore-listing-custom .bookstore-listing-hero,
+.bookstore-listing-custom .bookstore-cms-hero {
+    margin-bottom: 8px !important;
+    padding-bottom: 0 !important;
+}
+
+.bookstore-listing-custom .bookstore-listing-hero + .catalog-search-container,
+.bookstore-listing-custom .bookstore-cms-hero + .catalog-search-container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Biến catalog-search-container thành Flexbox 2 cột */
+.bookstore-listing-custom .catalog-search-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    max-width: 1200px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    gap: 28px !important;
+    box-sizing: border-box !important;
+}
+
+/* 6. SIDEBAR BỘ LỌC - 25% */
+.bookstore-listing-custom .catalog-search-container .sidebar.sidebar-main {
+    flex: 0 0 25% !important;
+    width: 25% !important;
+    max-width: 280px !important;
+    min-width: 240px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    float: none !important;
+}
+
+.bookstore-listing-custom .sidebar.sidebar-main .filter-sidebar {
+    background: #fff !important;
+    border: 2px solid var(--primary, #0095ff) !important;
+    border-radius: 16px !important;
+    padding: 16px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 7. VÙNG KẾT QUẢ - 72% */
+.bookstore-listing-custom .catalog-search-container .search-results-content {
+    flex: 1 1 72% !important;
+    width: 72% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    float: none !important;
+}
+
+/* 8. TRIỆT TIÊU MỌI MARGIN THỪA CỦA BLOCK, WIDGET BÊN TRONG */
+.bookstore-listing-custom .search-results-content > div,
+.bookstore-listing-custom .search-results-content > .block,
+.bookstore-listing-custom .search-results-content > .widget,
+.bookstore-listing-custom .search-results-content > .cms-content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.bookstore-listing-custom .search-results-content p:empty {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* 9. NÚT "THÊM VÀO GIỎ" - TO, CĂN GIỮA, MÀU XANH DƯƠNG */
+.bookstore-listing-custom .action.tocart {
+    width: 100% !important;
+    height: 44px !important;
+    border-radius: 10px !important;
+    background: #0095ff !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 800 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    margin-top: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+}
+
+.bookstore-listing-custom .action.tocart:hover {
+    background: #0076cc !important;
+}
+
+/* 10. THANH PHÂN TRANG CĂN GIỮA */
+.bookstore-listing-custom .bookstore-pagination {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px !important;
+    padding-top: 20px !important;
+    border-top: 1px solid var(--border, #e2e8f0);
+    clear: both;
+}
+
+.bookstore-listing-custom .bookstore-pagination .bookstore-page-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.bookstore-listing-custom .bookstore-pagination .bookstore-page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #fff;
+    border: 2px solid var(--primary, #0095ff);
+    color: var(--primary, #0095ff);
+    font-weight: 900;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.bookstore-listing-custom .bookstore-pagination .bookstore-page-link:hover:not(.is-disabled) {
+    background: var(--primary, #0095ff);
+    color: #fff;
+}
+
+.bookstore-listing-custom .bookstore-pagination .bookstore-page-link.is-disabled {
+    border-color: #e2e8f0;
+    color: #94a3b8;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* 11. RESPONSIVE */
+@media (max-width: 1100px) {
+    .bookstore-listing-custom .product-items,
+    .bookstore-listing-custom .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .bookstore-listing-custom .catalog-search-container {
+        flex-direction: column !important;
+    }
+    .bookstore-listing-custom .catalog-search-container .sidebar.sidebar-main,
+    .bookstore-listing-custom .catalog-search-container .search-results-content {
+        width: 100% !important;
+        flex: none !important;
+        max-width: 100% !important;
+    }
+    .bookstore-listing-custom .product-items,
+    .bookstore-listing-custom .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .bookstore-listing-custom .product-items,
+    .bookstore-listing-custom .products-grid {
+        grid-template-columns: 1fr !important;
+    }
+}

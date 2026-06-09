@@ -40,3 +40,20 @@ node_modules/
 # Ignore the product image cache directory and its contents
 src/pub/media/catalog/product/cache/
 src/pub/media/catalog/product/cache/**
+
+# --- ADDITIONAL MAGENTO IGNORES (tweaks for custom repo) ---
+# Composer cache/home used during builds
+src/composer_home/
+
+# Local PHP built-in server files
+phpserver/
+src/phpserver/
+
+# Node and build artifacts
+.sass-cache/
+.cache/
+
+# Ensure page cache and other var subfolders remain ignored explicitly
+src/var/cache/
+src/var/page_cache/
+src/var/composer_home/

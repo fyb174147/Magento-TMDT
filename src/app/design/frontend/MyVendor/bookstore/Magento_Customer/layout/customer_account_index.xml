@@ -1,24 +1,62 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="css/account-dashboard.css"/>
+    </head>
     <body>
         <attribute name="class" value="account bookstore-account-custom"/>
+
         <referenceBlock name="page.main.title" remove="true"/>
-        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceBlock name="customer_account_dashboard_info" remove="true"/>
         <referenceBlock name="customer_account_dashboard_info1" remove="true"/>
-        <referenceBlock name="customer_account_dashboard_info">
-            <arguments>
-                <argument name="template" xsi:type="string">Magento_Customer::account/dashboard/info.phtml</argument>
-            </arguments>
-        </referenceBlock>
-        <referenceBlock name="customer_account_dashboard_address">
-            <arguments>
-                <argument name="template" xsi:type="string">Magento_Customer::account/dashboard/address.phtml</argument>
-            </arguments>
-        </referenceBlock>
-        <referenceBlock name="customer_account_dashboard_top">
-            <arguments>
-                <argument name="template" xsi:type="string">Magento_Sales::order/recent.phtml</argument>
-            </arguments>
-        </referenceBlock>
+        <referenceBlock name="customer_account_dashboard_address" remove="true"/>
+        <referenceBlock name="customer_account_dashboard_addresses" remove="true"/>
+        <referenceBlock name="block-dashboard-info" remove="true"/>
+
+        <!-- BỎ "Đơn hàng gần đây" trên trang tổng quan (chuyển sang trang /sales/order/history/) -->
+        <referenceBlock name="sales.order.recent" remove="true"/>
+        <referenceBlock name="block-dashboard-orders" remove="true"/>
+        <referenceBlock name="customer_account_dashboard_orders" remove="true"/>
+        <referenceBlock name="customer_account_dashboard_order" remove="true"/>
+        <referenceBlock name="customer.orders.recent" remove="true"/>
+
+        <!-- ẨN TRIỆT ĐỂ WISHLIST & COMPARE PRODUCTS -->
+        <referenceBlock name="wishlist_sidebar" remove="true"/>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceBlock name="customer.wishlist" remove="true"/>
+        <referenceBlock name="wishlist_index_index" remove="true"/>
+        <referenceBlock name="customer.wishlist.button" remove="true"/>
+        <referenceBlock name="catalog.compare.list" remove="true"/>
+        <referenceBlock name="catalog.product.related" remove="true"/>
+        <referenceBlock name="block-compare" remove="true"/>
+        <referenceBlock name="block-recently-viewed" remove="true"/>
+        <referenceBlock name="block-compared" remove="true"/>
+        <referenceBlock name="block-viewed" remove="true"/>
+        <referenceBlock name="compared.list" remove="true"/>
+        <referenceBlock name="recently.viewed.list" remove="true"/>
+        <referenceBlock name="customer.wishlist.item.configure" remove="true"/>
+        <referenceBlock name="catalog.compare.item.render" remove="true"/>
+        <referenceBlock name="customer_compare_list" remove="true"/>
+
+        <referenceContainer name="content">
+            <!-- Hero block ở đầu trang, NGAY SAU HEADER
+            <block class="Magento\Framework\View\Element\Template"
+                   name="customer.account.hero"
+                   template="Magento_Theme::html/listing_hero.phtml"
+                   before="-">
+                <arguments>
+                    <argument name="eyebrow" xsi:type="string">Tài khoản BookStore</argument>
+                    <argument name="accent" xsi:type="string">#0095ff</argument>
+                    <argument name="title" xsi:type="string">Tổng quan tài khoản</argument>
+                    <argument name="description" xsi:type="string">Quản lý thông tin cá nhân, đơn hàng và sổ địa chỉ của bạn tại BookStore.</argument>
+                </arguments>
+            </block>
+            -->
+            <!-- Account info custom block -->
+            <block class="Magento\Framework\View\Element\Template"
+                   name="customer.account.dashboard.info.custom"
+                   template="Magento_Customer::account/dashboard/info.phtml"
+                   cacheable="false"/>
+        </referenceContainer>
     </body>
 </page>

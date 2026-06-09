@@ -1,25 +1,403 @@
-// ==========================================================================
-// MODULE 6: CUSTOMER ACCOUNT DASHBOARD & ORDER MANAGEMENT
-// ==========================================================================
+/* ==========================================================================
+   HỆ THỐNG GIAO DIỆN TÀI KHOẢN CAO CẤP CHUẨN BOOKSTORE - TÁI CẤU TRÚC TOÀN DIỆN
+   ========================================================================== */
 
-.bookstore-account-custom {
-    .block-dashboard-info,
-    .block-dashboard-addresses {
-        background: #ffffff !important;
-        border: 1px solid var(--border) !important;
-        border-radius: 14px !important;
-        padding: 24px !important;
-        margin-bottom: 24px !important;
+body[class*="account-"], body.account {
+    background-color: #f8fafc !important;
+
+    /* ----------------------------------------------------------------------
+       1. ẨN TRIỆT ĐỂ KHỐI GỐC LẶP DỮ LIỆU CỦA MAGENTO (XỬ LÝ LỖI SỔ ĐỊA CHỈ)
+       ---------------------------------------------------------------------- */
+    /* Ẩn khối danh sách địa chỉ mặc định cũ phía trên */
+    .block-addresses-list,
+    .block-dashboard-addresses,
+    .block-account-dashboard-addresses,
+    .box-address-billing,
+    .box-address-shipping,
+    /* Ẩn tiêu đề trang mặc định của Magento để không bị lặp với Hero Banner */
+    .page-title-wrapper {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        pointer-events: none !important;
     }
-    
-    .box-title {
-        border-bottom: 1px solid var(--border) !important;
-        padding-bottom: 10px !important;
-        margin-bottom: 16px !important;
-        span {
-            font-size: 16px !important;
+
+    /* ----------------------------------------------------------------------
+       2. KHÔI PHỤC LAYOUT 2 CỘT CHUẨN VÀ ĐẠT TRÁI TOÀN BỘ ĐOẠN MÔ TẢ
+       ---------------------------------------------------------------------- */
+    .columns {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 32px !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding: 40px 16px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Ép tất cả các khối mô tả, thông báo, văn bản trong trang account phải căn trái */
+    .column.main {
+        flex-grow: 1 !important;
+        width: auto !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 24px !important;
+        text-align: left !important;
+
+        /* Xử lý lỗi các đoạn mô tả/tiêu đề bị căn giữa */
+        .page-description, 
+        .form-instructions,
+        .block-cms-link,
+        p, span, div {
+            text-align: left !important;
+            margin-left: 0 !important;
+        }
+    }
+
+    /* Ép vùng văn bản của các khối Hero Banner luôn luôn dạt trái tuyệt đối */
+    .bookstore-listing-hero, .bookstore-cms-hero, .account-hero-section, .hero-info, div[class*="hero"] {
+        text-align: left !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+
+        h1, .title, p, .description, .hero-greeting, .hero-name, .hero-email {
+            text-align: left !important;
+            margin-left: 0 !important;
+            margin-right: auto !important;
+        }
+    }
+
+    /* SideBar điều hướng trái */
+    .sidebar.sidebar-main {
+        width: 260px !important;
+        flex-shrink: 0 !important;
+        display: block !important;
+        background: #ffffff !important;
+        border-radius: 12px !important;
+        padding: 24px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+        border: 1px solid #e2e8f0 !important;
+        height: fit-content !important;
+
+        .block-collapsible-nav .title {
+            font-size: 16px !important; font-weight: 700 !important; color: #0f172a !important;
+            padding-bottom: 12px !important; border-bottom: 1px solid #f1f5f9 !important; margin-bottom: 16px !important;
+        }
+        .content .nav.items .item {
+            margin: 6px 0 !important;
+            a {
+                display: block !important; padding: 10px 14px !important; color: #475569 !important;
+                font-size: 14px !important; font-weight: 500 !important; border-radius: 8px !important;
+                text-decoration: none !important; transition: all 0.2s ease !important;
+                &:hover { background: #f1f5f9 !important; color: #0095ff !important; }
+            }
+            &.current a { background: #e0f2fe !important; color: #0095ff !important; font-weight: 600 !important; }
+        }
+    }
+
+    /* ----------------------------------------------------------------------
+       3. CẤU TRÚC CARD HOÀN CHỈNH CHO SỔ ĐỊA CHỈ (HIỂN THỊ ĐỒNG BỘ)
+       ---------------------------------------------------------------------- */
+    .bookstore-unified-account-card {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        padding: 28px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+    }
+    .bookstore-account-card-header {
+        border-bottom: 1px solid #f1f5f9 !important;
+        padding-bottom: 14px !important;
+        margin-bottom: 20px !important;
+        text-align: left !important;
+        strong { font-size: 16px !important; font-weight: 700 !important; color: #1e293b !important; }
+    }
+
+    /* Container bao bọc các Card hàng ngang của Địa chỉ */
+    .address-horizontal-container {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 14px !important;
+        width: 100% !important;
+    }
+    .address-horizontal-row-card {
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 10px !important;
+        padding: 20px 24px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        transition: all 0.2s ease;
+        
+        &:hover { border-color: #cbd5e1 !important; background: #f1f5f9 !important; }
+        .address-row-text { font-size: 14px !important; color: #334155 !important; line-height: 1.6 !important; text-align: left !important; }
+        .address-row-actions { display: flex !important; gap: 16px !important; font-weight: 600 !important; }
+    }
+
+    /* ----------------------------------------------------------------------
+       4. FORM ĐỔI THÔNG TIN DÀN NGANG, CĂN TRÁI NHÃN & CĂN PHẢI NÚT BẤM
+       ---------------------------------------------------------------------- */
+    .css-form-modern-wrapper,
+    form.form-edit-account,
+    form.form-address-edit {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        /* Biến các vùng fieldset thành hệ thống Grid dàn ngang 2 cột */
+        .fieldset.info,
+        .fieldset.password,
+        .fieldset.info-group-fields,
+        .fieldset.password-sub-fields,
+        .fieldset .field.name-firstname {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 20px 24px !important;
+            width: 100% !important;
+        }
+
+        /* Đưa các vùng legend (tiêu đề nhóm) trải dài full chiều ngang */
+        legend.legend {
+            grid-column: span 2 !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            padding-bottom: 8px !important;
+            margin-bottom: 8px !important;
+            font-size: 15px !important;
             font-weight: 700 !important;
-            color: var(--text-main) !important;
+            color: #1e293b !important;
+            text-align: left !important;
+        }
+
+        /* Ép các ô input và nhãn dính chặt lề trái */
+        .field {
+            grid-column: span 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            text-align: left !important;
+            width: 100% !important;
+            
+            label.label, span {
+                text-align: left !important;
+                margin-left: 0 !important;
+                margin-right: auto !important;
+                font-size: 13px !important;
+                font-weight: 600 !important;
+                color: #475569 !important;
+                display: block !important;
+                width: 100% !important;
+            }
+
+            .control {
+                width: 100% !important;
+                text-align: left !important;
+                
+                input.input-text {
+                    width: 100% !important;
+                    height: 44px !important;
+                    padding: 0 16px !important;
+                    border: 1.5px solid #e2e8f0 !important;
+                    border-radius: 8px !important;
+                    box-sizing: border-box !important;
+                    font-size: 14px !important;
+                    color: #0f172a !important;
+                    text-align: left !important;
+                    
+                    &:focus {
+                        border-color: #0095ff !important;
+                        outline: none !important;
+                        box-shadow: 0 0 0 3px rgba(0, 149, 255, 0.12) !important;
+                    }
+                }
+            }
+        }
+
+        /* Phân tách đều ô Họ / Tên */
+        .field.field-name-firstname,
+        .field.field-name-lastname {
+            grid-column: span 1 !important;
+        }
+
+        /* Checkbox lựa chọn nằm riêng hàng rộng 100% */
+        .field.choice,
+        .field.choice-checkbox-wrapper {
+            grid-column: span 2 !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 10px !important;
+            margin: 8px 0 !important;
+            width: 100% !important;
+            
+            input[type="checkbox"] {
+                width: 18px !important;
+                height: 18px !important;
+                margin: 0 !important;
+                cursor: pointer;
+            }
+            label {
+                cursor: pointer;
+                font-size: 14px !important;
+                color: #334155 !important;
+                font-weight: 500 !important;
+            }
+        }
+
+        /* ----------------------------------------------------------------------
+           CĂN PHẢI NÚT LƯU THAY ĐỔI VÀ QUAY LẠI SANG GÓC PHẢI
+           ---------------------------------------------------------------------- */
+        .actions-toolbar {
+            grid-column: span 2 !important;
+            display: flex !important;
+            flex-direction: row-reverse !important; /* Đảo ngược thứ tự: Nút chính (Lưu) nằm ngoài cùng bên phải, nút phụ (Quay lại) nằm bên trái nút Lưu */
+            justify-content: flex-start !important; /* Đẩy sát về góc bên phải của form */
+            align-items: center !important;
+            gap: 16px !important;
+            margin-top: 32px !important;
+            padding-top: 20px !important;
+            border-top: 1px solid #e2e8f0 !important;
+            width: 100% !important;
+
+            .primary {
+                margin: 0 !important;
+                button.action.save.primary,
+                button.submit {
+                    background: #0095ff !important;
+                    color: #ffffff !important;
+                    border: none !important;
+                    padding: 12px 24px !important;
+                    border-radius: 8px !important;
+                    font-weight: 600 !important;
+                    font-size: 14px !important;
+                    cursor: pointer !important;
+                    transition: background 0.2s ease !important;
+                    box-shadow: 0 2px 4px rgba(0, 149, 255, 0.15) !important;
+                    
+                    &:hover { background: #0076cc !important; }
+                }
+            }
+
+            .secondary {
+                margin: 0 !important;
+                a.action.back {
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    color: #64748b !important;
+                    font-weight: 600 !important;
+                    font-size: 14px !important;
+                    text-decoration: none !important;
+                    padding: 12px 16px !important;
+                    border-radius: 8px !important;
+                    transition: all 0.2s ease !important;
+                    
+                    &:hover { color: #334155 !important; background: #f1f5f9 !important; }
+                }
+            }
+        }
+    }
+
+    /* Thanh chỉ báo độ mạnh mật khẩu bảo mật rộng 100% */
+    .password-strength-meter {
+        grid-column: span 2 !important;
+        background: #f1f5f9 !important;
+        border-radius: 6px !important;
+        padding: 12px !important;
+        margin-top: -10px !important;
+    }
+}
+
+/* ==========================================================================
+   BỔ SUNG: VIỆT HÓA VÀ FIX LỆCH HÀNG BẢNG CHI TIẾT ĐƠN HÀNG (DÁN DƯỚI CÙNG FILE)
+   ========================================================================== */
+
+body.sales-order-view, 
+.sales-order-view,
+body[class*="account-"],
+body.account {
+
+    /* --- 1. ÉP RIÊNG PHẦN MÔ TẢ TRANG VỀ BÊN TRÁI --- */
+    .column.main {
+        text-align: left !important;
+
+        .page-description,
+        .block-cms-link,
+        .order-date,
+        .order-status,
+        .bookstore-listing-hero p,
+        div[class*="hero"] p,
+        p.description {
+            text-align: left !important;
+            margin-left: 0 !important;
+            margin-right: auto !important;
+            display: block !important;
+        }
+    }
+
+    /* --- 2. SỬA TRIỆT ĐỂ LỖI LỆCH HÀNG & TRÙNG TEXT TRONG BẢNG ĐƠN HÀNG --- */
+    .table-order-items,
+    table.data.table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+
+        /* Căn thẳng hàng Header của bảng chi tiết */
+        thead th {
+            padding: 14px 16px !important;
+            background: #f8fafc !important;
+            color: #64748b !important;
+            font-weight: 600 !important;
+            border-bottom: 2px solid #e2e8f0 !important;
+            text-align: left !important; 
+            vertical-align: middle !important;
+        }
+
+        /* Căn thẳng hàng Thân bảng dữ liệu */
+        tbody td {
+            padding: 16px 16px !important;
+            color: #334155 !important;
+            border-bottom: 1px solid #f1f5f9 !important;
+            text-align: left !important; 
+            vertical-align: middle !important;
+        }
+
+        /* KHỬ TOÀN BỘ TEXT TIẾNG ANH GÂY DỒN LỆCH CỘT Ở GIAO DIỆN MÁY TÍNH */
+        tbody td:before {
+            display: none !important;
+            content: "" !important;
+        }
+
+        /* Định dạng lại chân bảng tổng tiền hàng ngay ngắn */
+        tfoot {
+            tr th {
+                color: #475569 !important;
+                font-weight: 500 !important;
+                text-align: right !important;
+                padding: 12px 16px !important;
+            }
+            tr td {
+                text-align: right !important;
+                padding: 12px 16px !important;
+                font-weight: 700 !important;
+                color: #0f172a !important;
+            }
+            /* Dòng chốt tổng tiền hàng cuối cùng */
+            tr.grand_total {
+                th strong {
+                    font-size: 14px !important;
+                    color: #0f172a !important;
+                }
+                td .price {
+                    font-size: 16px !important;
+                    color: #0095ff !important;
+                    font-weight: 800 !important;
+                }
+            }
         }
     }
 }

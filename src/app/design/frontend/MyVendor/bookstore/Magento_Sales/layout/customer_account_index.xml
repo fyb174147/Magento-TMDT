@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Loại bỏ bảng "Đơn hàng gần đây" khỏi trang tổng quan tài khoản -->
+        <referenceBlock name="customer_account_dashboard_top" remove="true"/>
+        <referenceBlock name="customer_account_dashboard_top1" remove="true"/>
+    </body>
+</page>

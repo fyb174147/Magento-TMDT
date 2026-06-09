@@ -42,16 +42,7 @@
         </div>
     </section>
 
-    <!-- Featured Section -->
-    <section class="home-featured">
-        <div class="container-center">
-            <div class="section-header">
-                <h2>Sách mới nổi bật</h2>
-                <a href="<?= $block->getUrl('new-books') ?>">Xem tất cả →</a>
-            </div>
-            <?= $block->getChildHtml('new_books_grid') ?>
-        </div>
-    </section>
+    <!-- Featured Section removed as requested -->
 </div>
 
 <style>
@@ -95,6 +86,9 @@
     .about-card .icon { font-size: 40px; margin-bottom: 20px; display: block; }
     .about-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 15px; }
     .about-card p { color: var(--text-sub); line-height: 1.6; }
+
+    /* Hide the global page title on the homepage and remove featured books */
+    .page-title-wrapper { display: none; }
 
     .home-featured { margin-top: 40px; }
     .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }

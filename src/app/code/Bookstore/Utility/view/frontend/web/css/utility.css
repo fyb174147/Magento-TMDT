@@ -1,27 +1,29 @@
+/* ==============================
+   Bookstore Utility Page Styles
+   ============================== */
+
+/* Page Layout */
 .bookstore-utility-custom .page-main {
     max-width: 1200px;
     padding: 18px 20px 56px;
 }
 
-.bookstore-cms-page,
 .bookstore-info-page {
     max-width: 1120px;
     margin: 0 auto;
 }
 
-.bookstore-cms-hero,
+/* Hero Section */
 .bookstore-info-hero {
     margin: 0 0 22px;
 }
 
-.bookstore-cms-hero p,
 .bookstore-info-hero p {
     margin: 0 0 8px;
     color: #0095ff;
     font-weight: 900;
 }
 
-.bookstore-cms-hero h1,
 .bookstore-info-hero h1 {
     margin: 0 0 10px;
     color: #1e293b;
@@ -30,191 +32,35 @@
     font-weight: 950;
 }
 
-.bookstore-cms-hero span,
 .bookstore-info-hero span {
     color: #64748b;
     font-weight: 650;
 }
 
-.store-toolbar,
-.store-feature,
-.bookstore-info-card,
-.utility-summary article {
-    border: 2px solid #0095ff;
-    border-radius: 18px;
-    background: #fff;
-    box-shadow: 0 10px 24px rgba(0, 149, 255, 0.08);
-}
-
-.store-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 16px 18px;
-    margin-bottom: 20px;
-}
-
-.store-toolbar strong,
-.store-toolbar span {
-    display: block;
-}
-
-.store-toolbar span {
-    margin-top: 4px;
-    color: #64748b;
-}
-
-.store-toolbar button {
-    min-height: 42px;
-    padding: 0 16px;
-    border: 0;
-    border-radius: 10px;
-    background: #0095ff;
-    color: #fff;
-    font-weight: 900;
-}
-
-.store-feature {
-    display: grid;
-    grid-template-columns: 1.05fr 1fr;
-    gap: 22px;
-    padding: 18px;
-    margin-bottom: 22px;
-}
-
-.store-map {
-    min-height: 260px;
-    border-radius: 14px;
-    background:
-        linear-gradient(90deg, rgba(0,149,255,0.12) 1px, transparent 1px),
-        linear-gradient(rgba(0,149,255,0.12) 1px, transparent 1px),
-        #f5fbff;
-    background-size: 34px 34px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 22px;
-}
-
-.store-map span {
-    color: #64748b;
-    font-weight: 800;
-}
-
-.store-map strong {
-    color: #1e293b;
-    font-size: 28px;
-    font-weight: 950;
-}
-
-.store-feature-copy h2 {
-    margin: 6px 0 12px;
-    font-size: 28px;
-    font-weight: 950;
-}
-
-.store-feature-copy p {
-    color: #64748b;
-    line-height: 1.7;
-}
-
-.store-services {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 18px;
-}
-
-.store-services span,
-.utility-chip {
-    display: inline-flex;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: rgba(0, 149, 255, 0.1);
-    color: #0076cc;
-    font-weight: 850;
-}
-
-.store-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-}
-
-.store-grid article {
-    border: 1px solid #d7ecff;
-    border-radius: 16px;
-    padding: 18px;
-    background: #fff;
-}
-
-.store-grid strong {
-    display: block;
-    color: #1e293b;
-    font-size: 17px;
-    font-weight: 950;
-}
-
-.store-grid p {
-    min-height: 44px;
-    color: #64748b;
-}
-
-.store-grid span,
-.store-grid small {
-    display: block;
-    color: #1e293b;
-    font-weight: 800;
-}
-
-.store-grid small {
-    margin-top: 6px;
-    color: #0095ff;
-}
-
-.utility-summary {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 20px;
-}
-
-.utility-summary article {
-    padding: 18px;
-}
-
-.utility-summary strong,
-.utility-summary span {
-    display: block;
-}
-
-.utility-summary strong {
-    color: #0095ff;
-    font-size: 26px;
-    font-weight: 950;
-}
-
-.utility-summary span {
-    color: #64748b;
-    font-weight: 800;
-}
-
+/* Info Grid */
 .bookstore-info-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
 }
 
+/* Info Cards */
 .bookstore-info-card {
+    border: 2px solid #0095ff;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(0, 149, 255, 0.08);
     padding: 20px;
 }
 
+/* ÉP CẢ 3 KHỐI ĐỀU KÉO DÀI THEO CHIỀU NGANG FULL WIDTH */
+.weather-card,
 .rates-card,
 .news-card {
     grid-column: 1 / -1;
 }
 
+/* Card Heading */
 .card-heading {
     display: flex;
     align-items: center;
@@ -232,6 +78,7 @@
     align-items: center;
     justify-content: center;
     font-weight: 950;
+    flex-shrink: 0;
 }
 
 .card-heading h2 {
@@ -242,15 +89,124 @@
 }
 
 .card-heading p,
-.muted {
+.utility-muted {
     margin: 4px 0 0;
     color: #64748b;
 }
 
-.weather-temp {
+/* Refresh Button */
+.utility-refresh-btn {
+    margin-left: auto;
+    width: 36px;
+    height: 36px;
+    border: 2px solid #d7ecff;
+    border-radius: 10px;
+    background: #f8fafc;
+    color: #0095ff;
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.utility-refresh-btn:hover {
+    background: #0095ff;
+    color: #fff;
+    border-color: #0095ff;
+}
+
+.utility-refresh-btn:active {
+    transform: rotate(180deg);
+}
+
+/* ==============================
+   Weather Widget (DÀN HÀNG NGANG CHUYÊN NGHIỆP)
+   ============================== */
+#utility-weather-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+}
+
+.weather-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0; /* Reset margin để bằng vai phải lứa với chỉ số */
+    flex-shrink: 0;
+}
+
+.weather-icon-wrap {
+    flex-shrink: 0;
+}
+
+.weather-icon-img {
+    width: 80px;
+    height: 80px;
+}
+
+.weather-temp-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.weather-temp-value {
     color: #1e293b;
-    font-size: 40px;
+    font-size: 42px;
     font-weight: 950;
+    line-height: 1;
+}
+
+.weather-desc {
+    color: #64748b;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: capitalize;
+    margin-top: 4px;
+}
+
+.weather-details {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5 chỉ số dàn đều 5 cột ngang */
+    gap: 10px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.weather-detail-item {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 12px 14px;
+}
+
+.wd-label {
+    display: block;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.wd-value {
+    display: block;
+    color: #1e293b;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+/* ==============================
+   Currency Rates Widget
+   ============================== */
+.utility-rates-scroll {
+    max-height: 520px;
+    overflow-y: auto;
+    border-radius: 12px;
+    border: 1px solid #d7ecff;
 }
 
 .utility-rate-table {
@@ -264,53 +220,198 @@
     background: #f5fbff;
     color: #64748b;
     text-align: left;
+    font-weight: 800;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .utility-rate-table td {
     padding: 13px 12px;
-    border-bottom: 1px solid #d7ecff;
+    border-bottom: 1px solid #e8f0fe;
+    font-size: 14px;
+}
+
+.utility-rate-table tr:hover td {
+    background: #f8fafc;
+}
+
+.utility-rate-table td strong {
+    color: #1e293b;
+    font-weight: 950;
 }
 
 .utility-rate-table td span {
     display: block;
     margin-top: 3px;
     color: #64748b;
-    font-size: 12px;
+    font-size: 11px;
 }
 
-.utility-news-list {
+/* ==============================
+   News Widget
+   ============================== */
+.utility-news-grid {
     display: grid;
-    gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
 }
 
-.utility-news-list article {
+.news-item {
+    display: flex;
+    flex-direction: column;
     padding: 14px;
-    border-radius: 12px;
+    border-radius: 14px;
     background: #f8fafc;
+    border: 1px solid #e8f0fe;
+    transition: all 0.2s ease;
 }
 
-.utility-news-list a {
-    color: #0076cc;
+.news-item:hover {
+    border-color: #0095ff;
+    box-shadow: 0 4px 12px rgba(0, 149, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.news-thumb {
+    margin-bottom: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.news-thumb img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+}
+
+.news-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-title {
+    color: #1e293b;
     font-weight: 900;
+    font-size: 15px;
     text-decoration: none;
+    line-height: 1.4;
+    margin-bottom: 6px;
 }
 
-.utility-news-list p {
-    margin: 6px 0 0;
-    color: #475569;
+.news-title:hover {
+    color: #0095ff;
+}
+
+.news-desc {
+    color: #64748b;
+    font-size: 13px;
     line-height: 1.55;
+    margin: 0 0 8px;
+    flex: 1;
 }
 
+.news-date {
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ==============================
+   Loading Animation
+   ============================== */
+.utility-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 40px 0;
+}
+
+.utility-loading span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #0095ff;
+    animation: utility-bounce 1.2s ease-in-out infinite;
+}
+
+.utility-loading span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.utility-loading span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes utility-bounce {
+    0%, 80%, 100% {
+        transform: scale(0.6);
+        opacity: 0.4;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ==============================
+   Muted Text
+   ============================== */
+.utility-muted {
+    color: #94a3b8;
+    font-size: 14px;
+    padding: 20px 0;
+    text-align: center;
+}
+
+/* ==============================
+   Responsive (TỰ ĐỘNG THU GỌN TRÊN MOBILE)
+   ============================== */
 @media (max-width: 800px) {
-    .store-feature,
-    .store-grid,
-    .utility-summary,
+    #utility-weather-content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .weather-main {
+        margin-bottom: 12px;
+        justify-content: center;
+    }
+
     .bookstore-info-grid {
         grid-template-columns: 1fr;
     }
 
-    .store-toolbar {
-        align-items: stretch;
+    .utility-news-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .weather-details {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .bookstore-info-hero h1 {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 480px) {
+    .weather-main {
         flex-direction: column;
+        text-align: center;
+    }
+
+    .weather-temp-value {
+        font-size: 34px;
+    }
+
+    .weather-details {
+        grid-template-columns: 1fr;
     }
 }

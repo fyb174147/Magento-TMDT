@@ -1,29 +1,945 @@
 // ==========================================================================
-// MODULE 4: CART PAGE & CHECKOUT CUSTOMIZATION
+// THIẾT KẾ ĐỒNG BỘ: GIỎ HÀNG (CART) & THANH TOÁN (CHECKOUT) - BOOKSTORE SYSTEM
 // ==========================================================================
 
-.cart-container {
-    display: flex !important;
-    flex-direction: row !important;
-    gap: 30px !important;
-    align-items: flex-start !important;
-    
-    .form-cart {
-        flex: 1 1 65% !important;
+body.bookstore-cart-page,
+body.bookstore-checkout-page {
+    background-color: #f8fafc !important; // Nền xám xanh dịu mắt
+    color: #1e293b !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+
+    // Định dạng các liên kết hành động chung
+    a.action.action-delete, 
+    a.action-edit, 
+    .action-towishlist {
+        color: #64748b !important;
+        text-decoration: none !important;
+        font-size: 13px !important;
+        transition: color 0.2s ease;
+        &:hover { color: #0095ff !important; }
     }
-    
-    .cart-summary {
-        flex: 0 0 35% !important;
-        background: var(--bg-surface) !important;
-        border-radius: 16px !important;
-        padding: 24px !important;
-        border: 1px solid var(--border) !important;
+
+    // Làm phẳng các ô Input đầu vào (Zipcode, Tỉnh thành, Coupon, Address)
+    input.input-text, 
+    select, 
+    textarea {
+        height: 42px !important;
+        background: #ffffff !important;
+        border: 1.5px solid #e2e8f0 !important;
+        border-radius: 8px !important;
+        padding: 0 14px !important;
+        font-size: 14px !important;
+        color: #334155 !important;
+        box-shadow: none !important;
+        box-sizing: border-box !important;
+        transition: all 0.2s ease !important;
+
+        &:focus {
+            border-color: #0095ff !important;
+            box-shadow: 0 0 0 3px rgba(0, 149, 255, 0.12) !important;
+            outline: none !important;
+        }
+    }
+
+    // Định dạng nút bấm chính chuẩn UI Phẳng của BookStore
+    .action.primary, 
+    button.action.primary, 
+    button.checkout {
+        background: #0095ff !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        padding: 0 24px !important;
+        height: 46px !important;
+        border-radius: 8px !important;
+        font-size: 14px !important;
+        cursor: pointer !important;
+        transition: background 0.2s ease !important;
+        box-shadow: 0 2px 4px rgba(0, 149, 255, 0.15) !important;
+
+        &:hover {
+            background: #0076cc !important;
+            box-shadow: 0 4px 8px rgba(0, 118, 204, 0.25) !important;
+        }
     }
 }
 
-// Thao tác trên trang Checkout
-.checkout-container {
-    max-width: 900px !important;
-    margin: 0 auto !important;
-    padding: 20px 0 !important;
+// ==========================================================================
+// 🛒 PHÂN ĐOẠN 1: LAYOUT TRANG GIỎ HÀNG (CART PAGE)
+// ==========================================================================
+body.bookstore-cart-page {
+    
+    .page-main {
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding: 40px 16px !important;
+    }
+
+    // Cấu trúc Grid 2 cột: Danh sách sản phẩm (Trái) & Tóm tắt đơn hàng (Phải)
+    .cart-container {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 32px !important;
+        align-items: flex-start !important;
+
+        // Cột trái - Form danh sách sản phẩm
+        .form-cart {
+            flex: 1 1 68% !important;
+            background: #ffffff !important;
+            border-radius: 12px !important;
+            padding: 24px !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        // Cột phải - Tóm tắt đơn hàng (Summary Card)
+        .cart-summary {
+            flex: 0 0 32% !important;
+            width: 32% !important;
+            background: #ffffff !important;
+            border-radius: 12px !important;
+            padding: 24px !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+            position: sticky !important;
+            top: 20px !important;
+
+            .summary.title {
+                font-size: 18px !important;
+                font-weight: 700 !important;
+                color: #0f172a !important;
+                border-bottom: 1px solid #f1f5f9 !important;
+                padding-bottom: 12px !important;
+                margin-bottom: 16px !important;
+            }
+
+            // Ẩn khối ước tính thuế rườm rà (Estimate Shipping Tax)
+            .block.shipping {
+                display: none !important;
+            }
+
+            // Khối mã giảm giá (Discount Coupon) làm gọn lại
+            .block.discount {
+                border-top: 1px dashed #e2e8f0 !important;
+                margin-top: 15px !important;
+                padding-top: 15px !important;
+                .title strong { font-size: 14px !important; color: #475569 !important; }
+            }
+        }
+    }
+
+    // Làm sạch bảng giỏ hàng phẳng mịn
+    .table-wrapper.cart {
+        border: none !important;
+        
+        .cart.items {
+            width: 100% !important;
+            border-collapse: collapse !important;
+
+            thead th {
+                background: #f8fafc !important;
+                color: #64748b !important;
+                font-weight: 600 !important;
+                padding: 12px !important;
+                border-bottom: 2px solid #e2e8f0 !important;
+                text-align: left !important;
+            }
+
+            tbody.item {
+                border-bottom: 1px solid #f1f5f9 !important;
+                
+                td {
+                    padding: 20px 12px !important;
+                    vertical-align: middle !important;
+                }
+
+                // Cột thông tin sản phẩm (Ảnh + Tên sách)
+                .col.item {
+                    display: flex !important;
+                    gap: 16px !important;
+                    align-items: center !important;
+                    
+                    .product-item-photo {
+                        padding: 0 !important;
+                        max-width: 80px !important;
+                        img { border-radius: 6px !important; border: 1px solid #e2e8f0 !important; }
+                    }
+                    .product-item-details {
+                        .product-item-name a {
+                            font-weight: 600 !important;
+                            color: #0f172a !important;
+                            font-size: 15px !important;
+                            &:hover { color: #0095ff !important; }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Căn chỉnh hàng nút cập nhật giỏ hàng dưới cùng
+    .cart.actions {
+        display: flex !important;
+        justify-content: flex-end !important;
+        gap: 12px !important;
+        margin-top: 20px !important;
+        padding-top: 20px !important;
+        border-top: 1px solid #f1f5f9 !important;
+
+        .action.clear, .action.update {
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            border: 1px solid #cbd5e1 !important;
+            box-shadow: none !important;
+            height: 38px !important;
+            padding: 0 16px !important;
+            font-size: 13px !important;
+            &:hover { background: #e2e8f0 !important; color: #0f172a !important; }
+        }
+    }
+}
+
+// ==========================================================================
+// 💳 PHÂN ĐOẠN 2: LAYOUT TIẾN TRÌNH THANH TOÁN (CHECKOUT PAGE)
+// ==========================================================================
+body.bookstore-checkout-page {
+
+    .page-main {
+        max-width: 1100px !important;
+        margin: 0 auto !important;
+        padding: 40px 16px !important;
+    }
+
+    // Layout chính chia đôi: Form thông tin & Sidebar tóm tắt đơn
+    .checkout-container {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 32px !important;
+        align-items: flex-start !important;
+
+        // Khung nhập liệu các bước (Vận chuyển, Thanh toán) bên trái
+        #checkout {
+            flex: 1 1 64% !important;
+            background: #ffffff !important;
+            border-radius: 12px !important;
+            padding: 32px !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        // Khung tóm tắt sidebar bên phải cố định hành trình
+        .opc-sidebar {
+            flex: 0 0 36% !important;
+            width: 36% !important;
+            background: #ffffff !important;
+            border-radius: 12px !important;
+            padding: 24px !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+            position: sticky !important;
+            top: 20px !important;
+        }
+    }
+
+    // Định dạng Thanh tiến trình các bước (Progress Steps: Shipping -> Review & Payments)
+    .opc-progress-bar {
+        display: flex !important;
+        justify-content: space-between !important;
+        margin-bottom: 35px !important;
+        padding: 0 !important;
+        border-bottom: 2px solid #e2e8f0 !important;
+        padding-bottom: 15px !important;
+
+        .opc-progress-bar-item {
+            font-weight: 500 !important;
+            color: #94a3b8 !important;
+            font-size: 15px !important;
+            position: relative !important;
+            
+            span:after { display: none !important; } // Ẩn icon bong bóng mặc định xấu xí
+
+            &._active {
+                color: #0095ff !important;
+                font-weight: 700 !important;
+                &:after {
+                    content: "" !important;
+                    position: absolute !important;
+                    bottom: -17px !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 3px !important;
+                    background: #0095ff !important;
+                }
+            }
+            &._complete { color: #10b981 !important; }
+        }
+    }
+
+    // Tiêu đề các phân khu lớn trong Form Checkout
+    .step-title {
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        color: #0f172a !important;
+        margin-bottom: 20px !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        padding-bottom: 10px !important;
+    }
+
+    // Định dạng danh sách địa chỉ có sẵn dạng Card Ô vuông cực mượt
+    .shipping-address-items {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px !important;
+
+        .shipping-address-item {
+            background: #f8fafc !important;
+            border: 1.5px solid #e2e8f0 !important;
+            border-radius: 10px !important;
+            padding: 16px !important;
+            font-size: 13.5px !important;
+            line-height: 1.6 !important;
+            color: #334155 !important;
+            position: relative !important;
+            transition: all 0.2s ease !important;
+
+            &.selected-item {
+                border-color: #0095ff !important;
+                background: rgba(0, 149, 255, 0.02) !important;
+                box-shadow: 0 0 0 1px #0095ff !important;
+
+                &:after {
+                    content: "✓" !important;
+                    position: absolute !important;
+                    top: 12px !important;
+                    right: 12px !important;
+                    background: #0095ff !important;
+                    color: #ffffff !important;
+                    width: 18px !important;
+                    height: 18px !important;
+                    border-radius: 50% !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    font-size: 11px !important;
+                    font-weight: bold !important;
+                }
+            }
+
+            .action-select-shipping-item {
+                background: #ffffff !important;
+                border: 1px solid #cbd5e1 !important;
+                padding: 6px 12px !important;
+                border-radius: 6px !important;
+                margin-top: 10px !important;
+                font-weight: 600 !important;
+                color: #475569 !important;
+                font-size: 12px !important;
+                cursor: pointer !important;
+                &:hover { background: #f1f5f9 !important; color: #0f172a !important; }
+            }
+        }
+    }
+
+    // Định dạng vùng chọn phương thức vận chuyển (Shipping Methods Table)
+    .table-checkout-shipping-method {
+        width: 100% !important;
+        margin-top: 15px !important;
+        border-collapse: collapse !important;
+
+        tbody tr {
+            border: 1px solid #e2e8f0 !important;
+            transition: background 0.2s ease;
+            &:hover { background: #f8fafc !important; }
+
+            td {
+                padding: 14px 16px !important;
+                font-size: 14px !important;
+                color: #334155 !important;
+                vertical-align: middle !important;
+                border: none !important;
+
+                input[type="radio"] {
+                    accent-color: #0095ff !important;
+                    width: 18px !important;
+                    height: 18px !important;
+                    cursor: pointer !important;
+                }
+                
+                .col-price { font-weight: 700 !important; color: #0f172a !important; }
+            }
+        }
+    }
+
+    // Làm gọn khối Tổng hợp tiền tố Sidebar phải (Order Summary Totals)
+    .opc-block-summary {
+        .title {
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            color: #0f172a !important;
+            margin-bottom: 12px !important;
+        }
+
+        .table-totals {
+            width: 100% !important;
+            tr th, tr td {
+                padding: 10px 0 !important;
+                font-size: 14px !important;
+                border: none !important;
+            }
+            tr th { color: #64748b !important; font-weight: 400 !important; }
+            tr td { text-align: right !important; font-weight: 600 !important; color: #1e293b !important; }
+
+            // Dòng tổng tiền chốt cuối cùng (Grand Total)
+            .grand.totals {
+                border-top: 1px solid #f1f5f9 !important;
+                th strong { font-size: 15px !important; color: #0f172a !important; font-weight: 700 !important; }
+                td strong .price { font-size: 18px !important; color: #0095ff !important; font-weight: 800 !important; }
+            }
+        }
+    }
+}
+
+// KHỬ TOÀN BỘ CÁC PHẦN DỒN CHỮ PSEUDO-ELEMENTS GÂY VỠ GIAO DIỆN TRÊN MÁY TÍNH MẶC ĐỊNH
+@media (min-width: 768px) {
+    body.bookstore-cart-page .col.qty:before,
+    body.bookstore-cart-page .col.price:before,
+    body.bookstore-cart-page .col.subtotal:before,
+    body.bookstore-cart-page .col.msrp:before {
+        display: none !important;
+        content: "" !important;
+    }
+}
+
+/* ==========================================================================
+   TỐI ƯU GIAO DIỆN GIỎ HÀNG: FIX LỖI ẢNH MÓP & NÚT REMOVE TRÀN TEXT
+   ========================================================================== */
+
+body.bookstore-cart-page,
+.bookstore-cart-page {
+
+    // --- 1. SỬA LỖI ẢNH SẢN PHẨM BỊ MÓP ---
+    .table-wrapper.cart .cart.items tbody.item td.col.item {
+        display: flex !important;
+        align-items: center !important;
+        gap: 20px !important;
+        text-align: left !important;
+
+        // Khung bọc ảnh sản phẩm
+        .product-item-photo {
+            flex: 0 0 90px !important; // Cố định chiều rộng khung ảnh không cho co cụm
+            width: 90px !important;
+            height: 110px !important; // Tỷ lệ dọc chuẩn cho bìa sách BookStore
+            display: block !important;
+            padding: 0 !important;
+            overflow: hidden !important;
+            border-radius: 8px !important;
+            border: 1px solid var(--border) !important;
+
+            // Ép ảnh hiển thị phẳng, căng đều không móp méo
+            img, .product-image-photo {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important; // Cắt cúp thông minh giữ nguyên tỷ lệ bìa sách
+                display: block !important;
+            }
+        }
+
+        // Vùng chữ tên sản phẩm bên cạnh
+        .product-item-details {
+            flex: 1 !important;
+            text-align: left !important;
+            
+            .product-item-name {
+                margin-bottom: 8px !important;
+                a {
+                    font-weight: 700 !important;
+                    color: var(--text-main) !important;
+                    font-size: 15px !important;
+                    line-height: 1.4 !important;
+                    text-decoration: none !important;
+                    &:hover { color: var(--primary) !important; }
+                }
+            }
+        }
+    }
+
+    // --- 2. LÀM ĐẸP VÀ CHỐNG TRÀN TEXT NÚT EDIT / REMOVE ITEM ---
+    // Khối bọc các nút hành động dưới mỗi dòng sản phẩm
+    .actions-toolbar {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+        margin-top: 12px !important;
+        width: auto !important;
+
+        // Biến nút thành dạng tag phẳng gọn gàng, bo góc tinh tế
+        a.action-edit,
+        a.action-delete {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            height: 32px !important;
+            padding: 0 14px !important;
+            border-radius: 6px !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            text-decoration: none !important;
+            white-space: nowrap !important; // Chống bẻ hàng tự do làm tràn chữ
+            box-sizing: border-box !important;
+            transition: var(--transition) !important;
+        }
+
+        // Nút Sửa (Edit item)
+        a.action-edit {
+            background: #f1f5f9 !important;
+            color: #475569 !important;
+            border: 1px solid #cbd5e1 !important;
+            
+            &:hover {
+                background: #e2e8f0 !important;
+                color: var(--text-main) !important;
+            }
+        }
+
+        // Nút Xóa (Remove item) - Định dạng lại thành màu đỏ phẳng mềm mại
+        a.action-delete,
+        .action-delete {
+            background: #fef2f2 !important;
+            color: #ef4444 !important;
+            border: 1px solid #fca5a5 !important;
+            font-size: 0 !important; // Ẩn chuỗi text lỗi hệ thống nếu có
+
+            // Bơm text tiếng Việt chuẩn, căn giữa gọn gàng không sợ tràn
+            &:before {
+                content: "Xóa" !important;
+                font-size: 13px !important;
+                font-weight: 600 !important;
+                display: inline-block !important;
+            }
+
+            &:hover {
+                background: #ef4444 !important;
+                color: #ffffff !important;
+                border-color: #ef4444 !important;
+                &:before { color: #ffffff !important; }
+            }
+        }
+    }
+}
+
+/* ==========================================================================
+   VIỆT HÓA ELEMENT TIẾNG ANH & KHỬ BỎ "CHECKOUT WITH MULTIPLE ADDRESSES"
+   ========================================================================== */
+
+body.bookstore-cart-page,
+body.bookstore-checkout-page,
+.bookstore-cart-page,
+.bookstore-checkout-page {
+
+    // --- 1. ẨN HOÀN TOÀN LIÊN KẾT THANH TOÁN NHIỀU ĐỊA CHỈ ---
+    .checkout-types .action.multicheckout,
+    .cart-summary .action.multicheckout,
+    a[href*="multicheckout"],
+    .multicheckout {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    // --- 2. VIỆT HÓA BẢNG GIỎ HÀNG (MÁY TÍNH & DI ĐỘNG) ---
+    .table-wrapper.cart .cart.items {
+        // Việt hóa Header bảng trên Desktop
+        thead {
+            tr {
+                th.col.item span { font-size: 0 !important; &:before { content: "Sản phẩm" !important; font-size: 14px !important; } }
+                th.col.price span { font-size: 0 !important; &:before { content: "Giá" !important; font-size: 14px !important; } }
+                th.col.qty span { font-size: 0 !important; &:before { content: "Số lượng" !important; font-size: 14px !important; } }
+                th.col.subtotal span { font-size: 0 !important; &:before { content: "Tạm tính" !important; font-size: 14px !important; } }
+            }
+        }
+
+        // Việt hóa nhãn hiển thị Mobile (nếu có co màn hình)
+        tbody.item td {
+            &.col.price:before { content: "Giá:" !important; font-size: 13px !important; color: #64748b !important; }
+            &.col.qty:before { content: "Số lượng:" !important; font-size: 13px !important; color: #64748b !important; }
+            &.col.subtotal:before { content: "Tạm tính:" !important; font-size: 13px !important; color: #64748b !important; }
+        }
+    }
+
+    // --- 3. VIỆT HÓA KHỐI TÓM TẮT ĐƠN HÀNG (CART SUMMARY SIDEBAR) ---
+    .cart-summary {
+        .summary.title {
+            font-size: 0 !important;
+            &:before { content: "Tóm tắt đơn hàng" !important; font-size: 18px !important; }
+        }
+
+        // Nút tiến hành thanh toán chính
+        button.action.tocart.checkout,
+        button.action.primary.checkout,
+        .actions-toolbar .checkout span {
+            font-size: 0 !important;
+            &:before { content: "Tiến hành thanh toán" !important; font-size: 15px !important; font-weight: 600 !important; }
+        }
+
+        // Khối mã giảm giá (Discount Coupon)
+        .block.discount {
+            #block-discount-heading {
+                font-size: 0 !important;
+                &:before { content: "Áp dụng mã giảm giá" !important; font-size: 14px !important; font-weight: 600 !important; }
+            }
+            .action.apply span {
+                font-size: 0 !important;
+                &:before { content: "Áp dụng" !important; font-size: 13px !important; }
+            }
+        }
+    }
+
+    // --- 4. VIỆT HÓA CÁC PHÂN ĐOẠN ĐỘNG TRÊN TRANG THANH TOÁN (CHECKOUT PAGE) ---
+    
+    // Tiêu đề các bước tiến trình
+    .opc-progress-bar-item {
+        &:nth-child(1) span { font-size: 0 !important; &:before { content: "1. Địa chỉ giao hàng" !important; font-size: 14px !important; } }
+        &:nth-child(2) span { font-size: 0 !important; &:before { content: "2. Thanh toán & Đặt mua" !important; font-size: 14px !important; } }
+    }
+
+    // Các tiêu đề phân khu chính trong form nhập liệu
+    #shipping .step-title,
+    .checkout-shipping-address .step-title {
+        font-size: 0 !important;
+        &:before { content: "Thông tin giao hàng" !important; font-size: 18px !important; font-weight: 700 !important; }
+    }
+
+    #opc-shipping_method .step-title {
+        font-size: 0 !important;
+        &:before { content: "Phương thức vận chuyển" !important; font-size: 18px !important; font-weight: 700 !important; }
+    }
+
+    // Việt hóa bảng Tổng cộng ở Sidebar phải trang Checkout (Totals Layout)
+    .opc-block-summary {
+        .title {
+            font-size: 0 !important;
+            &:before { content: "Đơn hàng của bạn" !important; font-size: 16px !important; font-weight: 700 !important; }
+        }
+
+        .table-totals {
+            tr.row-subtotal th { font-size: 0 !important; &:before { content: "Tạm tính" !important; font-size: 14px !important; } }
+            tr.shipping th { font-size: 0 !important; &:before { content: "Phí vận chuyển" !important; font-size: 14px !important; } }
+            tr.grand-total th strong,
+            tr.grand.totals th strong { font-size: 0 !important; &:before { content: "Tổng tiền tổng cộng" !important; font-size: 15px !important; font-weight: 700 !important; } }
+        }
+
+        // Khối sản phẩm thu gọn trong giỏ (Items in Cart)
+        .block.items-in-cart {
+            > .title strong span:nth-child(1) {
+                font-size: 0 !important;
+                &:before { content: "Sản phẩm trong giỏ" !important; font-size: 14px !important; }
+            }
+            .action.showcart span {
+                font-size: 0 !important;
+                &:before { content: "Xem chi tiết" !important; font-size: 13px !important; }
+            }
+        }
+    }
+
+    // Nút Tiếp theo (Next) ở bước 1 giao hàng
+    button.action.continue.primary span {
+        font-size: 0 !important;
+        &:before { content: "Tiếp tục bước thanh toán" !important; font-size: 14px !important; }
+    }
+
+    // Nút Đặt hàng (Place Order) ở bước cuối cùng
+    button.action.submit.primary span {
+        font-size: 0 !important;
+        &:before { content: "Đặt hàng ngay" !important; font-size: 15px !important; font-weight: 700 !important; }
+    }
+}
+
+/* ==========================================================================
+   FIX LỖI CHECKOUT VÀ CONFIG PHƯƠNG THỨC THANH TOÁN NỘI ĐỊA (API BANK TRANSFER)
+   ========================================================================== */
+
+body.bookstore-checkout-page {
+    
+    // --- 1. SỬA LỖI VỠ LAYOUT PHÂN ĐOẠN THANH TOÁN (PAYMENT STEP) ---
+    .checkout-payment-method {
+        margin-top: 24px !important;
+
+        .step-title {
+            font-size: 0 !important;
+            border-bottom: 2px solid #e2e8f0 !important;
+            padding-bottom: 12px !important;
+            margin-bottom: 20px !important;
+            
+            &:before {
+                content: "3. Phương thức thanh toán" !important; // Định hình lại phân cấp bước
+                font-size: 18px !important;
+                font-weight: 700 !important;
+                color: #0f172a !important;
+            }
+        }
+    }
+
+    // --- 2. CONFIG BIẾN PHƯƠNG THỨC THANH TOÁN MẶC ĐỊNH THÀNH CHUYỂN KHOẢN API ---
+    // Khung bọc danh sách phương thức thanh toán
+    .payment-methods {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+        margin-top: 16px !important;
+    }
+
+    // Định dạng item phương thức thanh toán (Dạng Card bo góc phẳng mịn)
+    .payment-method {
+        background: #ffffff !important;
+        border: 1.5px solid #e2e8f0 !important;
+        border-radius: 10px !important;
+        padding: 16px 20px !important;
+        transition: all 0.2s ease !important;
+        position: relative !important;
+
+        &._active {
+            border-color: #0095ff !important;
+            background: rgba(0, 149, 255, 0.01) !important;
+            box-shadow: 0 4px 12px rgba(0, 149, 255, 0.05) !important;
+        }
+
+        // Ẩn nhãn chữ Tiếng Anh gốc (Check / Money order)
+        .payment-method-title {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            
+            input[type="radio"] {
+                accent-color: #0095ff !important;
+                width: 18px !important;
+                height: 18px !important;
+                margin: 0 !important;
+                cursor: pointer !important;
+            }
+
+            label.label span {
+                font-size: 0 !important; // Khử chữ gốc
+                
+                &:before {
+                    content: "Chuyển khoản Ngân hàng nội địa (Xác thực API tự động QR-Code)" !important;
+                    font-size: 15px !important;
+                    font-weight: 600 !important;
+                    color: #0f172a !important;
+                }
+            }
+        }
+
+        // Khối nội dung chi tiết nằm bên trong khi được chọn (Nơi hiển thị hướng dẫn)
+        .payment-method-content {
+            padding-top: 14px !important;
+            margin-top: 14px !important;
+            border-top: 1px dashed #e2e8f0 !important;
+
+            // Nút Thỏa thuận sử dụng nếu có
+            .checkout-agreements {
+                display: none !important; // Khử bỏ rác thỏa thuận rườm rà
+            }
+
+            // Tạo khung thông báo hướng dẫn chuyển khoản mượt mà
+            .payment-method-note {
+                background: #f8fafc !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 8px !important;
+                padding: 14px !important;
+                margin-bottom: 16px !important;
+                font-size: 13.5px !important;
+                line-height: 1.6 !important;
+                color: #475569 !important;
+                
+                span {
+                    font-size: 0 !important;
+                    &:before {
+                        content: "Hệ thống sẽ tự động tạo mã QR điền sẵn số tiền và nội dung chuyển khoản qua API ngay sau khi bạn bấm Đặt hàng. Đơn hàng sẽ được kích hoạt tự động sau 30 giây kể từ khi nhận tiền thành công." !important;
+                        font-size: 13.5px !important;
+                        color: #475569 !important;
+                    }
+                }
+            }
+
+            // Làm đẹp cho nút Đặt hàng (Place Order) nằm bên trong khối này
+            .actions-toolbar {
+                display: flex !important;
+                justify-content: flex-end !important;
+                margin: 0 !important;
+                padding: 0 !important;
+
+                .primary {
+                    width: auto !important;
+                    
+                    button.action.primary.submit {
+                        background: #0095ff !important;
+                        color: #ffffff !important;
+                        height: 46px !important;
+                        padding: 0 32px !important;
+                        border-radius: 8px !important;
+                        font-size: 15px !important;
+                        font-weight: 700 !important;
+                        border: none !important;
+                        box-shadow: 0 4px 10px rgba(0, 149, 255, 0.2) !important;
+                        transition: background 0.2s ease !important;
+
+                        &:hover {
+                            background: #0076cc !important;
+                            box-shadow: 0 6px 14px rgba(0, 118, 204, 0.3) !important;
+                        }
+
+                        span {
+                            font-size: 0 !important;
+                            &:before {
+                                content: "Xác nhận đặt hàng & Thanh toán" !important;
+                                font-size: 15px !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* ==========================================================================
+   TÁI CẤU TRÚC LAYOUT CHECKOUT & KHỬ LOGO / SỬA VỠ GIAO DIỆN TOÀN DIỆN
+   ========================================================================== */
+
+body.bookstore-checkout-page {
+    background-color: #f8fafc !important;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+
+    /* 1. KHỬ KHOẢNG TRỐNG HEADER SAU KHI ẨN LOGO MẶC ĐỊNH */
+    header.page-header {
+        border-bottom: 1px solid #e2e8f0 !important;
+        background: #ffffff !important;
+        padding: 15px 0 !important;
+        margin-bottom: 30px !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+        
+        /* Đảm bảo nếu có chữ hoặc thanh tiến trình cha thì căn giữa phẳng mịn */
+        .header.content {
+            max-width: 1200px !important;
+            margin: 0 auto !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+    }
+
+    /* 2. KHẮC PHỤC TRIỆT ĐỂ LỖI VỠ LAYOUT KHUNG CONTAINER CHÍNH */
+    .checkout-container {
+        max-width: 1100px !important;
+        margin: 0 auto !important;
+        padding: 0 16px 60px 16px !important;
+        display: block !important; /* Phá bỏ float cũ gây vỡ hàng */
+    }
+
+    /* Chia khung Trang Checkout thành cấu trúc 2 cột mượt mà (Trái: Form nhập liệu - Phải: Tóm tắt đơn hàng) */
+    .opc-wrapper {
+        width: 64% !important;
+        float: left !important;
+        padding-right: 30px !important;
+        box-sizing: border-box !important;
+    }
+
+    .opc-sidebar {
+        width: 36% !important;
+        float: right !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Reset float để không vỡ layout các khối phía dưới */
+    &:after {
+        content: "";
+        display: table !important;
+        clear: both !important;
+    }
+
+    /* 3. LÀM ĐẸP THANH TIẾN TRÌNH (PROGRESS BAR) CÁC BƯỚC THANH TOÁN */
+    .opc-progress-bar {
+        display: flex !important;
+        justify-content: space-between !important;
+        margin-bottom: 35px !important;
+        padding: 0 !important;
+        counter-reset: item;
+        border-bottom: 1px solid #e2e8f0 !important;
+        padding-bottom: 20px !important;
+
+        .opc-progress-bar-item {
+            flex: 1 !important;
+            text-align: center !important;
+            position: relative !important;
+            
+            span {
+                color: #94a3b8 !important;
+                font-weight: 500 !important;
+                font-size: 14px !important;
+                transition: color 0.3s ease !important;
+            }
+
+            &._active span {
+                color: #0095ff !important;
+                font-weight: 700 !important;
+            }
+
+            &._complete span {
+                color: #10b981 !important;
+            }
+        }
+    }
+
+    /* 4. CHUẨN HÓA CÁC KHỐI ĐIỀU HƯỚNG VÀ INPUT FORM KHÔNG BỊ PHÌNH TO / LỆCH VỊ TRÍ */
+    .step-title {
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        color: #0f172a !important;
+        margin-bottom: 20px !important;
+        padding-bottom: 8px !important;
+    }
+
+    .form-login, .form-shipping-address, .methods-shipping {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        padding: 24px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02) !important;
+        margin-bottom: 24px !important;
+    }
+
+    /* Cải thiện ô nhập liệu Form không bị méo lệch */
+    .field .control input[type="text"],
+    .field .control input[type="email"],
+    .field .control input[type="tel"],
+    .select {
+        width: 100% !important;
+        height: 42px !important;
+        border-radius: 6px !important;
+        border: 1.5px solid #cbd5e1 !important;
+        padding: 0 12px !important;
+        box-sizing: border-box !important;
+        
+        &:focus {
+            border-color: #0095ff !important;
+            box-shadow: 0 0 0 3px rgba(0, 149, 255, 0.1) !important;
+        }
+    }
+
+    /* 5. FIX ĐÁP ỨNG DI ĐỘNG (RESPONSIVE) - TỰ ĐỘNG CHUYỂN THÀNH 1 CỘT TRÊN MOBILE */
+    @media (max-width: 768px) {
+        .opc-wrapper, .opc-sidebar {
+            width: 100% !important;
+            float: none !important;
+            padding-right: 0 !important;
+        }
+        
+        .opc-sidebar {
+            margin-top: 24px !important;
+        }
+    }
 }

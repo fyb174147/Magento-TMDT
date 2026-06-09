@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <attribute name="class" value="account bookstore-account-custom"/>
 
+        <!-- Đổi tên các link điều hướng (giữ cấu trúc columns) -->
         <referenceBlock name="sidebar.main.account_nav">
             <arguments>
                 <argument name="block_title" xsi:type="string">Tài khoản</argument>
@@ -28,6 +29,8 @@
                 <argument name="label" xsi:type="string">Thông tin tài khoản</argument>
             </arguments>
         </referenceBlock>
+
+        <!-- Ẩn các link điều hướng thừa -->
         <referenceBlock name="customer-account-navigation-newsletter-subscriptions-link" remove="true"/>
         <referenceBlock name="customer-account-navigation-downloadable-products-link" remove="true"/>
         <referenceBlock name="customer-account-navigation-wish-list-link" remove="true"/>
@@ -36,5 +39,24 @@
         <referenceBlock name="customer-account-navigation-billing-agreements-link" remove="true"/>
         <referenceBlock name="customer-account-navigation-delimiter-1" remove="true"/>
         <referenceBlock name="customer-account-navigation-delimiter-2" remove="true"/>
+
+        <!-- ẨN TRIỆT ĐỂ WISHLIST & COMPARE PRODUCTS (chỉ áp dụng cho trang tài khoản) -->
+        <referenceBlock name="wishlist_sidebar" remove="true"/>
+        <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+        <referenceBlock name="customer.wishlist" remove="true"/>
+        <referenceBlock name="wishlist_index_index" remove="true"/>
+        <referenceBlock name="customer.wishlist.button" remove="true"/>
+        <referenceBlock name="catalog.compare.list" remove="true"/>
+        <referenceBlock name="catalog.product.related" remove="true"/>
+        <referenceBlock name="block-compare" remove="true"/>
+        <referenceBlock name="block-recently-viewed" remove="true"/>
+        <referenceBlock name="block-compared" remove="true"/>
+        <referenceBlock name="block-viewed" remove="true"/>
+        <referenceBlock name="compared.list" remove="true"/>
+        <referenceBlock name="recently.viewed.list" remove="true"/>
+        <referenceBlock name="customer.wishlist.item.configure" remove="true"/>
+        <referenceBlock name="catalog.compare.item.render" remove="true"/>
+        <referenceBlock name="customer_compare_list" remove="true"/>
+        <referenceBlock name="sale.reorder.sidebar" remove="true"/>
     </body>
 </page>

@@ -1,10 +1,25 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <css src="css/product-detail.css"/>
+        <css src="css/product-detail-new.css"/>
     </head>
     <body>
-        <referenceBlock name="reviews.tab" remove="true"/>
-        <referenceBlock name="product.reviews.form" remove="true"/>    
+        <!-- Remove all default product blocks -->
+        <referenceBlock name="page.main.title" remove="true" />
+        <referenceBlock name="product.info" remove="true" />
+        <referenceBlock name="product.info.main" remove="true" />
+        <referenceBlock name="product.info.media" remove="true" />
+        <referenceBlock name="product.info.details" remove="true" />
+        <referenceBlock name="product.info.review" remove="true" />
+        <referenceBlock name="reviews.tab" remove="true" />
+        <referenceBlock name="product.info.addto" remove="true" />
+        <referenceBlock name="product.info.overview" remove="true" />
+        <referenceBlock name="related" remove="true" />
+        <referenceBlock name="upsell" remove="true" />
+        <referenceBlock name="catalog.product.related" remove="true" />
+
+        <referenceContainer name="main.content">
+            <block class="Magento\Catalog\Block\Product\View" name="product.bookstore.view" template="Magento_Catalog::product/view.phtml" before="-"/>
+        </referenceContainer>
     </body>
 </page>

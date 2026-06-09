@@ -4,6 +4,7 @@
         <bookstore_utility>
             <weather>
                 <city>Hanoi,VN</city>
+                <api_key>c9c4654e318d58bec7e954b569a2bfe9</api_key>
             </weather>
         </bookstore_utility>
     </default>

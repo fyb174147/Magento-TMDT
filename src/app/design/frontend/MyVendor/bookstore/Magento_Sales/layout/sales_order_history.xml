@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+        <title>Lịch sử đơn hàng</title>
+        <css src="css/account-dashboard.css"/>
+    </head>
+    <body>
+        <attribute name="class" value="account bookstore-account-custom order-history-page"/>
+
+        <referenceBlock name="page.main.title" remove="true"/>
+
+        <referenceContainer name="content">
+            <!--
+            <block class="Magento\Framework\View\Element\Template"
+                   name="customer.order.hero"
+                   template="Magento_Theme::html/listing_hero.phtml"
+                   before="-">
+                <arguments>
+                    <argument name="eyebrow" xsi:type="string">Tài khoản BookStore</argument>
+                    <argument name="accent" xsi:type="string">#0095ff</argument>
+                    <argument name="title" xsi:type="string">Lịch sử đơn hàng</argument>
+                    <argument name="description" xsi:type="string">Theo dõi và quản lý tất cả đơn hàng đã mua tại BookStore.</argument>
+                </arguments>
+            </block>
+            -->
+            <block class="Magento\Sales\Block\Order\History" name="sales.order.history" cacheable="false">
+                <container name="sales.order.history.info" as="info" label="Order History Info"/>
+                <container name="sales.order.history.extra.column.header" as="extra.column.header" label="Order History Extra Column Header"/>
+                <block class="Magento\Sales\Block\Order\History\Container"
+                       name="sales.order.history.extra.container" as="extra.container">
+                    <block class="Magento\Framework\View\Element\Template"
+                        name="sales.order.history.extra.container.data" as="extra.container.data"/>
+                </block>
+            </block>
+            <block class="Magento\Customer\Block\Account\Dashboard" name="customer.account.link.back" template="Magento_Customer::account/link/back.phtml" cacheable="false"/>
+        </referenceContainer>
+    </body>
+</page>

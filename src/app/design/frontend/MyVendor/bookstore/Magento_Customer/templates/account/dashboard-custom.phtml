@@ -1,0 +1,83 @@
+<?php
+/** @var \Magento\Customer\Block\Account\Dashboard\Address $block */
+
+// Ép gọi ObjectManager an toàn để lấy dữ liệu nếu block hiện tại không phải lớp Address
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get('\Magento\Customer\Model\Session');
+$currentCustomer = $customerSession->getCustomer();
+
+$fullName = $currentCustomer->getFirstname() . ' ' . $currentCustomer->getLastname();
+$email = $currentCustomer->getEmail();
+
+// Khởi tạo block address phụ để lấy HTML địa chỉ chuẩn nếu cần
+$addressBlock = $block->getLayout()->createBlock(\Magento\Customer\Block\Account\Dashboard\Address::class);
+$billingAddressHtml = $addressBlock->getPrimaryBillingAddressHtml();
+$shippingAddressHtml = $addressBlock->getPrimaryShippingAddressHtml();
+?>
+
+<div class="bookstore-main-dashboard-wrapper">
+    <div class="account-page-main-title">
+        <h1>Thông tin cá nhân dashboard-custom</h1>
+    </div>
+
+    <div class="bookstore-unified-account-card">
+        <div class="bookstore-account-card-header">
+            <strong>Thông tin tài khoản tổng quan</strong>
+        </div>
+        
+        <div class="bookstore-account-card-grid grid-3-columns">
+            <div class="bookstore-grid-item">
+                <div class="card-item-header">
+                    <span class="account-card-label">Họ và tên</span>
+                    <a href="<?= $block->escapeUrl($block->getUrl('customer/account/edit')) ?>" class="action-edit-inline">Sửa</a>
+                </div>
+                <strong class="card-item-value"><?= $block->escapeHtml($fullName) ?></strong>
+            </div>
+
+            <div class="bookstore-grid-item">
+                <div class="card-item-header">
+                    <span class="account-card-label">Email đăng nhập</span>
+                    <a href="<?= $block->escapeUrl($block->getUrl('customer/account/edit')) ?>" class="action-edit-inline">Sửa</a>
+                </div>
+                <strong class="card-item-value"><?= $block->escapeHtml($email) ?></strong>
+            </div>
+
+            <div class="bookstore-grid-item">
+                <div class="card-item-header">
+                    <span class="account-card-label">Mật khẩu</span>
+                    <a href="<?= $block->escapeUrl($block->getUrl('customer/account/edit')) ?>?changepass=1" class="action-edit-inline">Đổi mật khẩu</a>
+                </div>
+                <strong class="card-item-value">••••••••••••</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="bookstore-unified-account-card" style="margin-top: 10px;">
+        <div class="bookstore-account-card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <strong>Địa chỉ mặc định</strong>
+            <a href="<?= $block->escapeUrl($block->getUrl('customer/address/')) ?>" class="action-edit-inline" style="font-size: 13px;">Quản lý địa chỉ</a>
+        </div>
+        
+        <div class="bookstore-account-card-grid grid-2-columns">
+            <div class="bookstore-grid-item">
+                <div class="card-item-header">
+                    <span class="account-card-label">Địa chỉ thanh toán mặc định</span>
+                    <a href="<?= $block->escapeUrl($addressBlock->getPrimaryBillingAddressEditUrl()) ?>" class="action-edit-inline">Sửa địa chỉ</a>
+                </div>
+                <div class="address-text-display">
+                    <?= $billingAddressHtml ? $billingAddressHtml : 'Chưa thiết lập địa chỉ thanh toán mặc định.' ?>
+                </div>
+            </div>
+
+            <div class="bookstore-grid-item">
+                <div class="card-item-header">
+                    <span class="account-card-label">Địa chỉ giao hàng mặc định</span>
+                    <a href="<?= $block->escapeUrl($addressBlock->getPrimaryShippingAddressEditUrl()) ?>" class="action-edit-inline">Sửa địa chỉ</a>
+                </div>
+                <div class="address-text-display">
+                    <?= $shippingAddressHtml ? $shippingAddressHtml : 'Chưa thiết lập địa chỉ giao hàng mặc định.' ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

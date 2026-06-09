@@ -45,3 +45,675 @@
         }
     }
 }
+
+// ==========================================================================
+// ĐẠI TU LAYOUT ĐỒNG BỘ 3 TRANG (TẤT CẢ SÁCH, SÁCH MỚI, KHUYẾN MÃI)
+// ==========================================================================
+
+.bookstore-listing-custom,
+.bookstore-cms-listing-custom {
+    
+    // 1. XÓA KHOẢNG TRẮNG ĐẦU TRANG & TIÊU ĐỀ THỪA
+    .page-main, #maincontent, .columns, .column.main {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    .page-title-wrapper, .page.messages {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    // 2. KHÓA CHẶT LAYOUT 2 CỘT HÀNG NGANG
+    .catalog-search-container {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        gap: 28px !important;
+    }
+
+    // Cột Sidebar (Bộ lọc) - 25%
+    .sidebar.sidebar-main {
+        flex: 0 0 25% !important;
+        width: 25% !important;
+        max-width: 280px !important;
+        min-width: 240px !important;
+        display: block !important;
+        
+        .filter-sidebar {
+            background: #fff;
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+    }
+
+    // Cột Kết quả Sách - 75%
+    .search-results-content {
+        flex: 1 1 72% !important;
+        width: 72% !important;
+        min-width: 0 !important; // Chống tràn vỡ Grid
+        display: block !important;
+    }
+
+    // 3. ÉP LƯỚI SẢN PHẨM 3 CỘT TUYỆT ĐỐI KHÔNG BỊ BÓP DỌC
+    .product-items, .products-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 24px !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        list-style: none !important;
+        float: none !important;
+    }
+
+    // Cấu trúc Card thẻ sách thống nhất
+    .product-item {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        background: #fff !important;
+        border: 2px solid var(--primary) !important;
+        border-radius: 16px !important;
+        padding: 16px !important;
+        box-sizing: border-box !important;
+        
+        .product-item-info { display: flex; flex-direction: column; height: 100%; }
+        .product-item-name { min-height: 44px; margin-bottom: 8px; font-weight: 700;}
+        .price-box { min-height: 40px; margin-bottom: 12px; }
+        
+        .product-photo-container, .product-image-container {
+            width: 100% !important;
+            aspect-ratio: 3 / 4 !important;
+            overflow: hidden !important;
+            border-radius: 12px !important;
+            background: #f8fafc !important;
+            img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+        }
+        
+        .action.tocart {
+            width: 100% !important;
+            height: 40px !important;
+            border-radius: 8px !important;
+            font-weight: 800 !important;
+        }
+    }
+}
+
+// 4. TỰ ĐỘNG NHUỘM MÀU (CAM / XANH LÁ)
+.cms-new-books {
+    .filter-sidebar, .product-item { border-color: #10b981 !important; }
+    .action.tocart { background: #10b981 !important; color: #fff !important; border: none !important;}
+}
+
+.cms-promotions {
+    .filter-sidebar, .product-item { border-color: #ff4d00 !important; }
+    .action.tocart { background: #ff4d00 !important; color: #fff !important; border: none !important;}
+}
+
+// Responsive
+@media only screen and (max-width: 900px) {
+    .bookstore-listing-custom .catalog-search-container,
+    .bookstore-cms-listing-custom .catalog-search-container {
+        flex-direction: column !important;
+    }
+    .sidebar.sidebar-main, .search-results-content { width: 100% !important; flex: none !important; }
+    .product-items, .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+
+// ==========================================================================
+// FIX DỨT ĐIỂM LAYOUT, CĂN GIỮA, MÀU SẮC & KHOẢNG TRẮNG ĐẦU TRANG
+// ==========================================================================
+
+.bookstore-listing-custom,
+.bookstore-cms-listing-custom {
+    
+    // 1. XÓA KHOẢNG TRẮNG & CĂN GIỮA TOÀN TRANG
+    .columns, .column.main, .page-main, #maincontent {
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+        display: block !important;
+        width: 100% !important;
+    }
+
+    .page-title-wrapper, .page.messages {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    // 2. ẨN TEXT "SÁCH MỚI", "KHUYẾN MÃI" BỊ DƯ THỪA TRONG WIDGET
+    .block-new-products .block-title,
+    .block-products-list .block-title,
+    .widget-title {
+        display: none !important;
+    }
+
+    // 3. LAYOUT 2 CỘT
+    .catalog-search-container {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important; // Căn trái giống trang Tất cả sách
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        gap: 28px !important;
+    }
+
+    .sidebar.sidebar-main {
+        flex: 0 0 25% !important;
+        width: 25% !important;
+        max-width: 280px !important;
+        min-width: 240px !important;
+        .filter-sidebar {
+            background: #fff;
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+    }
+
+    .search-results-content {
+        flex: 1 1 72% !important;
+        width: 72% !important;
+        min-width: 0 !important;
+    }
+
+    // 4. LƯỚI SẢN PHẨM & TỈ LỆ 3:4 CHUẨN
+    .product-items-custom-list, .products-grid, .product-items {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 24px !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        list-style: none !important;
+    }
+
+    .product-item {
+        background: #fff !important;
+        border: 2px solid var(--primary) !important;
+        border-radius: 16px !important;
+        padding: 16px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        min-width: 0 !important;
+
+        .product-item-info { display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
+        .product-item-details { display: flex; flex-direction: column; flex: 1; padding-top: 12px; }
+        .product-item-name { min-height: 44px; margin-bottom: 8px; font-weight: 700; a { color: var(--text-main); text-decoration: none; } }
+        
+        // Sửa bounding box ảnh thành 3:4 (chuẩn, không béo)
+        .product-photo-container {
+            width: 100% !important;
+            aspect-ratio: 3 / 4 !important;
+            overflow: hidden !important;
+            border-radius: 12px !important;
+            background: #f8fafc !important;
+            img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+        }
+
+        .action.tocart {
+            width: 100% !important;
+            height: 42px !important;
+            border-radius: 10px !important;
+            background: var(--primary) !important;
+            color: #fff !important;
+            border: none !important;
+            font-weight: 800 !important;
+            cursor: pointer;
+            margin-top: auto;
+        }
+    }
+
+    // 5. THANH PHÂN TRANG (DƯỚI CÙNG, CÓ KẺ VIỀN CHIA TÁCH)
+    .bookstore-pagination {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-top: 40px !important;
+        padding-top: 24px !important;
+        border-top: 1px solid var(--border) !important;
+        clear: both !important;
+        
+        .bookstore-page-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .bookstore-page-link {
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 10px;
+            background: #fff; border: 2px solid var(--primary);
+            color: var(--primary); font-weight: 900; font-size: 18px;
+            text-decoration: none; transition: var(--transition);
+            &:hover:not(.is-disabled) { background: var(--primary); color: #fff; }
+            &.is-disabled { border-color: #e2e8f0; color: #94a3b8; opacity: 0.6; pointer-events: none; }
+        }
+    }
+}
+
+// 6. NHUỘM MÀU TRỰC TIẾP (BẰNG CLASS XML WRAPPER)
+.catalog-search-container.theme-green {
+    .filter-sidebar, .product-item { border-color: #10b981 !important; }
+    .action.tocart { background: #10b981 !important; }
+    .bookstore-page-link { border-color: #10b981 !important; color: #10b981 !important; }
+    .bookstore-page-link:hover:not(.is-disabled) { background: #10b981 !important; color: #fff !important; }
+}
+
+.catalog-search-container.theme-orange {
+    .filter-sidebar, .product-item { border-color: #ff4d00 !important; }
+    .action.tocart { background: #ff4d00 !important; }
+    .bookstore-page-link { border-color: #ff4d00 !important; color: #ff4d00 !important; }
+    .bookstore-page-link:hover:not(.is-disabled) { background: #ff4d00 !important; color: #fff !important; }
+}
+
+// Responsive
+@media only screen and (max-width: 900px) {
+    .bookstore-listing-custom .catalog-search-container,
+    .bookstore-cms-listing-custom .catalog-search-container {
+        flex-direction: column !important;
+    }
+    .sidebar.sidebar-main, .search-results-content { width: 100% !important; flex: none !important; }
+    .product-items-custom-list, .product-items, .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+
+// ==========================================================================
+// ĐẠI TU: XÓA KHOẢNG TRẮNG, CĂN GIỮA PHÂN TRANG & NHUỘM MÀU TRANG CMS
+// ==========================================================================
+
+// 1. XÓA KHOẢNG TRẮNG & ẨN TIÊU ĐỀ THỪA
+.bookstore-listing-custom,
+.bookstore-cms-listing-custom {
+    .page-main, #maincontent {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    .page-title-wrapper, .page.messages {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+}
+
+// 2. CĂN GIỮA THANH PHÂN TRANG CHO ĐẸP NHƯ TRANG TẤT CẢ SÁCH
+.bookstore-pagination {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 20px;
+    width: 100%;
+    margin-top: 30px !important;
+    padding-top: 20px !important;
+    border-top: 1px solid var(--border);
+    clear: both;
+    
+    .bookstore-page-actions {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .bookstore-page-link {
+        display: flex; align-items: center; justify-content: center;
+        width: 40px; height: 40px; border-radius: 10px;
+        background: #fff; border: 2px solid var(--primary);
+        color: var(--primary); font-weight: 900; font-size: 16px;
+        text-decoration: none; transition: var(--transition);
+        &:hover:not(.is-disabled) { background: var(--primary); color: #fff; }
+        &.is-disabled { border-color: #e2e8f0; color: #94a3b8; opacity: 0.6; pointer-events: none; }
+    }
+}
+
+// 3. TỰ ĐỘNG NHUỘM MÀU (DỰA TRÊN CLASS BODY)
+// Nhuộm viền Xanh Lá cho Sách mới
+.cms-new-books {
+    .filter-sidebar, .product-item { border-color: #10b981 !important; }
+    .action.tocart { background: #10b981 !important; border: none !important; color: #fff !important; }
+    .bookstore-page-link { border-color: #10b981 !important; color: #10b981 !important; }
+    .bookstore-page-link:hover:not(.is-disabled) { background: #10b981 !important; color: #fff !important; }
+}
+
+// Nhuộm viền Cam cho Khuyến mãi
+.cms-promotions {
+    .filter-sidebar, .product-item { border-color: #ff4d00 !important; }
+    .action.tocart { background: #ff4d00 !important; border: none !important; color: #fff !important; }
+    .bookstore-page-link { border-color: #ff4d00 !important; color: #ff4d00 !important; }
+    .bookstore-page-link:hover:not(.is-disabled) { background: #ff4d00 !important; color: #fff !important; }
+}
+
+// ==========================================================================
+// TRIỆT TIÊU KHOẢNG TRẮNG TÀNG HÌNH CỦA WIDGET & PAGE BUILDER
+// ==========================================================================
+
+.cms-new-books, .cms-promotions, .bookstore-listing-custom {
+    .search-results-content {
+        // Đẩy phần khung kết quả lên sát trên
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+
+        // Triệt tiêu margin của WIDGET
+        .block.widget {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        // Triệt tiêu margin của PAGE BUILDER (Nếu Magento đang dùng)
+        .pagebuilder-column-group,
+        .pagebuilder-column,
+        .pagebuilder-html-block {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        // Triệt tiêu mọi margin thừa của div bọc ngoài widget
+        > div, > .block, > .cms-content, > .widget {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+
+        // Triệt tiêu các thẻ p rỗng
+        p:empty, .empty-paragraph {
+            display: none !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    }
+}
+
+// ==========================================================================
+// TRIỆT TIÊU KHOẢNG TRẮNG GIỮA HERO VÀ CONTENT TRÊN CẢ 3 TRANG
+// ==========================================================================
+
+.bookstore-listing-custom,
+.bookstore-cms-listing-custom,
+.cms-new-books,
+.cms-promotions {
+    // Khử margin/padding của block Magento chứa hero
+    > .block,
+    .block.hero-block,
+    .block.new.books.listing.hero,
+    .block.promo.listing.hero,
+    .block.shop.listing.hero {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    // Khử margin/padding cho chính hero
+    .bookstore-listing-hero,
+    .bookstore-cms-hero {
+        margin-bottom: 8px !important;
+        padding-bottom: 0 !important;
+    }
+
+    // Đẩy catalog-search-container lên sát hero
+    .catalog-search-container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+}
+
+// ==========================================================================
+// ĐỒNG BỘ MÀU SẮC CHI TIẾT CHO THANH BỘ LỌC (SIDEBAR)
+// ==========================================================================
+
+// 1. NHUỘM XANH LÁ CHO TRANG SÁCH MỚI
+.cms-new-books {
+    // Viền bao quanh bộ lọc
+    .sidebar.sidebar-main .block.filter { 
+        border: 2px solid #10b981 !important; 
+        border-radius: 12px !important;
+        padding: 20px !important;
+        background: #fff !important;
+    }
+    
+    // Nút "Áp dụng"
+    .sidebar.sidebar-main .action.primary {
+        background: #10b981 !important;
+        border-color: #10b981 !important;
+        color: #fff !important;
+        border-radius: 8px !important;
+    }
+    .sidebar.sidebar-main .action.primary:hover { background: #059669 !important; }
+
+    // Thanh trượt giá (Price Slider)
+    .ui-slider .ui-slider-range { background: #10b981 !important; }
+    .ui-slider .ui-slider-handle { border: 4px solid #10b981 !important; }
+    
+    // Checkbox / Radio button (Nếu có)
+    input[type="radio"]:checked + label::before,
+    input[type="checkbox"]:checked + label::before {
+        border-color: #10b981 !important;
+        background-color: #10b981 !important;
+    }
+}
+
+// 2. NHUỘM CAM CHO TRANG KHUYẾN MÃI
+.cms-promotions {
+    // Viền bao quanh bộ lọc
+    .sidebar.sidebar-main .block.filter { 
+        border: 2px solid #ff4d00 !important; 
+        border-radius: 12px !important;
+        padding: 20px !important;
+        background: #fff !important;
+    }
+    
+    // Nút "Áp dụng"
+    .sidebar.sidebar-main .action.primary {
+        background: #ff4d00 !important;
+        border-color: #ff4d00 !important;
+        color: #fff !important;
+        border-radius: 8px !important;
+    }
+    .sidebar.sidebar-main .action.primary:hover { background: #e04400 !important; }
+
+    // Thanh trượt giá (Price Slider)
+    .ui-slider .ui-slider-range { background: #ff4d00 !important; }
+    .ui-slider .ui-slider-handle { border: 4px solid #ff4d00 !important; }
+
+    // Checkbox / Radio button (Nếu có)
+    input[type="radio"]:checked + label::before,
+    input[type="checkbox"]:checked + label::before {
+        border-color: #ff4d00 !important;
+        background-color: #ff4d00 !important;
+    }
+}
+
+// ==========================================================================
+// THIẾT QUÂN LUẬT: DỌN DẸP TOÀN DIỆN DIỆN MẠO TRƯỚC DEADLINE
+// ==========================================================================
+
+// 1. TRIỆT TIÊU KHOẢNG TRẮNG ĐẦU TRANG (Áp dụng: Sách mới, Khuyến mãi, Tìm kiếm)
+.cms-new-books, .cms-promotions, .catalogsearch-result-index {
+    .page-main, #maincontent, .columns {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    .page-title-wrapper, .breadcrumbs, .page.messages {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    // Ép khối container dịch lên sát đỉnh
+    .catalog-search-container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+}
+
+// 2. ẨN HOÀN TOÀN SỐ ĐẾM TĨNH SAI (COI NHƯ TÍNH NĂNG PHÁT TRIỂN SAU)
+.cms-new-books, .cms-promotions {
+    .sidebar.sidebar-main label, .sidebar.sidebar-main a {
+        // Ẩn các thẻ span chứa số đếm do module AJAX tự sinh
+        .count, .filter-count { 
+            display: none !important; 
+        }
+    }
+}
+
+// 3. ĐỒNG BỘ MÀU CUSTOM CHO THANH LỌC (SIDEBAR)
+// Nhuộm màu Xanh Lá cho trang Sách mới
+.cms-new-books {
+    .filter-sidebar, .block.filter { border-color: #10b981 !important; }
+    .filter-options-title { color: #10b981 !important; }
+    .sidebar.sidebar-main .action.primary { background: #10b981 !important; border-color: #10b981 !important; }
+    .ui-slider .ui-slider-range { background: #10b981 !important; }
+    .ui-slider .ui-slider-handle { border-color: #10b981 !important; }
+}
+
+// Nhuộm màu Cam cho trang Khuyến mãi
+.cms-promotions {
+    .filter-sidebar, .block.filter { border-color: #ff4d00 !important; }
+    .filter-options-title { color: #ff4d00 !important; }
+    .sidebar.sidebar-main .action.primary { background: #ff4d00 !important; border-color: #ff4d00 !important; }
+    .ui-slider .ui-slider-range { background: #ff4d00 !important; }
+    .ui-slider .ui-slider-handle { border-color: #ff4d00 !important; }
+}
+
+// ==========================================================================
+// FIX DỨT ĐIỂM LAYOUT, CĂN GIỮA, MÀU SẮC & KHOẢNG TRẮNG ĐẦU TRANG
+// Áp dụng đồng bộ: Tất cả sách, Sách mới, Khuyến mãi, Tìm kiếm
+// ==========================================================================
+
+.bookstore-listing-custom,
+.bookstore-cms-listing-custom,
+.catalogsearch-custom { // <--- Thêm class này để áp dụng cho trang tìm kiếm
+    
+    // 1. XÓA KHOẢNG TRẮNG & CĂN GIỮA TOÀN TRANG
+    .columns, .column.main, .page-main, #maincontent {
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+        width: 100% !important;
+    }
+
+    .page-title-wrapper, .page.messages {
+        display: none !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    // 2. ẨN TEXT TIÊU ĐỀ THỪA TRONG CÁC WIDGET
+    .block-new-products .block-title,
+    .block-products-list .block-title,
+    .widget-title {
+        display: none !important;
+    }
+
+    // 3. LAYOUT 2 CỘT HÀNG NGANG (ĐÃ FIX LỖI BLOCK)
+    .catalog-search-container,
+    &.catalogsearch-custom .columns { // Ép cấu trúc trang tìm kiếm native chạy flex
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        gap: 28px !important;
+    }
+
+    // Định dạng cột Sidebar Bộ Lọc bên trái chiếm 25%
+    .sidebar.sidebar-main {
+        flex: 0 0 25% !important;
+        width: 25% !important;
+        max-width: 280px !important;
+        min-width: 240px !important;
+        display: block !important;
+        float: none !important;
+        
+        .filter-sidebar, .block.filter {
+            background: #fff;
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+    }
+
+    // Định dạng cột lưới sách bên phải chiếm 72%
+    .search-results-content,
+    &.catalogsearch-custom .column.main {
+        flex: 1 1 72% !important;
+        width: 72% !important;
+        min-width: 0 !important;
+        display: block !important;
+        float: none !important;
+    }
+
+    // 4. LƯỚI SẢN PHẨM 3 CỘT TUYỆT ĐỐI CHO TRANG TÌM KIẾM VÀ CÁC TRANG CMS
+    .product-items-custom-list, .products-grid, .product-items, .products.list.items {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 24px !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        list-style: none !important;
+        float: none !important;
+    }
+
+    // Cấu trúc thẻ Card Sách chuẩn tỉ lệ
+    .product-item {
+        background: #fff !important;
+        border: 2px solid var(--primary) !important;
+        border-radius: 16px !important;
+        padding: 16px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        min-width: 0 !important;
+
+        .product-item-info { display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
+        .product-item-details { display: flex; flex-direction: column; flex: 1; padding-top: 12px; }
+        .product-item-name { min-height: 44px; margin-bottom: 8px; font-weight: 700; a { color: var(--text-main); text-decoration: none; } }
+        
+        // Ảnh tỉ lệ hình chữ nhật đứng 3:4 không lo béo, méo ảnh
+        .product-photo-container, .product-image-container {
+            width: 100% !important;
+            aspect-ratio: 3 / 4 !important;
+            overflow: hidden !important;
+            border-radius: 12px !important;
+            background: #f8fafc !important;
+            img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+        }
+
+        .action.tocart {
+            width: 100% !important;
+            height: 42px !important;
+            border-radius: 10px !important;
+            background: var(--primary) !important;
+            color: #fff !important;
+            border: none !important;
+            font-weight: 800 !important;
+            cursor: pointer;
+            margin-top: auto;
+        }
+    }
+}
+
+// Giữ nguyên đoạn code nhuộm màu sắc (.theme-green, .theme-orange, .cms-new-books, .cms-promotions...) ở cuối file của bạn

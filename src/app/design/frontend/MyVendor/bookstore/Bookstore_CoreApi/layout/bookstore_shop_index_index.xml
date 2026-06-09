@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="css/shop-custom.css"/>
+    </head>
     <body>
         <attribute name="class" value="bookstore-listing-custom"/>
 
@@ -12,6 +15,15 @@
         <referenceBlock name="product_list_toolbar" remove="true" />
 
         <referenceContainer name="main.content">
+            <block class="Magento\Framework\View\Element\Template" name="shop.listing.hero" template="Magento_Theme::html/listing_hero.phtml" before="-">
+                <arguments>
+                    <argument name="eyebrow" xsi:type="string">BookStore Network</argument>
+                    <argument name="accent" xsi:type="string">#0095ff</argument>
+                    <argument name="title" xsi:type="string">Tất cả sách</argument>
+                    <argument name="description" xsi:type="string">Toàn bộ sách hiện có của Bookstore.</argument>
+                </arguments>
+            </block>
+
             <container name="bookstore.listing.container" label="All Books Container" htmlTag="div" htmlClass="catalog-search-container">
                 <container name="bookstore.listing.sidebar" label="All Books Sidebar" htmlTag="aside" htmlClass="sidebar sidebar-main">
                     <block class="Magento\Framework\View\Element\Template" name="shop.filters" template="Magento_CatalogSearch::filter.phtml"/>

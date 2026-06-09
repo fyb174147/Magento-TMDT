@@ -6,7 +6,7 @@ define([
     return function (config, element) {
         // Hàm mở Modal Đăng nhập
         window.openModal = function(view) { 
-            $('#authModal').addClass('active'); // Dùng class thay vì .css('display')
+            $('#authModal').addClass('active');
             if (typeof window.switchAuth === 'function') {
                 window.switchAuth(view);
             }
@@ -16,11 +16,11 @@ define([
             $('#authModal').removeClass('active'); 
         };
 
-        // Hàm mở/đóng Giỏ hàng - Class phải là 'active' để khớp với CSS
+        // Hàm mở/đóng Giỏ hàng
         window.toggleCart = function(open) { 
             if (open) {
                 $('#cart-sidebar').addClass('active');
-                $('body').addClass('_has-modal'); // Chống cuộn trang
+                $('body').addClass('_has-modal');
             } else {
                 $('#cart-sidebar').removeClass('active');
                 $('body').removeClass('_has-modal');

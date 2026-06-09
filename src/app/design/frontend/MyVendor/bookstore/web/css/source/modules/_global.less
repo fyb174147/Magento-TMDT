@@ -7,11 +7,19 @@
     display: none !important;
 }
 
-// Ép toàn bộ khung nội dung phải giãn rộng theo container chuẩn
-.page-main, .columns, .main, .block-content {
+// Giải phóng .columns để các cấu trúc con tự quyết định Flexbox/Grid
+.page-main, .main, .block-content {
     .container-center();
     display: block !important;
     clear: both;
+}
+
+// Riêng lớp .columns bọc trang phải để tự do, thu hẹp khoảng cách lên đỉnh
+.columns {
+    .container-center();
+    clear: both;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
 }
 
 header {
@@ -20,6 +28,7 @@ header {
     padding: 15px 0;
     margin-bottom: 30px;
 }
+// Các đoạn code table giữ nguyên phía dưới...
 
 footer {
     background: var(--bg-surface);

@@ -3,4 +3,25 @@
     <head>
         <css src="css/new-books-custom.css"/>
     </head>
+    <body>
+        <attribute name="class" value="cms-new-books bookstore-cms-listing-custom"/>
+        <referenceBlock name="page.main.title" remove="true"/>
+        <referenceContainer name="main.content">
+            <block class="Magento\Framework\View\Element\Template" name="new.books.listing.hero" template="Magento_Theme::html/listing_hero.phtml" before="-">
+                <arguments>
+                    <argument name="eyebrow" xsi:type="string">BookStore Network</argument>
+                    <argument name="accent" xsi:type="string">#10b981</argument>
+                    <argument name="title" xsi:type="string">Sách mới</argument>
+                    <argument name="description" xsi:type="string">Những đầu sách vừa cập bến, được cập nhật để bạn bắt kịp lựa chọn mới nhất.</argument>
+                </arguments>
+            </block>
+            <container name="cms.layout.container" htmlTag="div" htmlClass="catalog-search-container theme-green">
+                <container name="cms.layout.sidebar" htmlTag="aside" htmlClass="sidebar sidebar-main">
+                    <block class="Magento\Framework\View\Element\Template" name="cms.dummy.filters" template="Magento_CatalogSearch::filter.phtml"/>
+                </container>
+                <container name="cms.layout.results" htmlTag="div" htmlClass="search-results-content" />
+            </container>
+        </referenceContainer>
+        <move element="cms_page" destination="cms.layout.results"/>
+    </body>
 </page>

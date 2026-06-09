@@ -67,3 +67,11 @@ footer .footer-col ul {
     padding: 0;
     margin: 0;
 }
+
+/* Khắc phục khoảng trắng lớn đầu trang của trang Tất cả sách (Shop Index) */
+.catalog-category-view .page-main,
+.bookstore-shop-index-index .page-main,
+.shop-index-index .page-main {
+    padding-top: 0 !important;
+    margin-top: 10px !important;
+}

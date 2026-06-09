@@ -3,4 +3,25 @@
     <head>
         <css src="css/promotions-custom.css"/>
     </head>
+    <body>
+        <attribute name="class" value="cms-promotions bookstore-cms-listing-custom"/>
+        <referenceBlock name="page.main.title" remove="true"/>
+        <referenceContainer name="main.content">
+            <block class="Magento\Framework\View\Element\Template" name="promo.listing.hero" template="Magento_Theme::html/listing_hero.phtml" before="-">
+                <arguments>
+                    <argument name="eyebrow" xsi:type="string">BookStore Network</argument>
+                    <argument name="accent" xsi:type="string">#ff4d00</argument>
+                    <argument name="title" xsi:type="string">Khuyến mãi</argument>
+                    <argument name="description" xsi:type="string">Tổng hợp các đầu sách đang có giá tốt và ưu đãi nổi bật trong cửa hàng.</argument>
+                </arguments>
+            </block>
+            <container name="cms.promo.layout.container" htmlTag="div" htmlClass="catalog-search-container theme-orange">
+                <container name="cms.promo.layout.sidebar" htmlTag="aside" htmlClass="sidebar sidebar-main">
+                    <block class="Magento\Framework\View\Element\Template" name="promo.dummy.filters" template="Magento_CatalogSearch::filter.phtml"/>
+                </container>
+                <container name="cms.promo.layout.results" htmlTag="div" htmlClass="search-results-content" />
+            </container>
+        </referenceContainer>
+        <move element="cms_page" destination="cms.promo.layout.results"/>
+    </body>
 </page>

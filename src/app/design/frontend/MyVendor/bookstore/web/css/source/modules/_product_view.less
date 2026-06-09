@@ -1,0 +1,136 @@
+// ==========================================================================
+// TỐI ƯU TRANG THÔNG TIN SÁCH CHUẨN ĐỒ ÁN - ĐỒNG BỘ 100% PHONG CÁCH
+// ==========================================================================
+
+.catalog-product-view {
+    // 1. Dọn sạch khoảng trắng đầu trang
+    .page-main { padding-top: 0 !important; margin-top: 0 !important; }
+    
+    // 2. Định dạng cột chứa ảnh sách (Bên trái)
+    .sidebar-main.filter-sidebar {
+        border: 2px solid var(--primary) !important;
+        border-radius: 18px !important;
+        padding: 24px !important;
+        background: #ffffff !important;
+        box-shadow: 0 10px 24px rgba(0, 149, 255, 0.05) !important;
+        box-sizing: border-box !important;
+
+        .product-image-container { width: 100% !important; height: auto !important; }
+        .fotorama__stage { border-radius: 12px !important; overflow: hidden !important; background: #f8fafc !important; }
+    }
+
+    // 3. Định dạng cột chứa thông tin mua hàng (Bên phải)
+    .search-results-content {
+        // Tên sách (Tiêu đề lớn)
+        .page-title {
+            font-size: 32px !important;
+            font-weight: 900 !important;
+            color: var(--text-main) !important;
+            margin: 0 0 16px 0 !important;
+        }
+
+        // Khối thông tin giá cả, số lượng, nút mua hàng
+        .product-info-main {
+            border: 2px solid var(--primary) !important;
+            border-radius: 18px !important;
+            padding: 28px !important;
+            background: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(0, 149, 255, 0.06) !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+
+            // Chữ tình trạng hàng hóa
+            .stock.available span {
+                font-weight: 800 !important;
+                color: #10b981 !important; // Màu xanh lá cho IN STOCK
+                &::after { content: " TẠI KHO" !important; } // Việt hóa text ngầm
+            }
+            .sku .type { font-weight: 800 !important; &::after { content: " mã:" !important; display:none;} }
+
+            // Hộp chứa giá tiền
+            .price-box {
+                margin: 20px 0 !important;
+                padding: 14px 0 !important;
+                border-top: 1px dashed var(--border) !important;
+                border-bottom: 1px dashed var(--border) !important;
+
+                .price { font-size: 30px !important; font-weight: 900 !important; color: #ef4444 !important; }
+                .old-price .price { font-size: 16px !important; color: var(--text-sub) !important; text-decoration: line-through !important; }
+            }
+
+            // Ô nhập số lượng sách (Qty)
+            .field.qty {
+                display: flex !important;
+                align-items: center !important;
+                gap: 12px !important;
+                margin-bottom: 20px !important;
+                
+                .label span {
+                    font-weight: 800 !important;
+                    color: var(--text-main) !important;
+                    font-size: 15px !important;
+                    visibility: hidden !important; // Giấu chữ Qty tiếng Anh
+                    position: relative;
+                    &::before { content: "Số lượng:" !important; visibility: visible !important; position: absolute; left: 0; top: 0; white-space: nowrap; }
+                }
+                
+                .control input.qty {
+                    height: 42px !important; width: 65px !important; text-align: center !important;
+                    border-radius: 8px !important; border: 2px solid var(--border) !important;
+                    font-weight: 900 !important; font-size: 15px !important; color: var(--text-main) !important;
+                }
+            }
+
+            // Nút bấm Add to Cart khổng lồ màu xanh thương hiệu
+            .actions .action.tocart {
+                width: 100% !important; max-width: 280px !important; height: 46px !important;
+                background: var(--primary) !important; color: #ffffff !important;
+                border-radius: 10px !important; border: none !important;
+                font-size: 15px !important; font-weight: 900 !important;
+                box-shadow: 0 4px 14px rgba(0, 149, 255, 0.2) !important;
+                transition: var(--transition) !important;
+                cursor: pointer !important;
+
+                span {
+                    visibility: hidden !important; position: relative;
+                    &::before { content: "Thêm vào giỏ hàng" !important; visibility: visible !important; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); white-space: nowrap; }
+                }
+                &:hover { background: var(--primary-hover) !important; transform: translateY(-1px) !important; }
+            }
+        }
+
+        // 4. Khối mô tả chi tiết / Thông số sách nằm ở dưới cùng
+        .product.info.detailed {
+            margin-top: 28px !important;
+            border: 2px solid var(--border) !important;
+            border-radius: 18px !important;
+            padding: 24px !important;
+            background: #ffffff !important;
+            box-sizing: border-box !important;
+            
+            .data.items > .item.title {
+                border: none !important; background: var(--bg-surface) !important;
+                padding: 10px 20px !important; border-radius: 8px 8px 0 0 !important;
+                margin-right: 4px !important;
+                
+                &.active {
+                    background: var(--primary) !important;
+                    a { color: #ffffff !important; font-weight: 900 !important; }
+                }
+                a { color: var(--text-main) !important; font-weight: 800 !important; text-decoration: none !important; font-size: 14px !important; }
+                
+                // Việt hóa tiêu đề Tab Mô tả mặc định
+                #tab-label-description-title {
+                    visibility: hidden !important; position: relative;
+                    &::before { content: "Mô tả chi tiết sản phẩm" !important; visibility: visible !important; position: absolute; left: 0; top: 0; white-space: nowrap; }
+                }
+            }
+            
+            .data.items > .item.content {
+                border: 1px solid var(--border) !important; padding: 20px !important;
+                border-radius: 0 12px 12px 12px !important; margin-top: -1px !important;
+                font-size: 14px !important; color: var(--text-main) !important; line-height: 1.6 !important;
+            }
+        }
+    }
+}

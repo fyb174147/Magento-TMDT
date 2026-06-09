@@ -1,8 +1,31 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-right" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Giỏ hàng</title>
+        <css src="css/cart-custom.css"/>
+    </head>
     <body>
+        <attribute name="class" value="bookstore-cart-page"/>
+
+        <referenceBlock name="page.main.title" remove="true"/>
+        <!--
+        <referenceContainer name="head.additional">
+            <block class="Magento\Framework\View\Element\Template" name="login.redirect.script" 
+                   template="Magento_Theme::html/cart_login_check.phtml"/>
+        </referenceContainer>
+        -->
         <referenceContainer name="content">
-            <block class="Magento\Framework\View\Element\Template" name="login.redirect.script" template="Magento_Theme::html/cart_login_check.phtml" before="-"/>
+            <block class="Magento\Framework\View\Element\Template"
+                   name="cart.page.hero"
+                   template="Magento_Theme::html/listing_hero.phtml"
+                   before="-">
+                <arguments>
+                    <argument name="eyebrow" xsi:type="string">BookStore</argument>
+                    <argument name="accent" xsi:type="string">#0095ff</argument>
+                    <argument name="title" xsi:type="string">Giỏ hàng của bạn</argument>
+                    <argument name="description" xsi:type="string">Kiểm tra lại sản phẩm trước khi tiến hành thanh toán.</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

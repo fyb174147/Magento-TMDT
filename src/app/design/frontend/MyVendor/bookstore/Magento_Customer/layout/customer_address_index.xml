@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+        <title>Sổ địa chỉ</title>
+        <css src="css/account-dashboard.css"/>
+    </head>
+    <body>
+        <attribute name="class" value="account bookstore-account-custom address-book-page"/>
+
+        <referenceBlock name="head.components">
+            <block class="Magento\Framework\View\Element\Js\Components" name="customer_address_head_components" template="Magento_Customer::js/components.phtml"/>
+        </referenceBlock>
+        <referenceBlock name="page.main.title" remove="true"/>
+
+        <referenceContainer name="content">
+            <!--
+            <block class="Magento\Framework\View\Element\Template"
+                   name="customer.address.hero"
+                   template="Magento_Theme::html/listing_hero.phtml"
+                   before="-">
+                <arguments>
+                    <argument name="eyebrow" xsi:type="string">Tài khoản BookStore</argument>
+                    <argument name="accent" xsi:type="string">#0095ff</argument>
+                    <argument name="title" xsi:type="string">Sổ địa chỉ</argument>
+                    <argument name="description" xsi:type="string">Quản lý địa chỉ giao hàng và thanh toán của bạn.</argument>
+                </arguments>
+            </block>
+            -->
+            <block class="Magento\Customer\Block\Address\Book" name="address_book" template="Magento_Customer::address/book.phtml" cacheable="false"/>
+            <block class="Magento\Customer\Block\Address\Grid" name="address_grid" template="Magento_Customer::address/grid.phtml" cacheable="false"/>
+        </referenceContainer>
+    </body>
+</page>
