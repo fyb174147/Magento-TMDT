@@ -21,6 +21,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\HTTP\Client\Curl;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
+use Magento\Framework\Stdlib\Cookie\PhpCookieManager;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -43,6 +45,8 @@ class Google implements HttpGetActionInterface, HttpPostActionInterface
         private readonly Json $json,
         private readonly ManagerInterface $messageManager,
         private readonly Session $customerSession,
+        private readonly PhpCookieManager $cookieManager,
+        private readonly CookieMetadataFactory $cookieMetadataFactory,
         private readonly CustomerRepositoryInterface $customerRepository,
         private readonly CustomerFactory $customerFactory,
         private readonly AccountManagementInterface $accountManagement,
@@ -113,7 +117,7 @@ class Google implements HttpGetActionInterface, HttpPostActionInterface
             }
 
             $this->customerSession->setCustomerDataAsLoggedIn($customer);
-            $this->customerSession->regenerateId();
+            $this->refreshPrivateContent();
             $this->messageManager->addSuccessMessage(__('You are now logged in with Google.'));
 
             return $this->redirectFactory->create()->setPath('customer/account');
@@ -139,7 +143,7 @@ class Google implements HttpGetActionInterface, HttpPostActionInterface
             $customer = $this->createCustomerFromGoogleProfile($profile, $password);
             $this->customerSession->unsetData(self::SESSION_PENDING_PROFILE_KEY);
             $this->customerSession->setCustomerDataAsLoggedIn($customer);
-            $this->customerSession->regenerateId();
+            $this->refreshPrivateContent();
             $this->messageManager->addSuccessMessage(__('Your account has been created and you are now logged in.'));
 
             return $this->redirectFactory->create()->setPath('customer/account');
@@ -244,6 +248,19 @@ class Google implements HttpGetActionInterface, HttpPostActionInterface
         $name = trim($name);
 
         return $name !== '' ? $name : 'Google';
+    }
+
+    private function refreshPrivateContent(): void
+    {
+        if ($this->cookieManager->getCookie('mage-cache-sessid')) {
+            $metadata = $this->cookieMetadataFactory->createCookieMetadata();
+            $metadata->setPath('/');
+            $this->cookieManager->deleteCookie('mage-cache-sessid', $metadata);
+        }
+
+        $metadata = $this->cookieMetadataFactory->createPublicCookieMetadata();
+        $metadata->setPath('/');
+        $this->cookieManager->setPublicCookie('section_data_clean', '1', $metadata);
     }
 
     private function fail(\Stringable|string $message): Redirect

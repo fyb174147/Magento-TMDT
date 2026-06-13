@@ -23,7 +23,7 @@
                     <argument name="eyebrow" xsi:type="string">Tài khoản BookStore</argument>
                     <argument name="accent" xsi:type="string">#0095ff</argument>
                     <argument name="title" xsi:type="string">Sổ địa chỉ</argument>
-                    <argument name="description" xsi:type="string">Quản lý địa chỉ giao hàng và thanh toán của bạn.</argument>
+                    <argument name="description" xsi:type="string">Quản lý địa chỉ giao hàng của bạn.</argument>
                 </arguments>
             </block>
             -->

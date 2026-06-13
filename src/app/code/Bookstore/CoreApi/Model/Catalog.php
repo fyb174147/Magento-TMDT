@@ -7,6 +7,9 @@ use Magento\Catalog\Api\CategoryManagementInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Store\Model\StoreManagerInterface;
+use Bookstore\CoreApi\Model\Data\Category as CategoryData;
+use Bookstore\CoreApi\Model\Data\ProductList;
+use Bookstore\CoreApi\Model\Data\ProductSummary;
 
 class Catalog implements CatalogInterface
 {
@@ -29,37 +32,35 @@ class Catalog implements CatalogInterface
 
         foreach ($this->productRepository->getList($criteria)->getItems() as $product) {
             $image = (string)$product->getData('image');
-            $items[] = [
-                'id' => (int)$product->getId(),
-                'sku' => (string)$product->getSku(),
-                'name' => (string)$product->getName(),
-                'price' => (float)$product->getPrice(),
-                'type' => (string)$product->getTypeId(),
-                'url_key' => (string)$product->getUrlKey(),
-                'image' => $image && $image !== 'no_selection' ? $mediaUrl . 'catalog/product' . $image : null,
-            ];
+            $items[] = (new ProductSummary())
+                ->setId((int)$product->getId())
+                ->setSku((string)$product->getSku())
+                ->setName((string)$product->getName())
+                ->setPrice((float)$product->getPrice())
+                ->setType((string)$product->getTypeId())
+                ->setUrlKey((string)$product->getUrlKey())
+                ->setImage($image && $image !== 'no_selection' ? $mediaUrl . 'catalog/product' . $image : null);
         }
 
-        return ['items' => $items, 'total' => count($items)];
+        return (new ProductList())->setItems($items)->setTotal(count($items));
     }
 
     public function getCategories()
     {
-        return ['items' => $this->mapCategory($this->categoryManagement->getTree())];
+        return $this->mapCategory($this->categoryManagement->getTree());
     }
 
-    private function mapCategory($category): array
+    private function mapCategory($category): CategoryData
     {
         $children = [];
         foreach ($category->getChildrenData() as $child) {
             $children[] = $this->mapCategory($child);
         }
 
-        return [
-            'id' => (int)$category->getId(),
-            'name' => (string)$category->getName(),
-            'is_active' => (bool)$category->getIsActive(),
-            'children' => $children,
-        ];
+        return (new CategoryData())
+            ->setId((int)$category->getId())
+            ->setName((string)$category->getName())
+            ->setIsActive((bool)$category->getIsActive())
+            ->setChildren($children);
     }
 }

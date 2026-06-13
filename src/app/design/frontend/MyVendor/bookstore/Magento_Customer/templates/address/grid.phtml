@@ -4,55 +4,11 @@ $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $addressBookBlock = $objectManager->get(\Magento\Customer\Block\Address\Book::class);
 $additionalAddresses = $addressBookBlock->getAdditionalAddresses();
 
-// Lấy thông tin họ tên khách hàng để hiển thị tiêu đề địa chỉ mặc định
-$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
-$currentCustomer = $customerSession->getCustomer();
-$customerName = $currentCustomer ? $currentCustomer->getFirstname() . ' ' . $currentCustomer->getLastname() : 'Khách hàng';
 ?>
-
-<!--
-<div class="bookstore-unified-account-card">
-    <div class="bookstore-account-card-header">
-        <strong>Địa chỉ mặc định</strong>
-    </div>
-    
-    <div class="address-horizontal-container">
-        <?php if ($addressBookBlock->getPrimaryBillingAddress()): ?>
-            <div class="address-horizontal-row-card">
-                <div class="address-row-text">
-                    <span class="status-badge" style="background: #f1f5f9; color: #475569; margin-bottom: 6px; display: inline-block;">Địa chỉ thanh toán chính</span>
-                    <div style="font-weight: 700; color: #0f172a; margin-bottom: 4px;"><?= $block->escapeHtml($customerName) ?></div>
-                    <?= $addressBookBlock->getAddressHtml($addressBookBlock->getPrimaryBillingAddress()) ?>
-                </div>
-                <div class="address-row-actions">
-                    <a href="<?= $block->escapeUrl($addressBookBlock->getPrimaryBillingAddressEditUrl()) ?>" class="action-edit-inline">Sửa</a>
-                </div>
-            </div>
-        <?php else: ?>
-            <div class="address-horizontal-row-card"><div class="address-row-text" style="color:#64748b;">Chưa cấu hình địa chỉ thanh toán mặc định.</div></div>
-        <?php endif; ?>
-
-        <?php if ($addressBookBlock->getPrimaryShippingAddress()): ?>
-            <div class="address-horizontal-row-card">
-                <div class="address-row-text">
-                    <span class="status-badge" style="background: #e0f2fe; color: #0369a1; margin-bottom: 6px; display: inline-block;">Địa chỉ giao hàng chính</span>
-                    <div style="font-weight: 700; color: #0f172a; margin-bottom: 4px;"><?= $block->escapeHtml($customerName) ?></div>
-                    <?= $addressBookBlock->getAddressHtml($addressBookBlock->getPrimaryShippingAddress()) ?>
-                </div>
-                <div class="address-row-actions">
-                    <a href="<?= $block->escapeUrl($addressBookBlock->getPrimaryShippingAddressEditUrl()) ?>" class="action-edit-inline">Sửa</a>
-                </div>
-            </div>
-        <?php else: ?>
-            <div class="address-horizontal-row-card"><div class="address-row-text" style="color:#64748b;">Chưa cấu hình địa chỉ giao hàng mặc định.</div></div>
-        <?php endif; ?>
-    </div>
-</div>
--->
 
 <div class="bookstore-unified-account-card" style="margin-top: 24px;">
     <div class="bookstore-account-card-header" style="display: flex; justify-content: space-between; align-items: center;">
-        <strong>Địa chỉ phụ đã lưu</strong>
+        <strong>Địa chỉ giao hàng khác</strong>
         <button type="button" class="action add primary" style="background:#0095ff; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-weight:600; cursor:pointer;" onclick="window.location='<?= $block->escapeUrl($addressBookBlock->getAddAddressUrl()) ?>'">
             <span>Thêm địa chỉ mới</span>
         </button>
@@ -66,17 +22,27 @@ $customerName = $currentCustomer ? $currentCustomer->getFirstname() . ' ' . $cur
                         <?= $addressBookBlock->getAddressHtml($address) ?>
                     </div>
                     <div class="address-row-actions">
-                        <a href="<?= $block->escapeUrl($addressBookBlock->getEditUrl($address)) ?>" class="action-edit-inline">Sửa</a>
-                        <a href="#" class="action-delete-inline" data-address="<?= $block->escapeHtmlAttr($address->getId()) ?>">Xóa</a>
+                        <button type="button"
+                                class="address-row-action-button address-row-edit-button"
+                                onclick="window.location='<?= $block->escapeUrl($addressBookBlock->getAddressEditUrl($address->getId())) ?>'">
+                            <span>Sửa</span>
+                        </button>
+                        <button type="button"
+                                class="address-row-action-button address-row-delete-button"
+                                role="delete-address"
+                                data-address="<?= $block->escapeHtmlAttr($address->getId()) ?>">
+                            <span>Xóa</span>
+                        </button>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
         <script type="text/x-magento-init">
             {
-                ".action-delete-inline": {
-                    "addressActions": {
-                        "deleteUrl": "<?= $block->escapeUrl($addressBookBlock->getDeleteUrl()) ?>",
+                ".page-main": {
+                    "address": {
+                        "deleteAddress": "button[role='delete-address']",
+                        "deleteUrlPrefix": "<?= $block->escapeJs($block->escapeUrl($addressBookBlock->getDeleteUrl())) ?>id/",
                         "deleteConfirmMessage": "Bạn có chắc chắn muốn xóa địa chỉ này?"
                     }
                 }
@@ -84,7 +50,7 @@ $customerName = $currentCustomer ? $currentCustomer->getFirstname() . ' ' . $cur
         </script>
     <?php else: ?>
         <div class="empty-state" style="padding: 32px; text-align: center; color: #64748b;">
-            <span>Bạn không có địa chỉ phụ nào khác.</span>
+            <span>Bạn không có địa chỉ giao hàng nào khác.</span>
         </div>
     <?php endif; ?>
 </div>

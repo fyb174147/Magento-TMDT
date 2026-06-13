@@ -3,6 +3,9 @@
 /** @var $escaper \Magento\Framework\Escaper */
 ?>
 <div class="bookstore-unified-account-card">
+    <a class="account-dashboard-back-link" href="<?= $escaper->escapeUrl($block->getUrl('customer/account/')) ?>">
+        <?= $escaper->escapeHtml(__('Quay lại trang tổng quan thông tin')) ?>
+    </a>
     <div class="bookstore-account-card-header">
         <strong>Cập nhật thông tin tài khoản cá nhân</strong>
     </div>

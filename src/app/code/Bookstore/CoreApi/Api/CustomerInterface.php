@@ -5,7 +5,7 @@ namespace Bookstore\CoreApi\Api;
 interface CustomerInterface
 {
     /**
-     * @return mixed[]
+     * @return \Bookstore\CoreApi\Api\Data\CustomerMeInterface
      */
     public function me();
 }

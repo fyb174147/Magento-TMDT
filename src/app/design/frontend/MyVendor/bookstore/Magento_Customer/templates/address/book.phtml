@@ -1,49 +1,14 @@
 <?php
 /**
- * Copyright 2017 Adobe
- * All Rights Reserved.
+ * @var \Magento\Customer\Block\Address\Book $block
+ * @var \Magento\Framework\Escaper $escaper
  */
-
-/** @var \Magento\Customer\Block\Address\Book $block */
-/** @var \Magento\Framework\Escaper $escaper */
+$defaultShipping = $block->getDefaultShipping();
 ?>
-<div class="address-book-grid">
-
-    <!-- Địa chỉ thanh toán mặc định -->
-    <div class="address-book-card">
-        <div class="address-book-card-header">
-            <div class="address-book-card-title">
-                <span class="ab-icon ab-billing">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-                        <line x1="1" y1="10" x2="23" y2="10"/>
-                    </svg>
-                </span>
-                Địa chỉ thanh toán
-            </div>
-            <?php if ($defaultBilling = $block->getDefaultBilling()): ?>
-                <a class="account-card-edit" href="<?= $escaper->escapeUrl($block->getAddressEditUrl($defaultBilling)) ?>">Sửa</a>
-            <?php endif; ?>
-        </div>
-        <div class="address-book-card-body">
-            <?php if ($defaultBilling = $block->getDefaultBilling()): ?>
-                <address>
-                    <?= $block->getAddressHtml($block->getAddressById($defaultBilling)) ?>
-                </address>
-                <div class="ab-card-actions">
-                    <a href="<?= $escaper->escapeUrl($block->getAddressEditUrl($defaultBilling)) ?>">Sửa địa chỉ</a>
-                    <a class="ab-action-secondary" href="<?= $escaper->escapeUrl($block->getAddressEditUrl($defaultBilling)) ?>">Đặt làm mặc định</a>
-                </div>
-            <?php else: ?>
-                <div class="ab-empty">Bạn chưa có địa chỉ thanh toán mặc định.</div>
-                <div class="ab-card-actions">
-                    <a href="<?= $escaper->escapeUrl($block->getAddressBookUrl()) ?>">Thêm địa chỉ</a>
-                </div>
-            <?php endif; ?>
-        </div>
-    </div>
-
-    <!-- Địa chỉ giao hàng mặc định -->
+<a class="account-dashboard-back-link" href="<?= $escaper->escapeUrl($block->getUrl('customer/account/')) ?>">
+    <?= $escaper->escapeHtml(__('Quay lại trang tổng quan thông tin')) ?>
+</a>
+<div class="address-book-grid address-book-grid-single">
     <div class="address-book-card">
         <div class="address-book-card-header">
             <div class="address-book-card-title">
@@ -53,28 +18,23 @@
                         <circle cx="12" cy="10" r="3"/>
                     </svg>
                 </span>
-                Địa chỉ giao hàng
+                Địa chỉ giao hàng mặc định
             </div>
-            <?php if ($defaultShipping = $block->getDefaultShipping()): ?>
-                <a class="account-card-edit" href="<?= $escaper->escapeUrl($block->getAddressEditUrl($defaultShipping)) ?>">Sửa</a>
+            <?php if ($defaultShipping): ?>
+                <a class="account-card-edit address-book-edit-button" href="<?= $escaper->escapeUrl($block->getAddressEditUrl($defaultShipping)) ?>">Sửa</a>
             <?php endif; ?>
         </div>
         <div class="address-book-card-body">
-            <?php if ($defaultShipping = $block->getDefaultShipping()): ?>
+            <?php if ($defaultShipping): ?>
                 <address>
                     <?= $block->getAddressHtml($block->getAddressById($defaultShipping)) ?>
                 </address>
-                <div class="ab-card-actions">
-                    <a href="<?= $escaper->escapeUrl($block->getAddressEditUrl($defaultShipping)) ?>">Sửa địa chỉ</a>
-                    <a class="ab-action-secondary" href="<?= $escaper->escapeUrl($block->getAddressEditUrl($defaultShipping)) ?>">Đặt làm mặc định</a>
-                </div>
             <?php else: ?>
                 <div class="ab-empty">Bạn chưa có địa chỉ giao hàng mặc định.</div>
                 <div class="ab-card-actions">
-                    <a href="<?= $escaper->escapeUrl($block->getAddressBookUrl()) ?>">Thêm địa chỉ</a>
+                    <a href="<?= $escaper->escapeUrl($block->getAddAddressUrl()) ?>">Thêm địa chỉ</a>
                 </div>
             <?php endif; ?>
         </div>
     </div>
-
 </div>

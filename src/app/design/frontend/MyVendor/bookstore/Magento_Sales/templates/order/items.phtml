@@ -1,0 +1,84 @@
+<?php
+/**
+ * @var \Magento\Sales\Block\Order\Items $block
+ */
+?>
+<div class="table-wrapper order-items order-view-table-wrapper">
+    <table class="data table table-order-items order-view-table" id="my-orders-table" summary="<?= $block->escapeHtml(__('Sản phẩm đã đặt')) ?>">
+        <caption class="table-caption"><?= $block->escapeHtml(__('Sản phẩm đã đặt')) ?></caption>
+        <thead>
+            <?php if ($block->isPagerDisplayed()) : ?>
+                <tr>
+                    <td colspan="5" data-block="order-items-pager-top" class="order-pager-wrapper order-pager-wrapper-top">
+                        <?= $block->getPagerHtml() ?>
+                    </td>
+                </tr>
+            <?php endif ?>
+            <tr>
+                <th class="col name"><?= $block->escapeHtml(__('Tên sản phẩm')) ?></th>
+                <th class="col sku"><?= $block->escapeHtml(__('Mã sản phẩm')) ?></th>
+                <th class="col price"><?= $block->escapeHtml(__('Giá')) ?></th>
+                <th class="col qty"><?= $block->escapeHtml(__('Số lượng')) ?></th>
+                <th class="col subtotal"><?= $block->escapeHtml(__('Tạm tính')) ?></th>
+            </tr>
+        </thead>
+        <?php $items = $block->getItems(); ?>
+        <?php $giftMessage = '' ?>
+        <?php foreach ($items as $item) :
+            if ($item->getParentItem()) :
+                continue;
+            endif;
+            ?>
+            <tbody>
+                <?= $block->getItemHtml($item) ?>
+                <?php if ($this->helper(\Magento\GiftMessage\Helper\Message::class)->isMessagesAllowed('order_item', $item) && $item->getGiftMessageId()) : ?>
+                    <?php $giftMessage = $this->helper(\Magento\GiftMessage\Helper\Message::class)->getGiftMessageForEntity($item); ?>
+                    <tr>
+                        <td class="col options" colspan="5">
+                            <a href="#"
+                               id="order-item-gift-message-link-<?= (int)$item->getId() ?>"
+                               class="action show"
+                               aria-controls="order-item-gift-message-<?= (int)$item->getId() ?>"
+                               data-item-id="<?= (int)$item->getId() ?>">
+                                <?= $block->escapeHtml(__('Lời nhắn quà tặng')) ?>
+                            </a>
+                            <div class="order-gift-message" id="order-item-gift-message-<?= (int)$item->getId() ?>" role="region" aria-expanded="false" tabindex="-1">
+                                <a href="#"
+                                   title="<?= $block->escapeHtml(__('Đóng')) ?>"
+                                   aria-controls="order-item-gift-message-<?= (int)$item->getId() ?>"
+                                   data-item-id="<?= (int)$item->getId() ?>"
+                                   class="action close">
+                                    <?= $block->escapeHtml(__('Đóng')) ?>
+                                </a>
+                                <dl class="item-options">
+                                    <dt class="item-sender"><strong class="label"><?= $block->escapeHtml(__('Từ')) ?></strong><?= $block->escapeHtml($giftMessage->getSender()) ?></dt>
+                                    <dt class="item-recipient"><strong class="label"><?= $block->escapeHtml(__('Đến')) ?></strong><?= $block->escapeHtml($giftMessage->getRecipient()) ?></dt>
+                                    <dd class="item-message"><?= /* @noEscape */ $this->helper(\Magento\GiftMessage\Helper\Message::class)->getEscapedGiftMessage($item) ?></dd>
+                                </dl>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endif ?>
+            </tbody>
+        <?php endforeach; ?>
+        <tfoot>
+            <?php if ($block->isPagerDisplayed()) : ?>
+                <tr>
+                    <td colspan="5" data-block="order-items-pager-bottom" class="order-pager-wrapper order-pager-wrapper-bottom">
+                        <?= $block->getPagerHtml() ?>
+                    </td>
+                </tr>
+            <?php endif ?>
+            <?= $block->getChildHtml('order_totals') ?>
+        </tfoot>
+    </table>
+</div>
+<?php if ($giftMessage) : ?>
+<script type="text/x-magento-init">
+    {
+        "a.action.show, a.action.close": {
+            "giftMessage": {}
+        }
+    }
+</script>
+<?php endif; ?>

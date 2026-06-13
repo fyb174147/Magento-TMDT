@@ -4,7 +4,9 @@ namespace Bookstore\CoreApi\Model;
 
 use Bookstore\CoreApi\Api\OrderRepositoryInterface;
 use Bookstore\CoreApi\Api\Data\OrderInterface;
+use Magento\Authorization\Model\UserContextInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\QuoteFactory;
@@ -12,6 +14,8 @@ use Magento\Quote\Model\QuoteManagement;
 use Magento\Sales\Api\OrderRepositoryInterface as MagentoOrderRepository;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use Bookstore\CoreApi\Model\Data\Address;
+use Bookstore\CoreApi\Model\Data\OrderItem;
 
 class OrderRepository implements OrderRepositoryInterface
 {
@@ -21,8 +25,10 @@ class OrderRepository implements OrderRepositoryInterface
         private readonly ProductRepositoryInterface $productRepository,
         private readonly MagentoOrderRepository $magentoOrderRepository,
         private readonly StoreManagerInterface $storeManager,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private ?UserContextInterface $userContext = null
     ) {
+        $this->userContext = $this->userContext ?: ObjectManager::getInstance()->get(UserContextInterface::class);
     }
 
     /**
@@ -47,8 +53,13 @@ class OrderRepository implements OrderRepositoryInterface
             }
 
             foreach ($items as $item) {
-                $productId = $item['product_id'] ?? null;
-                $qty = $item['qty'] ?? 1;
+                if (is_object($item) && method_exists($item, 'getProductId')) {
+                    $productId = $item->getProductId();
+                    $qty = method_exists($item, 'getQty') ? $item->getQty() : 1;
+                } else {
+                    $productId = $item['product_id'] ?? null;
+                    $qty = $item['qty'] ?? 1;
+                }
 
                 if (!$productId) {
                     throw new InputException(__('Product ID is required for each item'));
@@ -66,25 +77,28 @@ class OrderRepository implements OrderRepositoryInterface
 
             // Set billing address
             $billingAddress = $order->getBillingAddress();
-            if ($billingAddress && is_array($billingAddress)) {
+            if ($billingAddress && is_object($billingAddress) && method_exists($billingAddress, 'getFirstname')) {
+                $quote->getBillingAddress()->addData($this->addressToArray($billingAddress));
+            } elseif ($billingAddress && is_array($billingAddress)) {
                 $quote->getBillingAddress()
                     ->addData($billingAddress);
             }
 
             // Set shipping address
             $shippingAddress = $order->getShippingAddress();
-            if ($shippingAddress && is_array($shippingAddress)) {
+            if ($shippingAddress && is_object($shippingAddress) && method_exists($shippingAddress, 'getFirstname')) {
+                $quote->getShippingAddress()->addData($this->addressToArray($shippingAddress));
+            } elseif ($shippingAddress && is_array($shippingAddress)) {
                 $quote->getShippingAddress()
                     ->addData($shippingAddress);
             }
 
-            // Set shipping method
-            $shippingMethod = $order->getShippingMethod() ?? 'bookstore_express_express';
-            $quote->getShippingAddress()->setShippingMethod($shippingMethod);
-
             // Collect shipping rates
-            $quote->getShippingAddress()->collectShippingRates()
-                ->setCollectShippingRates(true);
+            $shippingMethod = $order->getShippingMethod() ?: 'bookstore_express_express';
+            $quote->getShippingAddress()
+                ->setCollectShippingRates(true)
+                ->collectShippingRates()
+                ->setShippingMethod($shippingMethod);
 
             // Set payment method
             $paymentMethod = $order->getPaymentMethod() ?? 'bookstore_vietqr';
@@ -114,6 +128,13 @@ class OrderRepository implements OrderRepositoryInterface
     {
         try {
             $magentoOrder = $this->magentoOrderRepository->get($orderId);
+            $customerId = (int)$this->userContext->getUserId();
+            $isCustomerToken = (int)$this->userContext->getUserType() === UserContextInterface::USER_TYPE_CUSTOMER;
+
+            if (!$customerId || !$isCustomerToken || (int)$magentoOrder->getCustomerId() !== $customerId) {
+                throw new NoSuchEntityException(__('Order #%1 not found', $orderId));
+            }
+
             return $this->createOrderDataObject($magentoOrder);
         } catch (\Exception $e) {
             throw new NoSuchEntityException(__('Order #%1 not found', $orderId));
@@ -139,6 +160,56 @@ class OrderRepository implements OrderRepositoryInterface
             ->setTaxAmount($magentoOrder->getTaxAmount())
             ->setCreatedAt($magentoOrder->getCreatedAt());
 
+        if ($magentoOrder->getBillingAddress()) {
+            $order->setBillingAddress($this->mapAddress($magentoOrder->getBillingAddress()));
+        }
+
+        if ($magentoOrder->getShippingAddress()) {
+            $order->setShippingAddress($this->mapAddress($magentoOrder->getShippingAddress()));
+        }
+
+        $items = [];
+        foreach ($magentoOrder->getAllVisibleItems() as $item) {
+            $items[] = (new OrderItem())
+                ->setProductId((int)$item->getProductId())
+                ->setSku((string)$item->getSku())
+                ->setName((string)$item->getName())
+                ->setQty((float)$item->getQtyOrdered())
+                ->setPrice((float)$item->getPrice())
+                ->setRowTotal((float)$item->getRowTotal());
+        }
+
+        $order->setItems($items)
+            ->setPaymentMethod($magentoOrder->getPayment() ? (string)$magentoOrder->getPayment()->getMethod() : null)
+            ->setShippingMethod($magentoOrder->getShippingMethod());
+
         return $order;
+    }
+
+    private function mapAddress($address): Address
+    {
+        return (new Address())
+            ->setFirstname((string)$address->getFirstname())
+            ->setLastname((string)$address->getLastname())
+            ->setStreet($address->getStreet())
+            ->setCity((string)$address->getCity())
+            ->setRegion((string)$address->getRegion())
+            ->setPostcode((string)$address->getPostcode())
+            ->setCountryId((string)$address->getCountryId())
+            ->setTelephone((string)$address->getTelephone());
+    }
+
+    private function addressToArray($address): array
+    {
+        return [
+            'firstname' => (string)$address->getFirstname(),
+            'lastname' => (string)$address->getLastname(),
+            'street' => $address->getStreet(),
+            'city' => (string)$address->getCity(),
+            'region' => (string)$address->getRegion(),
+            'postcode' => (string)$address->getPostcode(),
+            'country_id' => (string)$address->getCountryId(),
+            'telephone' => (string)$address->getTelephone(),
+        ];
     }
 }

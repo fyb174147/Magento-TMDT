@@ -2,6 +2,8 @@
 /** @var \Magento\Catalog\Block\Product\ListProduct $block */
 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $postDataHelper = $objectManager->get(\Magento\Framework\Data\Helper\PostHelper::class);
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+$isLoggedIn = $customerSession->isLoggedIn();
 $request = $block->getRequest();
 $fullActionName = (string)$request->getFullActionName();
 $isAllBooksPage = in_array($fullActionName, ['bookstore_shop_index_index', 'shop_index_index'], true);
@@ -111,21 +113,23 @@ $pageUrl = function (int $page) use ($block) {
 
                         <div class="product-item-actions">
                             <?php if ($_product->isSaleable()): ?>
-                                <?php 
-                                    // Kiểm tra session khách hàng trực tiếp từ tầng Backend
-                                    $customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
-                                    if ($customerSession->isLoggedIn()): 
-                                ?>
+                                <?php if ($isLoggedIn): ?>
                                     <button class="action tocart primary"
                                             data-post='<?= $block->escapeHtmlAttr($postData) ?>'
                                             type="button">
                                         <span><?= __('Thêm vào giỏ') ?></span>
                                     </button>
                                 <?php else: ?>
-                                    <button class="action tocart primary js-fake-login-trigger"
-                                            type="button">
-                                        <span><?= __('Thêm vào giỏ') ?></span>
-                                    </button>
+                                    <span class="login-required-tooltip"
+                                          data-tooltip="<?= $block->escapeHtmlAttr(__('bạn cần phải đăng nhập để mua hàng')) ?>">
+                                        <button class="action tocart primary is-login-required"
+                                                type="button"
+                                                disabled
+                                                aria-disabled="true"
+                                                title="<?= $block->escapeHtmlAttr(__('bạn cần phải đăng nhập để mua hàng')) ?>">
+                                            <span><?= __('Thêm vào giỏ') ?></span>
+                                        </button>
+                                    </span>
                                 <?php endif; ?>
                             <?php endif; ?>
                         </div>
@@ -167,16 +171,7 @@ require([
 ], function ($, $t) {
     'use strict';
 
-    // 1. Xử lý ép đăng nhập khi khách vãng lai bấm nút giả
-    $(document).on('click', '.js-fake-login-trigger', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        alert($t('Vui lòng đăng nhập tài khoản để trải nghiệm mua sách tại BookStore!'));
-        window.location.href = '<?= $block->getUrl('customer/account/login') ?>';
-        return false;
-    });
-
-    // 2. VÁ LỖI THIẾU THÔNG BÁO: Bắt sự kiện AJAX thêm vào giỏ thành công của Magento
+    // Bắt sự kiện AJAX thêm vào giỏ thành công của Magento
     $(document).on('ajax:addToCart', function (event, data) {
         // Nếu Server phản hồi thêm thành công và không yêu cầu điều hướng đặc biệt
         if (data && data.response && !data.response.backUrl) {

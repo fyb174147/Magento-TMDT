@@ -5,12 +5,12 @@ namespace Bookstore\CoreApi\Api;
 interface CatalogInterface
 {
     /**
-     * @return mixed[]
+     * @return \Bookstore\CoreApi\Api\Data\ProductListInterface
      */
     public function getProducts();
 
     /**
-     * @return mixed[]
+     * @return \Bookstore\CoreApi\Api\Data\CategoryInterface
      */
     public function getCategories();
 }

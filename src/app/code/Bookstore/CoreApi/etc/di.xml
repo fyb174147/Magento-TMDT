@@ -3,4 +3,18 @@
     <preference for="Bookstore\CoreApi\Api\CatalogInterface" type="Bookstore\CoreApi\Model\Catalog"/>
     <preference for="Bookstore\CoreApi\Api\CustomerInterface" type="Bookstore\CoreApi\Model\Customer"/>
     <preference for="Bookstore\CoreApi\Api\OrderRepositoryInterface" type="Bookstore\CoreApi\Model\OrderRepository"/>
+    <preference for="Bookstore\CoreApi\Api\Data\AddressInterface" type="Bookstore\CoreApi\Model\Data\Address"/>
+    <preference for="Bookstore\CoreApi\Api\Data\CategoryInterface" type="Bookstore\CoreApi\Model\Data\Category"/>
+    <preference for="Bookstore\CoreApi\Api\Data\CustomerMeInterface" type="Bookstore\CoreApi\Model\Data\CustomerMe"/>
+    <preference for="Bookstore\CoreApi\Api\Data\CustomerProfileInterface" type="Bookstore\CoreApi\Model\Data\CustomerProfile"/>
+    <preference for="Bookstore\CoreApi\Api\Data\OrderInterface" type="Bookstore\CoreApi\Model\Order"/>
+    <preference for="Bookstore\CoreApi\Api\Data\OrderItemInterface" type="Bookstore\CoreApi\Model\Data\OrderItem"/>
+    <preference for="Bookstore\CoreApi\Api\Data\OrderListInterface" type="Bookstore\CoreApi\Model\Data\OrderList"/>
+    <preference for="Bookstore\CoreApi\Api\Data\OrderStatusInterface" type="Bookstore\CoreApi\Model\Data\OrderStatus"/>
+    <preference for="Bookstore\CoreApi\Api\Data\OrderSummaryInterface" type="Bookstore\CoreApi\Model\Data\OrderSummary"/>
+    <preference for="Bookstore\CoreApi\Api\Data\ProductDetailInterface" type="Bookstore\CoreApi\Model\Data\ProductDetail"/>
+    <preference for="Bookstore\CoreApi\Api\Data\ProductListInterface" type="Bookstore\CoreApi\Model\Data\ProductList"/>
+    <preference for="Bookstore\CoreApi\Api\Data\ProductSummaryInterface" type="Bookstore\CoreApi\Model\Data\ProductSummary"/>
+    <preference for="Bookstore\CoreApi\Api\Data\StockInterface" type="Bookstore\CoreApi\Model\Data\Stock"/>
+    <preference for="Bookstore\CoreApi\Api\Data\VietQrInterface" type="Bookstore\CoreApi\Model\Data\VietQr"/>
 </config>

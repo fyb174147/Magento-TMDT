@@ -72,36 +72,45 @@
 // --- 4. BỐ CỤC HEADER CHUẨN ---
 header {
     background: var(--bg-body); border-bottom: 1px solid var(--border);
+    padding: 0;
+    margin: 0;
     .header-content { 
         .container-center(); 
         display: flex !important; 
         justify-content: space-between; 
         align-items: center; 
-        height: 80px;
-        gap: 24px;
+        min-height: 84px;
+        height: auto;
+        gap: 28px;
+        padding: 0 20px;
+        box-sizing: border-box;
     }
     
     .logo {
         display: flex; align-items: center; gap: 8px; text-decoration: none;
         color: var(--text-main); font-weight: 900; white-space: nowrap;
+        flex: 0 0 180px;
+        min-width: 0;
     }
 
     .nav-menu {
-        display: flex !important; list-style: none !important; gap: 30px; flex: 1; justify-content: center;
-        li a { text-decoration: none; color: var(--text-main); font-weight: 700; display: flex; align-items: center; height: 100%; }
+        display: flex !important; list-style: none !important; gap: 28px; flex: 1 1 auto; justify-content: center;
+        align-items: center; min-width: 0; margin: 0; padding: 0;
+        li { margin: 0; padding: 0; }
+        li a { text-decoration: none; color: var(--text-main); font-weight: 700; display: flex; align-items: center; min-height: 48px; white-space: nowrap; }
     }
 
     .header-actions { 
-        display: flex !important; align-items: center !important; justify-content: flex-end; gap: 16px; height: 100%;
+        display: flex !important; align-items: center !important; justify-content: flex-end; gap: 12px; min-height: 48px;
+        flex: 0 0 220px; min-width: 0;
     }
 
     .header-search-static {
-        background: #fff; padding: 15px 0; border-bottom: 1px solid var(--border);
+        background: #fff; padding: 14px 20px 18px; border-bottom: 1px solid var(--border);
         width: 100%; display: block; clear: both; margin-top: 0;
 
         .search-input-wrapper {
-            .container-center(); position: relative; max-width: 650px; margin: 0 auto;
-            form { position: relative; width: 100%; display: flex; align-items: center; height: 48px; }
+            position: relative; max-width: 650px; width: 100%; margin: 0 auto; height: 48px;
             input {
                 width: 100% !important; height: 48px !important; border-radius: 24px;
                 border: 2px solid var(--border) !important; padding: 0 55px 0 25px !important;
@@ -116,6 +125,13 @@ header {
                 transition: var(--transition); padding: 0;
                 &:hover { background: var(--primary-hover); }
             }
+        }
+
+        .search-form {
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            display: block;
         }
     }
 }

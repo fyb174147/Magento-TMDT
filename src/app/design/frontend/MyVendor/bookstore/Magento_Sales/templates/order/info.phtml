@@ -1,0 +1,68 @@
+<?php
+/**
+ * @var \Magento\Sales\Block\Order\Info $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$_order = $block->getOrder();
+$shippingAddress = $_order->getIsVirtual() ? $_order->getBillingAddress() : $_order->getShippingAddress();
+?>
+<section class="order-view-card order-view-info">
+    <div class="order-view-card-title">
+        <strong><?= $escaper->escapeHtml(__('Thông tin đơn hàng')) ?></strong>
+    </div>
+
+    <div class="order-info-grid">
+        <article class="order-info-box order-info-address">
+            <div class="order-info-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 12-9 12S3 17 3 10a9 9 0 1 1 18 0Z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+            </div>
+            <div>
+                <strong><?= $escaper->escapeHtml(__('Địa chỉ giao hàng')) ?></strong>
+                <address>
+                    <?= /* @noEscape */ $shippingAddress ? $block->getFormattedAddress($shippingAddress) : $escaper->escapeHtml(__('Không có địa chỉ giao hàng.')) ?>
+                </address>
+            </div>
+        </article>
+
+        <?php if (!$_order->getIsVirtual()) : ?>
+            <article class="order-info-box">
+                <div class="order-info-icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h11v12"/>
+                        <path d="M14 9h4l4 4v4c0 .6-.4 1-1 1h-2"/>
+                        <circle cx="7" cy="18" r="2"/>
+                        <circle cx="17" cy="18" r="2"/>
+                    </svg>
+                </div>
+                <div>
+                    <strong><?= $escaper->escapeHtml(__('Phương thức vận chuyển')) ?></strong>
+                    <p>
+                        <?php if ($_order->getShippingDescription()) : ?>
+                            <?= $escaper->escapeHtml($_order->getShippingDescription()) ?>
+                        <?php else : ?>
+                            <?= $escaper->escapeHtml(__('Không có thông tin vận chuyển.')) ?>
+                        <?php endif; ?>
+                    </p>
+                </div>
+            </article>
+        <?php endif; ?>
+
+        <article class="order-info-box">
+            <div class="order-info-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="5" width="20" height="14" rx="2"/>
+                    <path d="M2 10h20"/>
+                </svg>
+            </div>
+            <div>
+                <strong><?= $escaper->escapeHtml(__('Phương thức thanh toán')) ?></strong>
+                <div class="order-payment-method">
+                    <?= $block->getPaymentInfoHtml() ?>
+                </div>
+            </div>
+        </article>
+    </div>
+</section>

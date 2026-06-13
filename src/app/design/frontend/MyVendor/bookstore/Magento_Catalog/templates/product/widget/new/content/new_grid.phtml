@@ -2,6 +2,8 @@
 /** @var \Magento\CatalogWidget\Block\Product\ProductsList $block */
 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $postDataHelper = $objectManager->get(\Magento\Framework\Data\Helper\PostHelper::class);
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+$isLoggedIn = $customerSession->isLoggedIn();
 
 if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())) {
     $allItems = array_values($block->getProductCollection()->getItems());
@@ -52,6 +54,8 @@ if ($exist = ($block->getProductCollection() && $block->getProductCollection()->
         .cms-new-books .product-item { width: 100% !important; max-width: none !important; margin: 0 !important; border: 2px solid #10b981 !important; border-radius: 16px !important; box-sizing: border-box !important; float: none !important; }
         .cms-new-books .action.tocart { background: #10b981 !important; color: #fff !important; border: none !important; }
         .cms-new-books .action.tocart:hover { filter: brightness(0.9); }
+        .cms-new-books .action.tocart.is-login-required,
+        .cms-new-books .action.tocart.is-login-required:hover { background: #cbd5e1 !important; color: #64748b !important; filter: none !important; cursor: not-allowed !important; box-shadow: none !important; }
 
         /* 6. CĂN GIỮA PHÂN TRANG */
         .bookstore-pagination { display: flex; justify-content: center; align-items: center; margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px; clear: both; width: 100%; }
@@ -102,11 +106,25 @@ if ($exist = ($block->getProductCollection() && $block->getProductCollection()->
 
                                 <div class="product-item-actions" style="margin-top: auto;">
                                     <?php if ($_product->isSaleable()): ?>
-                                        <button class="action tocart primary"
-                                                data-post='<?= $block->escapeHtmlAttr($postData) ?>'
-                                                type="button" style="width: 100%; height: 42px; border-radius: 10px; font-weight: 800; cursor: pointer;">
-                                            <span><?= __('Thêm vào giỏ') ?></span>
-                                        </button>
+                                        <?php if ($isLoggedIn): ?>
+                                            <button class="action tocart primary"
+                                                    data-post='<?= $block->escapeHtmlAttr($postData) ?>'
+                                                    type="button" style="width: 100%; height: 42px; border-radius: 10px; font-weight: 800; cursor: pointer;">
+                                                <span><?= __('Thêm vào giỏ') ?></span>
+                                            </button>
+                                        <?php else: ?>
+                                            <span class="login-required-tooltip"
+                                                  data-tooltip="<?= $block->escapeHtmlAttr(__('bạn cần phải đăng nhập để mua hàng')) ?>">
+                                                <button class="action tocart primary is-login-required"
+                                                        type="button"
+                                                        disabled
+                                                        aria-disabled="true"
+                                                        title="<?= $block->escapeHtmlAttr(__('bạn cần phải đăng nhập để mua hàng')) ?>"
+                                                        style="width: 100%; height: 42px; border-radius: 10px; font-weight: 800; cursor: not-allowed;">
+                                                    <span><?= __('Thêm vào giỏ') ?></span>
+                                                </button>
+                                            </span>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                 </div>
                             </div>

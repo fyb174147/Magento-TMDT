@@ -53,9 +53,16 @@ $isLoggedIn = $customerSession->isLoggedIn();
                                                 <form action="<?= $block->getUrl('checkout/cart/add', ['product' => $_item->getId()]) ?>" method="post">
                                                     <?= $block->getBlockHtml('formkey') ?>
                                                     <?php if (!$isLoggedIn): ?>
-                                                        <button type="button" class="action tocart primary" onclick="window.location.href='<?= $block->getUrl('customer/account/login') ?>';">
-                                                            <span><?= __('Thêm vào giỏ') ?></span>
-                                                        </button>
+                                                        <span class="login-required-tooltip"
+                                                              data-tooltip="<?= $block->escapeHtmlAttr(__('bạn cần phải đăng nhập để mua hàng')) ?>">
+                                                            <button type="button"
+                                                                    class="action tocart primary is-login-required"
+                                                                    disabled
+                                                                    aria-disabled="true"
+                                                                    title="<?= $block->escapeHtmlAttr(__('bạn cần phải đăng nhập để mua hàng')) ?>">
+                                                                <span><?= __('Thêm vào giỏ') ?></span>
+                                                            </button>
+                                                        </span>
                                                     <?php else: ?>
                                                         <button type="submit" class="action tocart primary">
                                                             <span><?= __('Thêm vào giỏ') ?></span>

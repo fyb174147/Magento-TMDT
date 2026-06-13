@@ -1,6 +1,9 @@
 <?php
 /** @var $block \Magento\Catalog\Block\Product\View */
 $_product = $block->getProduct();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+$isLoggedIn = $customerSession->isLoggedIn();
 ?>
 <div class="product-detail-container">
     <!-- Breadcrumb -->
@@ -112,9 +115,22 @@ $_product = $block->getProduct();
                         <input type="number" name="qty" value="1" min="1" max="999" class="qty-input">
                     </div>
 
-                    <button type="submit" class="btn-add-to-cart">
-                        Thêm vào giỏ hàng
-                    </button>
+                    <?php if ($isLoggedIn): ?>
+                        <button type="submit" class="btn-add-to-cart">
+                            Thêm vào giỏ hàng
+                        </button>
+                    <?php else: ?>
+                        <span class="login-required-tooltip"
+                              data-tooltip="<?= $block->escapeHtmlAttr(__('bạn cần phải đăng nhập để mua hàng')) ?>">
+                            <button type="button"
+                                    class="btn-add-to-cart is-login-required"
+                                    disabled
+                                    aria-disabled="true"
+                                    title="<?= $block->escapeHtmlAttr(__('bạn cần phải đăng nhập để mua hàng')) ?>">
+                                Thêm vào giỏ hàng
+                            </button>
+                        </span>
+                    <?php endif; ?>
                 </form>
             </div>
 

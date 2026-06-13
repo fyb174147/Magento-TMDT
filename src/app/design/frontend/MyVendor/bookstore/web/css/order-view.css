@@ -1,0 +1,369 @@
+body.account.sales-order-view .page-main,
+body.account.order-view-page .page-main {
+    background: #f6f9fc !important;
+}
+
+body.account.sales-order-view .column.main,
+body.account.order-view-page .column.main {
+    max-width: 1180px !important;
+    margin: 0 auto !important;
+    padding: 0 20px 56px !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+body.account.sales-order-view .bookstore-order-view,
+body.account.order-view-page .bookstore-order-view {
+    display: grid !important;
+    gap: 22px !important;
+    width: 100% !important;
+}
+
+body.account.sales-order-view .order-view-hero,
+body.account.order-view-page .order-view-hero {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 24px !important;
+    padding: 28px 32px !important;
+    background: #fff !important;
+    border: 1px solid #dfe7f1 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06) !important;
+}
+
+body.account.sales-order-view .order-view-back,
+body.account.order-view-page .order-view-back {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin-bottom: 14px !important;
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+body.account.sales-order-view .order-view-back::before,
+body.account.order-view-page .order-view-back::before {
+    content: "<" !important;
+    font-weight: 900 !important;
+}
+
+body.account.sales-order-view .order-view-hero h1,
+body.account.order-view-page .order-view-hero h1 {
+    margin: 0 0 12px !important;
+    color: #0f172a !important;
+    font-size: 30px !important;
+    font-weight: 900 !important;
+    line-height: 1.15 !important;
+}
+
+body.account.sales-order-view .order-view-meta,
+body.account.order-view-page .order-view-meta {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    align-items: center !important;
+    color: #64748b !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+}
+
+body.account.sales-order-view .order-view-status,
+body.account.order-view-page .order-view-status {
+    display: inline-flex !important;
+    align-items: center !important;
+    min-height: 28px !important;
+    padding: 4px 12px !important;
+    border-radius: 999px !important;
+    background: #e0f2fe !important;
+    color: #0369a1 !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+}
+
+body.account.sales-order-view .order-view-total,
+body.account.order-view-page .order-view-total {
+    min-width: 240px !important;
+    padding: 18px 20px !important;
+    border-radius: 12px !important;
+    background: linear-gradient(180deg, #f8fbff 0%, #eef7ff 100%) !important;
+    border: 1px solid #cfe7ff !important;
+    text-align: right !important;
+}
+
+body.account.sales-order-view .order-view-total span,
+body.account.order-view-page .order-view-total span {
+    display: block !important;
+    margin-bottom: 8px !important;
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+}
+
+body.account.sales-order-view .order-view-total strong,
+body.account.order-view-page .order-view-total strong {
+    display: block !important;
+    color: #0095ff !important;
+    font-size: 24px !important;
+    line-height: 1.2 !important;
+}
+
+body.account.sales-order-view .order-view-card,
+body.account.order-view-page .order-view-card {
+    padding: 26px 32px !important;
+    background: #fff !important;
+    border: 1px solid #dfe7f1 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06) !important;
+}
+
+body.account.sales-order-view .order-view-card-title,
+body.account.order-view-page .order-view-card-title {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 16px !important;
+    margin: 0 0 18px !important;
+    padding-bottom: 16px !important;
+    border-bottom: 2px solid #f1f5f9 !important;
+}
+
+body.account.sales-order-view .order-view-card-title strong,
+body.account.order-view-page .order-view-card-title strong {
+    color: #0f172a !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+}
+
+body.account.sales-order-view .order-view-card-title span,
+body.account.order-view-page .order-view-card-title span {
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+}
+
+body.account.sales-order-view .order-view-table-wrapper,
+body.account.order-view-page .order-view-table-wrapper {
+    width: 100% !important;
+    overflow-x: auto !important;
+}
+
+body.account.sales-order-view table.order-view-table,
+body.account.order-view-page table.order-view-table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    background: #fff !important;
+}
+
+body.account.sales-order-view .order-view-table caption,
+body.account.order-view-page .order-view-table caption {
+    display: none !important;
+}
+
+body.account.sales-order-view .order-view-table thead th,
+body.account.order-view-page .order-view-table thead th {
+    padding: 14px 16px !important;
+    background: #f8fafc !important;
+    border: 0 !important;
+    border-bottom: 1px solid #dfe7f1 !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    text-align: left !important;
+    text-transform: uppercase !important;
+}
+
+body.account.sales-order-view .order-view-table tbody td,
+body.account.order-view-page .order-view-table tbody td {
+    padding: 20px 16px !important;
+    border: 0 !important;
+    border-bottom: 1px solid #edf2f7 !important;
+    background: #fff !important;
+    color: #334155 !important;
+    vertical-align: middle !important;
+}
+
+body.account.sales-order-view .order-view-table .product-item-name,
+body.account.order-view-page .order-view-table .product-item-name {
+    display: block !important;
+    color: #0f172a !important;
+    font-size: 15px !important;
+    font-weight: 900 !important;
+    line-height: 1.45 !important;
+}
+
+body.account.sales-order-view .order-view-table .col.price,
+body.account.sales-order-view .order-view-table .col.subtotal,
+body.account.order-view-page .order-view-table .col.price,
+body.account.order-view-page .order-view-table .col.subtotal {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+    white-space: nowrap !important;
+}
+
+body.account.sales-order-view .order-view-table .items-qty,
+body.account.order-view-page .order-view-table .items-qty {
+    display: grid !important;
+    gap: 4px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+body.account.sales-order-view .order-view-table .items-qty .item,
+body.account.order-view-page .order-view-table .items-qty .item {
+    display: inline-flex !important;
+    gap: 6px !important;
+    align-items: center !important;
+}
+
+body.account.sales-order-view .order-view-table tfoot th,
+body.account.sales-order-view .order-view-table tfoot td,
+body.account.order-view-page .order-view-table tfoot th,
+body.account.order-view-page .order-view-table tfoot td {
+    padding: 12px 16px !important;
+    background: #fff !important;
+    border: 0 !important;
+    font-size: 14px !important;
+}
+
+body.account.sales-order-view .order-view-table tfoot .mark,
+body.account.order-view-page .order-view-table tfoot .mark {
+    color: #475569 !important;
+    font-weight: 800 !important;
+    text-align: right !important;
+}
+
+body.account.sales-order-view .order-view-table tfoot .amount,
+body.account.order-view-page .order-view-table tfoot .amount {
+    color: #0f172a !important;
+    font-weight: 900 !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+}
+
+body.account.sales-order-view .order-view-table tfoot .grand_total .mark,
+body.account.sales-order-view .order-view-table tfoot .grand_total .amount,
+body.account.sales-order-view .order-view-table tfoot .grand-total .mark,
+body.account.sales-order-view .order-view-table tfoot .grand-total .amount,
+body.account.order-view-page .order-view-table tfoot .grand_total .mark,
+body.account.order-view-page .order-view-table tfoot .grand_total .amount,
+body.account.order-view-page .order-view-table tfoot .grand-total .mark,
+body.account.order-view-page .order-view-table tfoot .grand-total .amount {
+    padding-top: 18px !important;
+    border-top: 1px solid #dfe7f1 !important;
+    color: #0f172a !important;
+    font-size: 16px !important;
+}
+
+body.account.sales-order-view .order-view-table tfoot .grand_total .amount strong,
+body.account.sales-order-view .order-view-table tfoot .grand-total .amount strong,
+body.account.order-view-page .order-view-table tfoot .grand_total .amount strong,
+body.account.order-view-page .order-view-table tfoot .grand-total .amount strong {
+    color: #0095ff !important;
+    font-size: 18px !important;
+}
+
+body.account.sales-order-view .order-info-grid,
+body.account.order-view-page .order-info-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) !important;
+    gap: 18px !important;
+}
+
+body.account.sales-order-view .order-info-box,
+body.account.order-view-page .order-info-box {
+    display: grid !important;
+    grid-template-columns: 42px minmax(0, 1fr) !important;
+    gap: 14px !important;
+    min-width: 0 !important;
+    padding: 18px !important;
+    border: 1px solid #dfe7f1 !important;
+    border-radius: 12px !important;
+    background: #f8fafc !important;
+}
+
+body.account.sales-order-view .order-info-address,
+body.account.order-view-page .order-info-address {
+    grid-row: span 2 !important;
+}
+
+body.account.sales-order-view .order-info-icon,
+body.account.order-view-page .order-info-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 10px !important;
+    background: #dbeafe !important;
+    color: #2563eb !important;
+}
+
+body.account.sales-order-view .order-info-box strong,
+body.account.order-view-page .order-info-box strong {
+    display: block !important;
+    margin: 0 0 8px !important;
+    color: #0f172a !important;
+    font-size: 14px !important;
+    font-weight: 900 !important;
+}
+
+body.account.sales-order-view .order-info-box address,
+body.account.sales-order-view .order-info-box p,
+body.account.sales-order-view .order-payment-method,
+body.account.order-view-page .order-info-box address,
+body.account.order-view-page .order-info-box p,
+body.account.order-view-page .order-payment-method {
+    margin: 0 !important;
+    color: #334155 !important;
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+}
+
+@media (max-width: 900px) {
+    body.account.sales-order-view .order-view-hero,
+    body.account.order-view-page .order-view-hero {
+        display: grid !important;
+    }
+
+    body.account.sales-order-view .order-view-total,
+    body.account.order-view-page .order-view-total {
+        min-width: 0 !important;
+        text-align: left !important;
+    }
+
+    body.account.sales-order-view .order-info-grid,
+    body.account.order-view-page .order-info-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    body.account.sales-order-view .order-info-address,
+    body.account.order-view-page .order-info-address {
+        grid-row: auto !important;
+    }
+}
+
+@media (max-width: 640px) {
+    body.account.sales-order-view .order-view-hero,
+    body.account.sales-order-view .order-view-card,
+    body.account.order-view-page .order-view-hero,
+    body.account.order-view-page .order-view-card {
+        padding: 22px 18px !important;
+        border-radius: 12px !important;
+    }
+
+    body.account.sales-order-view .order-view-hero h1,
+    body.account.order-view-page .order-view-hero h1 {
+        font-size: 22px !important;
+    }
+
+    body.account.sales-order-view .order-view-table,
+    body.account.order-view-page .order-view-table {
+        min-width: 720px !important;
+    }
+}

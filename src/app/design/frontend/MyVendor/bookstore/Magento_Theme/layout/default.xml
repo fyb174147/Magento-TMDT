@@ -14,7 +14,7 @@
 
         <referenceContainer name="page.wrapper">
             <block class="Magento\Framework\View\Element\Template" name="custom.header" 
-                   template="Magento_Theme::html/header.phtml" before="main.content"/>
+                   template="Magento_Theme::html/header.phtml" before="main.content" cacheable="false"/>
 
             <container name="custom.footer.wrapper" as="custom_footer_wrapper" after="main.content" label="Custom Footer Container">
                 <block class="Magento\Framework\View\Element\Template" name="custom.footer" 

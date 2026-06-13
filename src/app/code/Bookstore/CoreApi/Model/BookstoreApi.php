@@ -14,6 +14,14 @@ use Magento\Sales\Api\Data\OrderInterface as MagentoOrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory as OrderCollectionFactory;
 use Magento\Store\Model\StoreManagerInterface;
+use Bookstore\CoreApi\Model\Data\ProductDetail;
+use Bookstore\CoreApi\Model\Data\Stock;
+use Bookstore\CoreApi\Model\Data\CustomerProfile;
+use Bookstore\CoreApi\Model\Data\OrderItem;
+use Bookstore\CoreApi\Model\Data\OrderList;
+use Bookstore\CoreApi\Model\Data\OrderStatus;
+use Bookstore\CoreApi\Model\Data\OrderSummary;
+use Bookstore\CoreApi\Model\Data\VietQr;
 
 class BookstoreApi
 {
@@ -35,7 +43,7 @@ class BookstoreApi
 
     /**
      * @param int $productId
-     * @return mixed[]
+     * @return \Bookstore\CoreApi\Api\Data\ProductDetailInterface
      * @throws NoSuchEntityException
      */
     public function getProduct($productId)
@@ -45,28 +53,28 @@ class BookstoreApi
         $image = (string)$product->getData('image');
         $mediaUrl = $this->storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
 
-        return [
-            'id' => (int)$product->getId(),
-            'sku' => (string)$product->getSku(),
-            'name' => (string)$product->getName(),
-            'price' => (float)$product->getPrice(),
-            'special_price' => $product->getSpecialPrice() !== null ? (float)$product->getSpecialPrice() : null,
-            'type' => (string)$product->getTypeId(),
-            'status' => (int)$product->getStatus(),
-            'visibility' => (int)$product->getVisibility(),
-            'url_key' => (string)$product->getUrlKey(),
-            'short_description' => (string)$product->getShortDescription(),
-            'description' => (string)$product->getDescription(),
-            'image' => $image && $image !== 'no_selection' ? $mediaUrl . 'catalog/product' . $image : null,
-            'stock' => [
-                'is_in_stock' => (bool)$stock->getIsInStock(),
-                'qty' => (float)$stock->getQty(),
-            ],
-        ];
+        $stockData = (new Stock())
+            ->setIsInStock((bool)$stock->getIsInStock())
+            ->setQty((float)$stock->getQty());
+
+        return (new ProductDetail())
+            ->setId((int)$product->getId())
+            ->setSku((string)$product->getSku())
+            ->setName((string)$product->getName())
+            ->setPrice((float)$product->getPrice())
+            ->setSpecialPrice($product->getSpecialPrice() !== null ? (float)$product->getSpecialPrice() : null)
+            ->setType((string)$product->getTypeId())
+            ->setStatus((int)$product->getStatus())
+            ->setVisibility((int)$product->getVisibility())
+            ->setUrlKey((string)$product->getUrlKey())
+            ->setShortDescription((string)$product->getShortDescription())
+            ->setDescription((string)$product->getDescription())
+            ->setImage($image && $image !== 'no_selection' ? $mediaUrl . 'catalog/product' . $image : null)
+            ->setStock($stockData);
     }
 
     /**
-     * @return mixed[]
+     * @return \Bookstore\CoreApi\Api\Data\CustomerProfileInterface
      * @throws AuthorizationException
      * @throws NoSuchEntityException
      */
@@ -74,18 +82,18 @@ class BookstoreApi
     {
         $customer = $this->customerRepository->getById($this->getCustomerId());
 
-        return [
-            'id' => (int)$customer->getId(),
-            'email' => (string)$customer->getEmail(),
-            'firstname' => (string)$customer->getFirstname(),
-            'lastname' => (string)$customer->getLastname(),
-            'group_id' => (int)$customer->getGroupId(),
-            'created_at' => (string)$customer->getCreatedAt(),
-        ];
+        return (new CustomerProfile())
+            ->setLoggedIn(true)
+            ->setId((int)$customer->getId())
+            ->setEmail((string)$customer->getEmail())
+            ->setFirstname((string)$customer->getFirstname())
+            ->setLastname((string)$customer->getLastname())
+            ->setGroupId((int)$customer->getGroupId())
+            ->setCreatedAt((string)$customer->getCreatedAt());
     }
 
     /**
-     * @return mixed[]
+     * @return \Bookstore\CoreApi\Api\Data\OrderListInterface
      * @throws AuthorizationException
      */
     public function getCustomerOrders()
@@ -101,12 +109,12 @@ class BookstoreApi
             $items[] = $this->mapOrderSummary($order);
         }
 
-        return ['items' => $items, 'total' => count($items)];
+        return (new OrderList())->setItems($items)->setTotal(count($items));
     }
 
     /**
      * @param int $orderId
-     * @return mixed[]
+     * @return \Bookstore\CoreApi\Api\Data\OrderStatusInterface
      * @throws AuthorizationException
      * @throws NoSuchEntityException
      */
@@ -114,21 +122,20 @@ class BookstoreApi
     {
         $order = $this->getCustomerOrder((int)$orderId);
 
-        return [
-            'id' => (int)$order->getEntityId(),
-            'increment_id' => (string)$order->getIncrementId(),
-            'status' => (string)$order->getStatus(),
-            'state' => (string)$order->getState(),
-            'grand_total' => (float)$order->getGrandTotal(),
-            'created_at' => (string)$order->getCreatedAt(),
-        ];
+        return (new OrderStatus())
+            ->setId((int)$order->getEntityId())
+            ->setIncrementId((string)$order->getIncrementId())
+            ->setStatus((string)$order->getStatus())
+            ->setState((string)$order->getState())
+            ->setGrandTotal((float)$order->getGrandTotal())
+            ->setCreatedAt((string)$order->getCreatedAt());
     }
 
     /**
      * @param int|null $orderId
      * @param float|null $amount
      * @param string|null $description
-     * @return mixed[]
+     * @return \Bookstore\CoreApi\Api\Data\VietQrInterface
      * @throws AuthorizationException
      * @throws InputException
      * @throws NoSuchEntityException
@@ -159,14 +166,13 @@ class BookstoreApi
             'accountName' => self::VIETQR_ACCOUNT_NAME,
         ]);
 
-        return [
-            'qr_url' => $qrUrl,
-            'bank_id' => self::VIETQR_BANK_ID,
-            'account_no' => self::VIETQR_ACCOUNT_NO,
-            'account_name' => self::VIETQR_ACCOUNT_NAME,
-            'amount' => (int)round($amount),
-            'add_info' => $addInfo,
-        ];
+        return (new VietQr())
+            ->setQrUrl($qrUrl)
+            ->setBankId(self::VIETQR_BANK_ID)
+            ->setAccountNo(self::VIETQR_ACCOUNT_NO)
+            ->setAccountName(self::VIETQR_ACCOUNT_NAME)
+            ->setAmount((int)round($amount))
+            ->setAddInfo($addInfo);
     }
 
     /**
@@ -196,31 +202,30 @@ class BookstoreApi
         return $order;
     }
 
-    private function mapOrderSummary(MagentoOrderInterface $order): array
+    private function mapOrderSummary(MagentoOrderInterface $order): OrderSummary
     {
         $items = [];
         foreach ($order->getAllVisibleItems() as $item) {
-            $items[] = [
-                'sku' => (string)$item->getSku(),
-                'name' => (string)$item->getName(),
-                'qty_ordered' => (float)$item->getQtyOrdered(),
-                'price' => (float)$item->getPrice(),
-                'row_total' => (float)$item->getRowTotal(),
-            ];
+            $items[] = (new OrderItem())
+                ->setProductId((int)$item->getProductId())
+                ->setSku((string)$item->getSku())
+                ->setName((string)$item->getName())
+                ->setQty((float)$item->getQtyOrdered())
+                ->setPrice((float)$item->getPrice())
+                ->setRowTotal((float)$item->getRowTotal());
         }
 
-        return [
-            'id' => (int)$order->getEntityId(),
-            'increment_id' => (string)$order->getIncrementId(),
-            'status' => (string)$order->getStatus(),
-            'state' => (string)$order->getState(),
-            'grand_total' => (float)$order->getGrandTotal(),
-            'subtotal' => (float)$order->getSubtotal(),
-            'shipping_amount' => (float)$order->getShippingAmount(),
-            'created_at' => (string)$order->getCreatedAt(),
-            'payment_method' => $order->getPayment() ? (string)$order->getPayment()->getMethod() : null,
-            'shipping_method' => (string)$order->getShippingMethod(),
-            'items' => $items,
-        ];
+        return (new OrderSummary())
+            ->setId((int)$order->getEntityId())
+            ->setIncrementId((string)$order->getIncrementId())
+            ->setStatus((string)$order->getStatus())
+            ->setState((string)$order->getState())
+            ->setGrandTotal((float)$order->getGrandTotal())
+            ->setSubtotal((float)$order->getSubtotal())
+            ->setShippingAmount((float)$order->getShippingAmount())
+            ->setCreatedAt((string)$order->getCreatedAt())
+            ->setPaymentMethod($order->getPayment() ? (string)$order->getPayment()->getMethod() : null)
+            ->setShippingMethod((string)$order->getShippingMethod())
+            ->setItems($items);
     }
 }

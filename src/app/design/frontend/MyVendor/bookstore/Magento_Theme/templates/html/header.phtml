@@ -1,5 +1,13 @@
 <?php
 /** @var \Magento\Theme\Block\Html\Header $block */
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+$isLoggedIn = $customerSession->isLoggedIn();
+$customerFirstname = '';
+
+if ($isLoggedIn) {
+    $customerFirstname = (string)$customerSession->getCustomer()->getFirstname();
+}
 ?>
 
 <header>
@@ -22,12 +30,10 @@
                 <li><a href="<?= $block->getUrl('bookstore-info') ?>"><?= __('Tiện ích') ?></a></li>
             </ul>
 
-            <div class="header-actions" data-bind="scope: 'customer'">
-                <!-- Hiển thị khi ĐÃ ĐĂNG NHẬP -->
-                <!-- ko if: customer().firstname  -->
-                <div class="user-account-wrapper">
+            <div class="header-actions <?= $isLoggedIn ? 'is-server-logged-in' : 'is-server-guest' ?>" data-bind="scope: 'customer'">
+                <div class="user-account-wrapper auth-logged-in" data-bind="visible: customer().firstname || <?= $isLoggedIn ? 'true' : 'false' ?>">
                     <div class="user-trigger">
-                        Chào, <strong data-bind="text: customer().firstname"></strong> ▼
+                        Chào, <strong data-bind="text: customer().firstname || '<?= $block->escapeJs($customerFirstname) ?>'"><?= $block->escapeHtml($customerFirstname) ?></strong> ▼
                     </div>
                     <ul class="user-dropdown-menu">
                         <li><a href="<?= $block->getUrl('customer/account') ?>"><?= __('Thông tin cá nhân') ?></a></li>
@@ -36,15 +42,11 @@
                         <li><a href="<?= $block->getUrl('customer/account/logout') ?>" class="logout-link"><?= __('Đăng xuất') ?></a></li>
                     </ul>
                 </div>
-                <a href="<?= $block->getUrl('checkout/cart') ?>" class="cart-icon-link">🛒</a>
-                <!-- /ko -->
+                <a href="<?= $block->getUrl('checkout/cart') ?>" class="cart-icon-link auth-logged-in" data-bind="visible: customer().firstname || <?= $isLoggedIn ? 'true' : 'false' ?>">🛒</a>
 
-                <!-- Hiển thị khi CHƯA ĐĂNG NHẬP -->
-                <!-- ko ifnot: customer().firstname  -->
-                <a href="<?= $block->getUrl('customer/account/login') ?>" class="btn-login-link">
+                <a href="<?= $block->getUrl('customer/account/login') ?>" class="btn-login-link auth-guest" data-bind="visible: !customer().firstname && <?= $isLoggedIn ? 'false' : 'true' ?>">
                     <?= __('Đăng nhập') ?>
                 </a>
-                <!-- /ko -->
             </div>
         </div>
     </div>
@@ -93,8 +95,22 @@ require(['jquery'], function($) {
 </script>
 
 <style>
+    header { padding: 0 !important; margin: 0 !important; background: var(--bg-body); border-bottom: 1px solid var(--border); }
+    .header-main { width: 100%; background: var(--bg-body); }
+    .header-content { display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 28px !important; min-height: 84px !important; height: auto !important; padding: 0 20px !important; box-sizing: border-box !important; }
+    .header-content .logo { flex: 0 0 180px !important; display: inline-flex !important; align-items: center !important; gap: 8px !important; min-width: 0 !important; line-height: 1 !important; }
+    .header-content .logo span { display: inline-flex; align-items: center; line-height: 1; }
+    .nav-menu { flex: 1 1 auto !important; display: flex !important; align-items: center !important; justify-content: center !important; gap: 28px !important; min-width: 0 !important; margin: 0 !important; padding: 0 !important; list-style: none !important; }
+    .nav-menu li { margin: 0 !important; padding: 0 !important; }
+    .nav-menu li a { display: inline-flex !important; align-items: center !important; min-height: 48px !important; line-height: 1 !important; white-space: nowrap !important; }
+    .header-actions { flex: 0 0 220px !important; display: flex !important; align-items: center !important; justify-content: flex-end !important; gap: 12px !important; min-height: 48px !important; }
+    .header-search-static { width: 100% !important; padding: 14px 20px 18px !important; background: #fff !important; border-bottom: 1px solid var(--border) !important; box-sizing: border-box !important; }
+    .header-search-static .container-center { display: flex !important; justify-content: center !important; }
+    .search-form { width: 100% !important; max-width: 650px !important; margin: 0 auto !important; display: block !important; }
+    .search-input-wrapper { position: relative !important; width: 100% !important; height: 48px !important; margin: 0 auto !important; }
+    .search-input-wrapper input { display: block !important; width: 100% !important; height: 48px !important; line-height: 48px !important; box-sizing: border-box !important; }
     .user-account-wrapper { position: relative; display: flex; align-items: center; height: 100%; }
-    .user-trigger { background: #f1f5f9; border: none; padding: 10px 18px; border-radius: 12px; cursor: pointer; font-family: inherit; color: var(--text-main); transition: 0.3s; display: flex; align-items: center; white-space: nowrap; height: 48px; font-size: 14px; font-weight: 600; }
+    .user-trigger { background: #f1f5f9; border: none; padding: 0 18px; border-radius: 12px; cursor: pointer; font-family: inherit; color: var(--text-main); transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; height: 48px; line-height: 1; font-size: 14px; font-weight: 600; box-sizing: border-box; }
     .user-trigger:hover { background: #e2e8f0; }
     .user-account-wrapper.active .user-trigger { background: var(--primary); color: #fff; }
     .user-dropdown-menu { position: absolute; right: 0; top: 100%; margin-top: 8px; width: 220px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); list-style: none; padding: 8px 0; margin: 0; display: none; z-index: 1001; }
@@ -103,11 +119,117 @@ require(['jquery'], function($) {
     .user-dropdown-menu li a:hover { background: #f8fafc; color: #0095ff; }
     .user-dropdown-menu .divider { height: 1px; background: #e2e8f0; margin: 8px 0; }
     .user-dropdown-menu .logout-link { color: #ef4444; }
-    .btn-login-link { background: #0095ff; color: #fff !important; padding: 10px 25px; border-radius: 12px; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; height: 48px; white-space: nowrap; font-size: 14px; }
+    .btn-login-link { background: #0095ff; color: #fff !important; padding: 0 24px; border-radius: 12px; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; height: 48px; line-height: 1; white-space: nowrap; font-size: 14px; box-sizing: border-box; }
     .btn-login-link:hover { background: #0076cc; }
-    .cart-icon-link { display: flex !important; align-items: center !important; justify-content: center; height: 48px !important; width: 48px !important; border-radius: 12px; background: #f1f5f9; text-decoration: none !important; font-size: 20px; transition: 0.3s; margin-left: 12px; }
+    .cart-icon-link { display: inline-flex !important; align-items: center !important; justify-content: center; height: 48px !important; width: 48px !important; min-width: 48px !important; border-radius: 12px; background: #f1f5f9; text-decoration: none !important; font-size: 20px; line-height: 1 !important; transition: 0.3s; margin-left: 0 !important; box-sizing: border-box; }
     .cart-icon-link:hover { background: #e2e8f0; }
+    .header-actions.is-server-logged-in .auth-guest,
+    .header-actions.is-server-guest .auth-logged-in { display: none !important; }
     [data-theme='dark'] .user-dropdown-menu { background: #1e293b; border-color: #334155; }
+    @media (max-width: 1100px) {
+        .header-content { gap: 18px !important; }
+        .header-content .logo { flex-basis: 150px !important; }
+        .nav-menu { gap: 18px !important; }
+        .header-actions { flex-basis: 190px !important; }
+    }
+    @media (max-width: 900px) {
+        html,
+        body {
+            overflow-x: hidden !important;
+        }
+        .header-content {
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            gap: 10px 16px !important;
+            min-height: 0 !important;
+            padding: 14px 20px 10px !important;
+        }
+        .header-content .logo {
+            order: 1 !important;
+            flex: 1 1 auto !important;
+            min-width: 150px !important;
+        }
+        .header-actions {
+            order: 2 !important;
+            flex: 0 0 auto !important;
+            min-width: 0 !important;
+            min-height: 44px !important;
+        }
+        .nav-menu {
+            order: 3 !important;
+            flex: 0 0 100% !important;
+            justify-content: flex-start !important;
+            gap: 18px !important;
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            padding: 2px 0 4px !important;
+            scrollbar-width: none;
+        }
+        .nav-menu::-webkit-scrollbar { display: none; }
+        .nav-menu li a {
+            min-height: 36px !important;
+            font-size: 14px !important;
+        }
+        .btn-login-link,
+        .user-trigger {
+            height: 44px !important;
+            padding: 0 18px !important;
+        }
+        .cart-icon-link {
+            height: 44px !important;
+            width: 44px !important;
+            min-width: 44px !important;
+        }
+        .header-search-static {
+            padding: 10px 20px 14px !important;
+        }
+    }
+    @media (max-width: 560px) {
+        .header-content {
+            padding: 12px 16px 8px !important;
+            gap: 8px 10px !important;
+        }
+        .header-content .logo {
+            min-width: 120px !important;
+            font-size: 14px !important;
+        }
+        .header-actions {
+            gap: 8px !important;
+        }
+        .btn-login-link,
+        .user-trigger {
+            height: 40px !important;
+            padding: 0 14px !important;
+            font-size: 13px !important;
+            border-radius: 10px !important;
+        }
+        .cart-icon-link {
+            height: 40px !important;
+            width: 40px !important;
+            min-width: 40px !important;
+            border-radius: 10px !important;
+            font-size: 18px !important;
+        }
+        .nav-menu {
+            gap: 16px !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            overflow: visible !important;
+            row-gap: 4px !important;
+        }
+        .nav-menu li a {
+            min-height: 30px !important;
+            font-size: 13px !important;
+        }
+        .header-search-static {
+            padding: 8px 16px 12px !important;
+        }
+        .search-input-wrapper,
+        .search-input-wrapper input {
+            height: 44px !important;
+            line-height: 44px !important;
+        }
+    }
 </style>
 
 <?php

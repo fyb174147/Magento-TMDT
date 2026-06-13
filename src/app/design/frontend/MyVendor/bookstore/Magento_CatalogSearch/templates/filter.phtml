@@ -19,17 +19,41 @@ $categoryCollection = $categoryCollectionFactory->create()
 $request = $block->getRequest();
 $selectedCategory = (int)$request->getParam('cat', 0);
 $queryText = trim((string)$request->getParam('q', ''));
+$pathInfo = trim((string)$request->getPathInfo(), '/');
+$requestUri = trim((string)parse_url((string)$request->getRequestUri(), PHP_URL_PATH), '/');
+$fullActionName = (string)$request->getFullActionName();
+$blockName = (string)$block->getNameInLayout();
+$isNewBooksPage = $blockName === 'cms.dummy.filters'
+    || strpos($pathInfo, 'new-books') !== false
+    || strpos($requestUri, 'new-books') !== false;
+$isPromotionsPage = $blockName === 'promo.dummy.filters'
+    || strpos($pathInfo, 'promotions') !== false
+    || strpos($requestUri, 'promotions') !== false;
+$isSearchPage = $blockName === 'catalog.search.filter' || $fullActionName === 'catalogsearch_result_index';
 $priceParam = $request->getParam('price');
 $minPrice = 0;
 $maxPrice = 5000000;
+$hasPriceFilter = false;
 
 if (is_array($priceParam)) {
-    $minPrice = isset($priceParam['from']) ? (int)$priceParam['from'] : $minPrice;
-    $maxPrice = isset($priceParam['to']) ? (int)$priceParam['to'] : $maxPrice;
+    if (array_key_exists('from', $priceParam) && $priceParam['from'] !== '') {
+        $minPrice = (int)$priceParam['from'];
+        $hasPriceFilter = true;
+    }
+    if (array_key_exists('to', $priceParam) && $priceParam['to'] !== '') {
+        $maxPrice = (int)$priceParam['to'];
+        $hasPriceFilter = true;
+    }
 } elseif (is_string($priceParam) && strpos($priceParam, '-') !== false) {
     [$from, $to] = array_pad(explode('-', $priceParam, 2), 2, null);
-    $minPrice = (int)$from;
-    $maxPrice = $to !== null && $to !== '' ? (int)$to : $maxPrice;
+    if ($from !== null && $from !== '') {
+        $minPrice = (int)$from;
+        $hasPriceFilter = true;
+    }
+    if ($to !== null && $to !== '') {
+        $maxPrice = (int)$to;
+        $hasPriceFilter = true;
+    }
 }
 
 $applySearchFilter = static function ($collection) use ($queryText) {
@@ -48,19 +72,61 @@ $countProducts = static function (?int $categoryId = null) use (
     $productCollectionFactory,
     $productStatus,
     $productVisibility,
-    $applySearchFilter
+    $applySearchFilter,
+    $isNewBooksPage,
+    $isPromotionsPage,
+    $isSearchPage,
+    $hasPriceFilter,
+    $minPrice,
+    $maxPrice
 ) {
     $collection = $productCollectionFactory->create()
-        ->addAttributeToSelect('entity_id')
+        ->addAttributeToSelect(['entity_id', 'price', 'special_price', 'created_at'])
         ->addAttributeToFilter('status', ['in' => $productStatus->getVisibleStatusIds()])
         ->setVisibility($productVisibility->getVisibleInSiteIds())
-        ->addStoreFilter();
+        ->addStoreFilter()
+        ->addFinalPrice();
+
+    if ($isNewBooksPage) {
+        $recentCollection = $productCollectionFactory->create()
+            ->addAttributeToSelect('entity_id')
+            ->addAttributeToFilter('status', ['in' => $productStatus->getVisibleStatusIds()])
+            ->setVisibility($productVisibility->getVisibleInSiteIds())
+            ->addStoreFilter()
+            ->addAttributeToSort('created_at', 'desc')
+            ->setPageSize(36)
+            ->setCurPage(1);
+
+        $recentIds = [];
+        foreach ($recentCollection as $recentProduct) {
+            $recentIds[] = (int)$recentProduct->getId();
+        }
+
+        if (!$recentIds) {
+            return 0;
+        }
+
+        $collection->addAttributeToFilter('entity_id', ['in' => $recentIds]);
+    }
+
+    if ($isPromotionsPage) {
+        $collection->addAttributeToFilter('special_price', ['gt' => 0]);
+        $collection->getSelect()->where('price_index.final_price < price_index.price');
+    }
+
+    if ($hasPriceFilter) {
+        $collection->getSelect()
+            ->where('price_index.final_price >= ?', $minPrice)
+            ->where('price_index.final_price <= ?', $maxPrice);
+    }
 
     if ($categoryId) {
         $collection->addCategoriesFilter(['in' => [$categoryId]]);
     }
 
-    $applySearchFilter($collection);
+    if ($isSearchPage) {
+        $applySearchFilter($collection);
+    }
 
     return (int)$collection->getSize();
 };

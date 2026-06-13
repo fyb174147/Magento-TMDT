@@ -3,19 +3,12 @@
 ?>
 <section class="bookstore-account-card block-dashboard-addresses">
     <div class="bookstore-account-card-title">
-        <strong><?= $block->escapeHtml(__('Địa chỉ mặc định')) ?></strong>
+        <strong><?= $block->escapeHtml(__('Địa chỉ giao hàng mặc định')) ?></strong>
         <a class="action edit" href="<?= $block->escapeUrl($block->getAddressBookUrl()) ?>">
             <?= $block->escapeHtml(__('Quản lý địa chỉ')) ?>
         </a>
     </div>
-    <div class="bookstore-account-address-grid">
-        <article>
-            <span class="account-card-label"><?= $block->escapeHtml(__('Thanh toán')) ?></span>
-            <address><?= $block->getPrimaryBillingAddressHtml() ?></address>
-            <a class="action edit" href="<?= $block->escapeUrl($block->getPrimaryBillingAddressEditUrl()) ?>">
-                <?= $block->escapeHtml(__('Sửa địa chỉ')) ?>
-            </a>
-        </article>
+    <div class="bookstore-account-address-grid grid-1-column">
         <article>
             <span class="account-card-label"><?= $block->escapeHtml(__('Giao hàng')) ?></span>
             <address><?= $block->getPrimaryShippingAddressHtml() ?></address>

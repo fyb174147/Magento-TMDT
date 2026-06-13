@@ -11,6 +11,27 @@ body.account.customer-account-index .column.main {
     box-shadow: none !important;
 }
 
+body.account.bookstore-account-custom .sidebar.sidebar-main,
+body.account.bookstore-account-custom .block.account-nav {
+    display: none !important;
+}
+
+body.account.bookstore-account-custom .columns {
+    display: block !important;
+    max-width: 1200px !important;
+}
+
+body.account.bookstore-account-custom .columns .column.main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    float: none !important;
+}
+
+body.account .bookstore-account-card-grid.grid-1-column {
+    grid-template-columns: 1fr !important;
+}
+
 /* ==========================================================================
    HERO SECTION
    ========================================================================== */
@@ -242,6 +263,51 @@ body.account.customer-account-index .column.main {
     font-size: 14px;
 }
 
+.account-dashboard-back-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin: 0 0 18px !important;
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+.account-dashboard-back-link::before {
+    content: "<";
+    font-weight: 900;
+}
+
+.account-dashboard-back-link:hover {
+    color: #0095ff !important;
+}
+
+.address-book-edit-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 34px !important;
+    padding: 0 14px !important;
+    border: 1px solid #dbe5ef !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    color: #0095ff !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+}
+
+.address-book-edit-button:hover {
+    border-color: #0095ff !important;
+    background: #0095ff !important;
+    color: #fff !important;
+}
+
+.address-book-edit-button::after {
+    content: none !important;
+}
+
 .account-card-body {
     padding: 16px 24px 24px;
 }
@@ -411,7 +477,7 @@ body.account.customer-account-index .column.main {
    ========================================================================== */
 .account-stats-bar {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
     margin-bottom: 28px;
 }
@@ -461,6 +527,20 @@ body.account.customer-account-index .column.main {
     color: #d97706;
 }
 
+.stat-icon.stat-logout {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.stat-item.stat-item-logout:hover {
+    border-color: #ef4444;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+}
+
+.stat-item.stat-item-logout:hover .stat-arrow {
+    color: #ef4444;
+}
+
 .stat-text {
     display: flex;
     flex-direction: column;
@@ -506,7 +586,7 @@ body.account.customer-account-index .column.main {
     }
 
     .account-stats-bar {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
     }
 }
@@ -950,6 +1030,519 @@ body.account.sales-order-history .column.main {
     color: #0095ff !important;
 }
 
+body.account.order-history-page .order-history-dashboard-back,
+body.account.sales-order-history .order-history-dashboard-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 18px;
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+body.account.order-history-page .order-history-dashboard-back::before,
+body.account.sales-order-history .order-history-dashboard-back::before {
+    content: "<";
+    font-weight: 900;
+}
+
+body.account.order-history-page .order-history-dashboard-back:hover,
+body.account.sales-order-history .order-history-dashboard-back:hover {
+    color: #0095ff !important;
+}
+
+body.account.order-history-page .order-history-stats,
+body.account.sales-order-history .order-history-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0 0 20px;
+}
+
+body.account.order-history-page .order-history-stat,
+body.account.sales-order-history .order-history-stat {
+    padding: 16px 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+body.account.order-history-page .order-history-stat span,
+body.account.sales-order-history .order-history-stat span {
+    display: block;
+    margin-bottom: 8px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+body.account.order-history-page .order-history-stat strong,
+body.account.sales-order-history .order-history-stat strong {
+    display: block;
+    color: #0f172a;
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+body.account.order-history-page .order-products-toolbar,
+body.account.sales-order-history .order-products-toolbar {
+    display: none !important;
+}
+
+body.account.order-history-page .order-history-simple-pager,
+body.account.sales-order-history .order-history-simple-pager {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 22px 0 0;
+    padding: 18px 0 2px;
+    border-top: 1px solid #f1f5f9;
+    clear: both;
+}
+
+body.account.order-history-page .order-history-simple-pager a,
+body.account.order-history-page .order-history-simple-pager span,
+body.account.sales-order-history .order-history-simple-pager a,
+body.account.sales-order-history .order-history-simple-pager span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid #dbe5ef;
+    background: #fff;
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+body.account.order-history-page .order-history-simple-pager a:hover,
+body.account.sales-order-history .order-history-simple-pager a:hover {
+    border-color: #0095ff;
+    background: #0095ff;
+    color: #fff;
+}
+
+body.account.order-history-page .order-history-simple-pager .disabled,
+body.account.sales-order-history .order-history-simple-pager .disabled {
+    color: #cbd5e1;
+    background: #f8fafc;
+    cursor: default;
+}
+
+body.account.order-history-page .order-history-simple-pager .order-history-page-indicator,
+body.account.sales-order-history .order-history-simple-pager .order-history-page-indicator {
+    width: auto;
+    min-width: 112px;
+    padding: 0 12px;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+    body.account.order-history-page .order-history-stats,
+    body.account.sales-order-history .order-history-stats {
+        grid-template-columns: 1fr;
+    }
+
+    body.account.order-history-page .order-history-simple-pager,
+    body.account.sales-order-history .order-history-simple-pager {
+        flex-wrap: wrap;
+    }
+}
+
+/* ==========================================================================
+   TRANG CHI TIẾT ĐƠN HÀNG (ORDER VIEW)
+   ========================================================================== */
+body.account.order-view-page .column.main,
+body.account.sales-order-view .column.main {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+.bookstore-order-view {
+    display: grid;
+    gap: 22px;
+}
+
+.order-view-hero {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: flex-start;
+    padding: 28px 32px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+}
+
+.order-view-back {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+.order-view-back::before {
+    content: "<";
+    font-weight: 900;
+}
+
+.order-view-back:hover {
+    color: #0095ff !important;
+}
+
+.order-view-hero h1 {
+    margin: 0 0 12px !important;
+    color: #0f172a !important;
+    font-size: 28px !important;
+    font-weight: 900 !important;
+    line-height: 1.2 !important;
+}
+
+.order-view-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.order-view-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.order-view-status.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.order-view-status.processing {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.order-view-status.complete,
+.order-view-status.closed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.order-view-status.canceled {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.order-view-total {
+    min-width: 220px;
+    padding: 18px 20px;
+    border-radius: 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    text-align: right;
+}
+
+.order-view-total span {
+    display: block;
+    margin-bottom: 8px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.order-view-total strong {
+    display: block;
+    color: #0095ff;
+    font-size: 24px;
+    line-height: 1.2;
+}
+
+.order-view-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 26px 32px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+}
+
+.order-view-card-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 16px;
+    margin-bottom: 18px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.order-view-card-title strong {
+    color: #0f172a;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.order-view-card-title span {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.order-view-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.order-view-table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    color: #334155;
+}
+
+.order-view-table caption {
+    display: none;
+}
+
+.order-view-table thead th {
+    padding: 14px 16px !important;
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    color: #64748b !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    text-align: left !important;
+    text-transform: uppercase !important;
+}
+
+.order-view-table tbody td {
+    padding: 18px 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    background: #fff !important;
+    color: #334155 !important;
+    vertical-align: middle !important;
+}
+
+.order-view-table tbody:last-of-type td {
+    border-bottom-color: #e2e8f0 !important;
+}
+
+.order-view-table .product-item-name {
+    display: block;
+    color: #0f172a !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    line-height: 1.45 !important;
+}
+
+.order-view-table .col.sku {
+    color: #64748b !important;
+    font-weight: 600 !important;
+}
+
+.order-view-table .col.price,
+.order-view-table .col.subtotal {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+    white-space: nowrap;
+}
+
+.order-view-table .items-qty {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 4px;
+}
+
+.order-view-table .items-qty .item {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.order-view-table .items-qty .title {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.order-view-table .items-qty .content {
+    color: #0f172a;
+    font-weight: 800;
+}
+
+.order-view-table tfoot th,
+.order-view-table tfoot td {
+    padding: 12px 16px !important;
+    background: #fff !important;
+    border: none !important;
+    font-size: 14px !important;
+}
+
+.order-view-table tfoot tr:first-child th,
+.order-view-table tfoot tr:first-child td {
+    padding-top: 20px !important;
+}
+
+.order-view-table tfoot .mark {
+    color: #475569 !important;
+    font-weight: 700 !important;
+    text-align: right !important;
+}
+
+.order-view-table tfoot .amount {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+    text-align: right !important;
+    white-space: nowrap;
+}
+
+.order-view-table tfoot .grand_total .mark,
+.order-view-table tfoot .grand_total .amount,
+.order-view-table tfoot .grand-total .mark,
+.order-view-table tfoot .grand-total .amount {
+    padding-top: 18px !important;
+    color: #0f172a !important;
+    font-size: 16px !important;
+    border-top: 1px solid #e2e8f0 !important;
+}
+
+.order-view-table tfoot .grand_total .amount strong,
+.order-view-table tfoot .grand-total .amount strong {
+    color: #0095ff !important;
+    font-size: 18px !important;
+}
+
+.order-info-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 18px;
+}
+
+.order-info-box {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 14px;
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.order-info-address {
+    grid-row: span 2;
+}
+
+.order-info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.order-info-box strong {
+    display: block;
+    margin: 0 0 8px;
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.order-info-box address,
+.order-info-box p,
+.order-payment-method {
+    margin: 0 !important;
+    color: #334155 !important;
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+}
+
+.order-payment-method .payment-method,
+.order-payment-method .payment-method-title,
+.order-payment-method .payment-method-content {
+    margin: 0 !important;
+}
+
+.order-payment-method dl,
+.order-payment-method dd {
+    margin-bottom: 0 !important;
+}
+
+.order-view-card .actions-toolbar {
+    margin-top: 20px !important;
+}
+
+@media (max-width: 900px) {
+    .order-view-hero,
+    .order-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .order-view-hero {
+        display: grid;
+    }
+
+    .order-view-total {
+        min-width: 0;
+        text-align: left;
+    }
+
+    .order-info-address {
+        grid-row: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .order-view-hero,
+    .order-view-card {
+        padding: 22px 18px;
+        border-radius: 12px;
+    }
+
+    .order-view-hero h1 {
+        font-size: 22px !important;
+    }
+
+    .order-view-table {
+        min-width: 720px;
+    }
+}
+
 /* ==========================================================================
    TRANG SỔ ĐỊA CHỈ (ADDRESS BOOK)
    ========================================================================== */
@@ -984,6 +1577,10 @@ body.account .bookstore-cms-hero span {
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     margin-bottom: 24px;
+}
+
+.address-book-grid.address-book-grid-single {
+    grid-template-columns: 1fr;
 }
 
 .address-book-card {
@@ -1031,11 +1628,6 @@ body.account .bookstore-cms-hero span {
 .address-book-card-title .ab-icon.ab-shipping {
     background: #dbeafe;
     color: #2563eb;
-}
-
-.address-book-card-title .ab-icon.ab-billing {
-    background: #e0f2fe;
-    color: #0284c7;
 }
 
 .address-book-card-body {
@@ -1093,6 +1685,49 @@ body.account .bookstore-cms-hero span {
     border-color: #e2e8f0 !important;
 }
 
+.address-row-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.address-row-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid #dbe5ef;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.address-row-edit-button {
+    color: #0095ff;
+}
+
+.address-row-edit-button:hover {
+    border-color: #0095ff;
+    background: #0095ff;
+    color: #fff;
+}
+
+.address-row-delete-button {
+    color: #ef4444;
+}
+
+.address-row-delete-button:hover {
+    border-color: #ef4444;
+    background: #ef4444;
+    color: #fff;
+}
+
 .address-book-additional {
     background: #fff;
     border: 1px solid #e2e8f0;
@@ -1140,11 +1775,288 @@ body.account .bookstore-cms-hero span {
 }
 
 /* ==========================================================================
+   FORM THÊM / SỬA ĐỊA CHỈ
+   ========================================================================== */
+body.account.address-form-page .column.main,
+body.account.customer-address-form .column.main {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
+body.account.address-form-page .form-address-edit,
+body.account.customer-address-form .form-address-edit {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 32px !important;
+    background: #fff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+    box-sizing: border-box !important;
+}
+
+body.account.address-form-page .form-address-edit .fieldset,
+body.account.customer-address-form .form-address-edit .fieldset {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px 24px !important;
+    margin: 0 0 28px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    min-inline-size: 0 !important;
+}
+
+body.account.address-form-page .form-address-edit .legend,
+body.account.customer-address-form .form-address-edit .legend {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 0 12px !important;
+    border-bottom: 2px solid #f1f5f9 !important;
+    color: #0f172a !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    line-height: 1.3 !important;
+    text-align: left !important;
+}
+
+body.account.address-form-page .form-address-edit .legend + br,
+body.account.customer-address-form .form-address-edit .legend + br {
+    display: none !important;
+}
+
+body.account.address-form-page .form-address-edit .field,
+body.account.customer-address-form .form-address-edit .field {
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 7px !important;
+    text-align: left !important;
+}
+
+body.account.address-form-page .form-address-edit .field.street,
+body.account.address-form-page .form-address-edit .message.info,
+body.account.address-form-page .form-address-edit .field.choice,
+body.account.customer-address-form .form-address-edit .field.street,
+body.account.customer-address-form .form-address-edit .message.info,
+body.account.customer-address-form .form-address-edit .field.choice {
+    grid-column: 1 / -1 !important;
+}
+
+body.account.address-form-page .form-address-edit .field > .label,
+body.account.address-form-page .form-address-edit label.label,
+body.account.customer-address-form .form-address-edit .field > .label,
+body.account.customer-address-form .form-address-edit label.label {
+    margin: 0 !important;
+    padding: 0 !important;
+    color: #475569 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    text-align: left !important;
+    display: inline-flex !important;
+    align-items: baseline !important;
+    gap: 4px !important;
+    width: auto !important;
+}
+
+body.account.address-form-page .form-address-edit .field.required > .label::after,
+body.account.address-form-page .form-address-edit .field._required > .label::after,
+body.account.customer-address-form .form-address-edit .field.required > .label::after,
+body.account.customer-address-form .form-address-edit .field._required > .label::after {
+    content: "*" !important;
+    color: #ef4444 !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+}
+
+body.account.address-form-page .form-address-edit .field > .label span,
+body.account.customer-address-form .form-address-edit .field > .label span {
+    display: inline !important;
+}
+
+body.account.address-form-page .form-address-edit.bookstore-compact-address-form .contact-fields,
+body.account.customer-address-form .form-address-edit.bookstore-compact-address-form .contact-fields {
+    grid-template-columns: minmax(0, 1fr) !important;
+}
+
+body.account.address-form-page .form-address-edit .control,
+body.account.customer-address-form .form-address-edit .control {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+body.account.address-form-page .form-address-edit input.input-text,
+body.account.address-form-page .form-address-edit select,
+body.account.address-form-page .form-address-edit textarea,
+body.account.customer-address-form .form-address-edit input.input-text,
+body.account.customer-address-form .form-address-edit select,
+body.account.customer-address-form .form-address-edit textarea {
+    width: 100% !important;
+    min-height: 46px !important;
+    padding: 0 14px !important;
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    background: #fff !important;
+    color: #0f172a !important;
+    font-size: 14px !important;
+    line-height: 46px !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+body.account.address-form-page .form-address-edit select,
+body.account.customer-address-form .form-address-edit select {
+    appearance: auto !important;
+}
+
+body.account.address-form-page .form-address-edit input.input-text:focus,
+body.account.address-form-page .form-address-edit select:focus,
+body.account.address-form-page .form-address-edit textarea:focus,
+body.account.customer-address-form .form-address-edit input.input-text:focus,
+body.account.customer-address-form .form-address-edit select:focus,
+body.account.customer-address-form .form-address-edit textarea:focus {
+    border-color: #0095ff !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(0, 149, 255, 0.12) !important;
+}
+
+body.account.address-form-page .form-address-edit .field.street .control,
+body.account.customer-address-form .form-address-edit .field.street .control {
+    display: grid !important;
+    gap: 12px !important;
+}
+
+body.account.address-form-page .form-address-edit .field.street .field.primary,
+body.account.customer-address-form .form-address-edit .field.street .field.primary {
+    display: none !important;
+}
+
+body.account.address-form-page .form-address-edit .field.street .nested,
+body.account.customer-address-form .form-address-edit .field.street .nested {
+    display: grid !important;
+    gap: 12px !important;
+}
+
+body.account.address-form-page .form-address-edit .field.choice,
+body.account.customer-address-form .form-address-edit .field.choice {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 4px 0 !important;
+}
+
+body.account.address-form-page .form-address-edit .field.choice input[type="checkbox"],
+body.account.customer-address-form .form-address-edit .field.choice input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    accent-color: #0095ff !important;
+}
+
+body.account.address-form-page .form-address-edit .field.choice .label,
+body.account.customer-address-form .form-address-edit .field.choice .label {
+    color: #334155 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+}
+
+body.account.address-form-page .form-address-edit .message.info,
+body.account.customer-address-form .form-address-edit .message.info {
+    margin: 0 !important;
+    padding: 12px 14px !important;
+    border: 1px solid #bfdbfe !important;
+    border-radius: 10px !important;
+    background: #eff6ff !important;
+    color: #1d4ed8 !important;
+    font-size: 13px !important;
+}
+
+body.account.address-form-page .form-address-edit .message.warning,
+body.account.customer-address-form .form-address-edit .message.warning {
+    margin-top: 8px !important;
+}
+
+body.account.address-form-page .form-address-edit .actions-toolbar,
+body.account.customer-address-form .form-address-edit .actions-toolbar {
+    margin: 30px 0 0 !important;
+    padding: 22px 0 0 !important;
+    border-top: 1px solid #e2e8f0 !important;
+    display: flex !important;
+    flex-direction: row-reverse !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 14px !important;
+}
+
+body.account.address-form-page .form-address-edit .actions-toolbar .primary,
+body.account.address-form-page .form-address-edit .actions-toolbar .secondary,
+body.account.customer-address-form .form-address-edit .actions-toolbar .primary,
+body.account.customer-address-form .form-address-edit .actions-toolbar .secondary {
+    margin: 0 !important;
+}
+
+body.account.address-form-page .form-address-edit button.action.primary,
+body.account.customer-address-form .form-address-edit button.action.primary {
+    min-height: 46px !important;
+    padding: 0 26px !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: #0095ff !important;
+    color: #fff !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    box-shadow: 0 2px 8px rgba(0, 149, 255, 0.2) !important;
+    transition: background 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+body.account.address-form-page .form-address-edit button.action.primary:hover,
+body.account.customer-address-form .form-address-edit button.action.primary:hover {
+    background: #0076cc !important;
+    box-shadow: 0 4px 12px rgba(0, 149, 255, 0.28) !important;
+}
+
+body.account.address-form-page .form-address-edit a.action.back,
+body.account.customer-address-form .form-address-edit a.action.back {
+    display: inline-flex !important;
+    align-items: center !important;
+    min-height: 46px !important;
+    padding: 0 14px !important;
+    color: #64748b !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    border-radius: 8px !important;
+}
+
+body.account.address-form-page .form-address-edit a.action.back:hover,
+body.account.customer-address-form .form-address-edit a.action.back:hover {
+    background: #f1f5f9 !important;
+    color: #0095ff !important;
+}
+
+/* ==========================================================================
    RESPONSIVE CHO TẤT CẢ TRANG
    ========================================================================== */
 @media (max-width: 768px) {
     .account-edit-form-card {
         padding: 20px;
+    }
+
+    body.account.address-form-page .form-address-edit,
+    body.account.customer-address-form .form-address-edit {
+        padding: 22px !important;
+    }
+
+    body.account.address-form-page .form-address-edit .fieldset,
+    body.account.customer-address-form .form-address-edit .fieldset {
+        grid-template-columns: 1fr !important;
     }
 
     .address-book-grid {
@@ -1165,6 +2077,30 @@ body.account .bookstore-cms-hero span {
 @media (max-width: 480px) {
     .account-edit-form-card {
         padding: 16px;
+    }
+
+    body.account.address-form-page .form-address-edit,
+    body.account.customer-address-form .form-address-edit {
+        padding: 18px !important;
+    }
+
+    body.account.address-form-page .form-address-edit .actions-toolbar,
+    body.account.customer-address-form .form-address-edit .actions-toolbar {
+        align-items: stretch !important;
+        flex-direction: column !important;
+    }
+
+    body.account.address-form-page .form-address-edit .actions-toolbar .primary,
+    body.account.address-form-page .form-address-edit .actions-toolbar .secondary,
+    body.account.address-form-page .form-address-edit button.action.primary,
+    body.account.address-form-page .form-address-edit a.action.back,
+    body.account.customer-address-form .form-address-edit .actions-toolbar .primary,
+    body.account.customer-address-form .form-address-edit .actions-toolbar .secondary,
+    body.account.customer-address-form .form-address-edit button.action.primary,
+    body.account.customer-address-form .form-address-edit a.action.back {
+        width: 100% !important;
+        justify-content: center !important;
+        text-align: center !important;
     }
 
     .address-book-card {

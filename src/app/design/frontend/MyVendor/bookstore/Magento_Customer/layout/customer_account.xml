@@ -3,12 +3,9 @@
     <body>
         <attribute name="class" value="account bookstore-account-custom"/>
 
-        <!-- Đổi tên các link điều hướng (giữ cấu trúc columns) -->
-        <referenceBlock name="sidebar.main.account_nav">
-            <arguments>
-                <argument name="block_title" xsi:type="string">Tài khoản</argument>
-            </arguments>
-        </referenceBlock>
+        <!-- Dùng thanh điều hướng custom trong nội dung tài khoản, bỏ nav mặc định của Magento -->
+        <referenceBlock name="sidebar.main.account_nav" remove="true"/>
+        <referenceBlock name="customer_account_navigation" remove="true"/>
         <referenceBlock name="customer-account-navigation-account-link">
             <arguments>
                 <argument name="label" xsi:type="string">Tổng quan</argument>

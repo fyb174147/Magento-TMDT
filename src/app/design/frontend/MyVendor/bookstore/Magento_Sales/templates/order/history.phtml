@@ -1,16 +1,60 @@
 <?php
 /** @var \Magento\Sales\Block\Order\History $block */
 $_orders = $block->getOrders(); // Lấy danh sách đơn hàng
+$totalOrders = 0;
+$totalSpend = 0.0;
+$formattedTotalSpend = '';
+if ($_orders) {
+    $currentPageParam = (int)$block->getRequest()->getParam('p', 1) ?: 1;
+    $allOrders = clone $_orders;
+    $allOrders->clear()->setPageSize(false)->setCurPage(1);
+    $totalOrders = (int)$allOrders->getSize();
+    foreach ($allOrders as $orderForStats) {
+        $totalSpend += (float)$orderForStats->getGrandTotal();
+    }
+    $formattedTotalSpend = $allOrders->getFirstItem()->getId()
+        ? $allOrders->getFirstItem()->formatPrice($totalSpend)
+        : '';
+
+    $_orders->setPageSize(10)->setCurPage($currentPageParam);
+    if ($_orders->isLoaded()) {
+        $_orders->clear();
+    }
+}
 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 // Gọi Helper kiểm tra reorder trực tiếp từ môi trường lõi
 $salesHelper = $objectManager->get(\Magento\Sales\Helper\Reorder::class);
+$getPageUrl = function (int $page) use ($block): string {
+    return $block->getUrl('*/*/*', [
+        '_current' => true,
+        '_use_rewrite' => true,
+        '_query' => [
+            'p' => $page > 1 ? $page : null,
+            'limit' => null,
+        ],
+    ]);
+};
 ?>
 <div class="bookstore-unified-account-card">
+    <a class="order-history-dashboard-back" href="<?= $block->escapeUrl($block->getBackUrl()) ?>">
+        <?= $block->escapeHtml(__('Quay lại trang tổng quan thông tin')) ?>
+    </a>
     <div class="bookstore-account-card-header">
         <strong>Lịch sử mua hàng</strong>
     </div>
 
     <?php if ($_orders && count($_orders)): ?>
+        <div class="order-history-stats">
+            <div class="order-history-stat">
+                <span>Tổng số đơn hàng</span>
+                <strong><?= $block->escapeHtml((string)$totalOrders) ?></strong>
+            </div>
+            <div class="order-history-stat">
+                <span>Tổng chi tiêu</span>
+                <strong><?= /* @noEscape */ $formattedTotalSpend ?></strong>
+            </div>
+        </div>
+
         <div class="table-wrapper orders-history" style="overflow-x: auto; width: 100%;">
             <table class="data table table-order-items history bookstore-table" id="my-orders-table">
                 <thead>
@@ -32,7 +76,7 @@ $salesHelper = $objectManager->get(\Magento\Sales\Helper\Reorder::class);
                             <td class="order-price"><?= /* @noEscape */ $_order->formatPrice($_order->getGrandTotal()) ?></td>
                             <td>
                                 <span class="status-badge" style="background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">
-                                    <?= $block->escapeHtml($_order->getStatusLabel()) ?>
+                                    <?= $block->escapeHtml(__($_order->getStatusLabel())) ?>
                                 </span>
                             </td>
                             <td>
@@ -50,8 +94,34 @@ $salesHelper = $objectManager->get(\Magento\Sales\Helper\Reorder::class);
                 </tbody>
             </table>
         </div>
-        <?php if ($block->getPagerHtml()): ?>
-            <div class="order-products-toolbar toolbar bottom"><?= $block->getPagerHtml() ?></div>
+        <?php if ($_orders->getLastPageNumber() > 1): ?>
+            <?php
+            $currentPage = (int)$_orders->getCurPage();
+            $lastPage = (int)$_orders->getLastPageNumber();
+            $previousPage = max(1, $currentPage - 1);
+            $nextPage = min($lastPage, $currentPage + 1);
+            ?>
+            <nav class="order-history-simple-pager" aria-label="<?= $block->escapeHtmlAttr(__('Phân trang lịch sử đơn hàng')) ?>">
+                <?php if ($currentPage > 1): ?>
+                    <a href="<?= $block->escapeUrl($getPageUrl(1)) ?>" aria-label="<?= $block->escapeHtmlAttr(__('Trang đầu')) ?>">&lt;&lt;</a>
+                    <a href="<?= $block->escapeUrl($getPageUrl($previousPage)) ?>" aria-label="<?= $block->escapeHtmlAttr(__('Trang trước')) ?>">&lt;</a>
+                <?php else: ?>
+                    <span class="disabled" aria-hidden="true">&lt;&lt;</span>
+                    <span class="disabled" aria-hidden="true">&lt;</span>
+                <?php endif; ?>
+
+                <span class="order-history-page-indicator">
+                    <?= $block->escapeHtml(__('Trang %1 của %2', $currentPage, $lastPage)) ?>
+                </span>
+
+                <?php if ($currentPage < $lastPage): ?>
+                    <a href="<?= $block->escapeUrl($getPageUrl($nextPage)) ?>" aria-label="<?= $block->escapeHtmlAttr(__('Trang sau')) ?>">&gt;</a>
+                    <a href="<?= $block->escapeUrl($getPageUrl($lastPage)) ?>" aria-label="<?= $block->escapeHtmlAttr(__('Trang cuối')) ?>">&gt;&gt;</a>
+                <?php else: ?>
+                    <span class="disabled" aria-hidden="true">&gt;</span>
+                    <span class="disabled" aria-hidden="true">&gt;&gt;</span>
+                <?php endif; ?>
+            </nav>
         <?php endif ?>
     <?php else: ?>
         <div class="empty-state" style="padding: 32px; text-align: center; color: #64748b;">
