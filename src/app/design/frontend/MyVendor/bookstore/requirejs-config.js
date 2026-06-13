@@ -10,6 +10,9 @@ var config = {
             'Magento_Catalog/js/catalog-add-to-cart': {
                 // Sửa đường dẫn chuẩn theo thư mục theme của bạn
                 'Magento_Catalog/js/mixin/catalog-add-to-cart-mixin': true
+            },
+            'Magento_Checkout/js/model/payment-service': {
+                'js/mixin/payment-service-mixin': true
             }
         }
     }

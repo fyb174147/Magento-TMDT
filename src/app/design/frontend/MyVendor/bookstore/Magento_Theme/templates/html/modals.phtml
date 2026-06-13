@@ -89,7 +89,7 @@
             <span><?= $block->escapeHtml(__('hoặc tiếp tục với')) ?></span>
         </div>
 
-        <button type="button" class="btn-google">
+        <button type="button" class="btn-google" onclick="window.location.href='<?= $block->escapeUrl($block->getUrl('shop/auth/google')) ?>'">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
             <?= $block->escapeHtml(__('Tiếp tục với Google')) ?>
         </button>

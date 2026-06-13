@@ -6,5 +6,10 @@
                 <value id="vietqr" type="host">img.vietqr.io</value>
             </values>
         </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="vietqr-api" type="host">api.vietqr.io</value>
+            </values>
+        </policy>
     </policies>
 </csp_whitelist>

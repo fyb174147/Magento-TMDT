@@ -17,3 +17,4 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 RUN echo "memory_limit=2G" > /usr/local/etc/php/conf.d/memory-limit.ini
+RUN echo "clear_env = no" >> /usr/local/etc/php-fpm.d/www.conf

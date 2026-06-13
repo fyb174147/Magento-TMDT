@@ -14,20 +14,38 @@
                 <img data-bind="attr: {src: getQrUrl(), alt: 'VietQR'}" width="220" height="220"/>
             </div>
             <div class="qr-info">
-                <p><strong>Số tài khoản:</strong> 0123456789</p>
-                <p><strong>Ngân hàng:</strong> Vietcombank (VCB)</p>
-                <p><strong>Nội dung:</strong> MagentoBookstore</p>
-            </div>
-            <button type="button" class="btn-confirm-payment" data-bind="click: placeOrder">
-                <span>Xác nhận đã chuyển khoản</span>
-            </button>
-        </div>
-        <div class="actions-toolbar" style="display:none">
-            <div class="primary">
-                <button class="action primary checkout"
-                        type="submit"
-                        data-bind="click: placeOrder, attr: {title: $t('Place Order')}, css: {disabled: !isPlaceOrderActionAllowed()}, enable: (getCode() == isChecked())">
-                    <span data-bind="i18n: 'Place Order'"></span>
+                <div>
+                    <h4>Quét mã VietQR để chuyển khoản</h4>
+                    <p>Vui lòng chuyển khoản đúng số tiền và nội dung bên dưới, sau đó xác nhận để đặt hàng.</p>
+                </div>
+                <div class="qr-row">
+                    <span>Ngân hàng</span>
+                    <strong data-bind="text: bankName + ' (' + bankId + ')'"></strong>
+                </div>
+                <div class="qr-row">
+                    <span>Số tài khoản</span>
+                    <strong data-bind="text: accountNo"></strong>
+                </div>
+                <div class="qr-row">
+                    <span>Chủ tài khoản</span>
+                    <strong data-bind="text: accountName"></strong>
+                </div>
+                <div class="qr-row">
+                    <span>Số tiền</span>
+                    <strong data-bind="text: getFormattedAmount()"></strong>
+                </div>
+                <div class="qr-row">
+                    <span>Nội dung</span>
+                    <strong data-bind="text: getTransferContent()"></strong>
+                </div>
+                <label class="qr-confirm">
+                    <input type="checkbox" data-bind="checked: transferConfirmed"/>
+                    <span>Tôi đã chuyển khoản đúng số tiền và nội dung ở trên</span>
+                </label>
+                <button type="button"
+                        class="btn-confirm-payment"
+                        data-bind="click: placeOrder, enable: canConfirmPayment(), attr: {title: 'Xác nhận thanh toán VietQR'}">
+                    <span>Xác nhận và đặt hàng</span>
                 </button>
             </div>
         </div>

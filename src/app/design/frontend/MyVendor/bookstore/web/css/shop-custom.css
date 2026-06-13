@@ -135,15 +135,37 @@
     overflow: hidden !important;
 }
 
+/* Đảm bảo hero và lưới là 2 hàng liền nhau trong vùng nội dung chính */
+.bookstore-listing-custom #maincontent,
+.bookstore-listing-custom .columns,
+.bookstore-listing-custom .column.main,
+.bookstore-listing-custom .main.content {
+    row-gap: 0 !important;
+}
+
+.bookstore-listing-custom .main.content > *:empty {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
 /* Triệt tiêu khoảng trắng giữa hero và content */
 .bookstore-listing-custom .bookstore-listing-hero,
 .bookstore-listing-custom .bookstore-cms-hero {
     margin-bottom: 8px !important;
     padding-bottom: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
 }
 
 .bookstore-listing-custom .bookstore-listing-hero + .catalog-search-container,
-.bookstore-listing-custom .bookstore-cms-hero + .catalog-search-container {
+.bookstore-listing-custom .bookstore-cms-hero + .catalog-search-container,
+.bookstore-listing-custom .bookstore-listing-hero ~ .catalog-search-container,
+.bookstore-listing-custom .bookstore-cms-hero ~ .catalog-search-container {
     margin-top: 0 !important;
     padding-top: 0 !important;
 }

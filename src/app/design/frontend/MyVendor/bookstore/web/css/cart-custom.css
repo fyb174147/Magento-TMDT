@@ -628,6 +628,157 @@ body.bookstore-checkout-page button.action.primary:hover {
     transform: translateY(-1px) !important;
 }
 
+/* Checkout progress */
+body.bookstore-checkout-page .opc-progress-bar {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    max-width: 900px !important;
+    margin: 18px auto 24px !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item {
+    position: relative !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 14px 16px !important;
+    border: 1px solid #dbe5f1 !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    text-align: left !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item::before,
+body.bookstore-checkout-page .opc-progress-bar-item::after {
+    display: none !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item > span {
+    display: block !important;
+    padding: 0 !important;
+    color: #64748b !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    line-height: 1.35 !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item._active {
+    border-color: #0095ff !important;
+    box-shadow: 0 6px 18px rgba(0, 149, 255, 0.12) !important;
+}
+
+/* Payment methods */
+body.bookstore-checkout-page .payment-method {
+    border: 1px solid #dbe5f1 !important;
+    border-radius: 8px !important;
+    margin: 0 0 12px !important;
+    overflow: hidden !important;
+    background: #fff !important;
+}
+
+body.bookstore-checkout-page .payment-method-title {
+    padding: 18px 20px !important;
+    margin: 0 !important;
+    border: 0 !important;
+}
+
+body.bookstore-checkout-page .payment-method-title .label span {
+    color: #0f172a !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+}
+
+body.bookstore-checkout-page .payment-method._active {
+    border-color: #0095ff !important;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08) !important;
+}
+
+body.bookstore-checkout-page .payment-method-content {
+    padding: 0 20px 20px !important;
+}
+
+.bookstore-vietqr {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 22px;
+    align-items: start;
+    padding: 18px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.bookstore-vietqr .qr-code-wrapper {
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #dbe5f1;
+    border-radius: 8px;
+}
+
+.bookstore-vietqr .qr-code-wrapper img {
+    display: block;
+    width: 196px;
+    height: 196px;
+}
+
+.bookstore-vietqr h4 {
+    margin: 0 0 8px;
+    color: #0f172a;
+    font-size: 17px;
+}
+
+.bookstore-vietqr p {
+    margin: 6px 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.bookstore-vietqr .qr-info {
+    display: grid;
+    gap: 8px;
+}
+
+.bookstore-vietqr .qr-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 9px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.bookstore-vietqr .qr-row strong {
+    color: #0f172a;
+    text-align: right;
+}
+
+.bookstore-vietqr .qr-confirm {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid #dbe5f1;
+}
+
+.bookstore-vietqr .btn-confirm-payment {
+    width: 100%;
+    margin-top: 12px;
+    background: #0095ff;
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    padding: 13px 18px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.bookstore-vietqr .btn-confirm-payment:disabled {
+    cursor: not-allowed;
+    opacity: .5;
+}
+
 /* ==========================================================================
    9. RESPONSIVE
    ========================================================================== */
@@ -677,6 +828,16 @@ body.bookstore-checkout-page button.action.primary:hover {
         padding: 20px !important;
     }
 
+    body.bookstore-checkout-page .opc-progress-bar,
+    .bookstore-vietqr {
+        grid-template-columns: 1fr !important;
+    }
+
+    .bookstore-vietqr .qr-code-wrapper {
+        width: 220px;
+        margin: 0 auto;
+    }
+
     .cart.main.actions {
         flex-direction: column !important;
         gap: 10px !important;
@@ -701,4 +862,777 @@ body.bookstore-checkout-page button.action.primary:hover {
         padding: 16px !important;
         border-radius: 10px !important;
     }
+}
+
+/* ==========================================================================
+   10. CHECKOUT COMPOSITION OVERRIDE
+   ========================================================================== */
+body.bookstore-checkout-page {
+    background: #f6f8fb !important;
+}
+
+body.bookstore-checkout-page .page-main {
+    max-width: 1160px !important;
+    padding: 56px 20px 72px !important;
+}
+
+body.bookstore-checkout-page .checkout-container {
+    max-width: 1120px !important;
+    margin: 0 auto !important;
+}
+
+body.bookstore-checkout-page .checkout-container::after {
+    display: table !important;
+    clear: both !important;
+    content: "" !important;
+}
+
+body.bookstore-checkout-page .opc-estimated-wrapper {
+    display: none !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar {
+    display: flex !important;
+    gap: 14px !important;
+    max-width: 1120px !important;
+    margin: 0 0 24px !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    text-align: center !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item::before,
+body.bookstore-checkout-page .opc-progress-bar-item::after,
+body.bookstore-checkout-page .opc-progress-bar-item > span::after {
+    display: none !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item > span {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    min-height: 58px !important;
+    padding: 10px 14px !important;
+    border: 1px solid #dbe5f1 !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    color: #64748b !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    box-sizing: border-box !important;
+    white-space: normal !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item > span::before {
+    position: static !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 28px !important;
+    width: 28px !important;
+    height: 28px !important;
+    margin: 0 !important;
+    border-radius: 999px !important;
+    background: #e8f4ff !important;
+    color: #0095ff !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    content: "1" !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item:nth-child(2) > span::before {
+    content: "2" !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item._active > span {
+    border-color: #0095ff !important;
+    color: #0f172a !important;
+    box-shadow: 0 8px 24px rgba(0, 149, 255, 0.12) !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item._active > span::before {
+    background: #0095ff !important;
+    color: #fff !important;
+}
+
+body.bookstore-checkout-page .opc-wrapper {
+    float: left !important;
+    width: calc(100% - 392px) !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.bookstore-checkout-page .opc-sidebar {
+    float: right !important;
+    width: 360px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.bookstore-checkout-page .opc-wrapper .step-content,
+body.bookstore-checkout-page .opc-wrapper .checkout-shipping-address,
+body.bookstore-checkout-page .opc-wrapper .checkout-shipping-method,
+body.bookstore-checkout-page .opc-wrapper .payment-group {
+    background: #fff !important;
+    border: 1px solid #dbe5f1 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
+}
+
+body.bookstore-checkout-page .opc-wrapper .checkout-shipping-address,
+body.bookstore-checkout-page .opc-wrapper .checkout-shipping-method,
+body.bookstore-checkout-page .opc-wrapper .payment-group {
+    padding: 24px !important;
+}
+
+body.bookstore-checkout-page .step-title {
+    margin: 0 0 18px !important;
+    padding: 0 0 14px !important;
+    border-bottom: 1px solid #edf2f7 !important;
+    color: #0f172a !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+}
+
+body.bookstore-checkout-page .shipping-address-items {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+    gap: 16px !important;
+    margin: 0 0 16px !important;
+}
+
+body.bookstore-checkout-page .shipping-address-item {
+    width: auto !important;
+    min-height: 156px !important;
+    margin: 0 !important;
+    padding: 18px 18px 52px !important;
+    border: 1px solid #dbe5f1 !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    color: #334155 !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    box-sizing: border-box !important;
+}
+
+body.bookstore-checkout-page .shipping-address-item.selected-item {
+    border-color: #0095ff !important;
+    box-shadow: 0 8px 24px rgba(0, 149, 255, 0.12) !important;
+}
+
+body.bookstore-checkout-page .shipping-address-item::before,
+body.bookstore-checkout-page .shipping-address-item::after {
+    display: none !important;
+}
+
+body.bookstore-checkout-page .shipping-address-item .action-select-shipping-item {
+    position: absolute !important;
+    right: 14px !important;
+    bottom: 14px !important;
+    min-height: 34px !important;
+    padding: 7px 12px !important;
+    border-radius: 6px !important;
+    background: #f8fafc !important;
+    border: 1px solid #dbe5f1 !important;
+    color: #0f172a !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    box-shadow: none !important;
+}
+
+body.bookstore-checkout-page .action-show-popup {
+    min-height: 40px !important;
+    padding: 0 16px !important;
+    border-radius: 6px !important;
+    border: 1px solid #cbd5e1 !important;
+    background: #fff !important;
+    color: #0f172a !important;
+    font-weight: 800 !important;
+    box-shadow: none !important;
+}
+
+body.bookstore-checkout-page .table-checkout-shipping-method {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border: 1px solid #dbe5f1 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+body.bookstore-checkout-page .table-checkout-shipping-method tbody tr {
+    background: #fff !important;
+}
+
+body.bookstore-checkout-page .table-checkout-shipping-method tbody tr + tr td {
+    border-top: 1px solid #edf2f7 !important;
+}
+
+body.bookstore-checkout-page .table-checkout-shipping-method td {
+    padding: 16px !important;
+    color: #334155 !important;
+    font-size: 14px !important;
+    vertical-align: middle !important;
+}
+
+body.bookstore-checkout-page .checkout-shipping-method .actions-toolbar {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-top: 16px !important;
+}
+
+body.bookstore-checkout-page .payment-method {
+    border: 1px solid #dbe5f1 !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+}
+
+body.bookstore-checkout-page .payment-method-title {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    min-height: 60px !important;
+    padding: 0 18px !important;
+}
+
+body.bookstore-checkout-page .payment-method-title .radio {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+}
+
+body.bookstore-checkout-page .payment-method-title .label {
+    margin: 0 !important;
+}
+
+body.bookstore-checkout-page .payment-method-title .label span {
+    color: #0f172a !important;
+    font-size: 15px !important;
+    font-weight: 900 !important;
+    line-height: 1.35 !important;
+}
+
+body.bookstore-checkout-page .payment-method._active {
+    border-color: #0095ff !important;
+}
+
+body.bookstore-checkout-page .payment-method-content {
+    padding: 0 18px 18px !important;
+}
+
+body.bookstore-checkout-page .payment-method .actions-toolbar {
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-top: 18px !important;
+}
+
+body.bookstore-checkout-page .opc-sidebar .modal-inner-wrap,
+body.bookstore-checkout-page .opc-sidebar .opc-block-summary {
+    padding: 22px !important;
+    border: 1px solid #dbe5f1 !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
+}
+
+body.bookstore-checkout-page .opc-sidebar .opc-block-summary > .title {
+    display: block !important;
+    margin: 0 0 18px !important;
+    padding: 0 0 14px !important;
+    border-bottom: 1px solid #edf2f7 !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+}
+
+body.bookstore-checkout-page .opc-sidebar .opc-block-summary > .title * {
+    color: transparent !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+}
+
+body.bookstore-checkout-page .opc-sidebar .opc-block-summary > .title::before {
+    content: "Tóm tắt đơn hàng";
+    color: #0f172a;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1.3;
+}
+
+body.bookstore-checkout-page .opc-block-summary .table-totals {
+    width: 100% !important;
+    margin: 0 0 12px !important;
+    border-collapse: collapse !important;
+    background: transparent !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .table-totals th,
+body.bookstore-checkout-page .opc-block-summary .table-totals td {
+    padding: 9px 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    color: #64748b !important;
+    font-size: 14px !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .table-totals td {
+    text-align: right !important;
+    color: #0f172a !important;
+    font-weight: 800 !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .grand.totals th,
+body.bookstore-checkout-page .opc-block-summary .grand.totals td {
+    padding-top: 14px !important;
+    border-top: 1px solid #edf2f7 !important;
+    color: #0f172a !important;
+    font-weight: 900 !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .grand.totals .price {
+    color: #0095ff !important;
+    font-size: 20px !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .items-in-cart > .title {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin: 16px 0 0 !important;
+    padding: 14px 0 0 !important;
+    border-top: 1px solid #edf2f7 !important;
+    color: transparent !important;
+    font-size: 0 !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .items-in-cart > .title * {
+    color: transparent !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .items-in-cart > .title::before {
+    content: "Sản phẩm trong giỏ";
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+body.bookstore-checkout-page .opc-block-summary .items-in-cart > .title::after {
+    color: #64748b !important;
+    font-size: 12px !important;
+}
+
+body.bookstore-checkout-page .opc-block-shipping-information {
+    margin-top: 16px !important;
+    padding: 22px !important;
+    border: 1px solid #dbe5f1 !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
+}
+
+body.bookstore-checkout-page .opc-block-shipping-information .shipping-information-title {
+    margin: 0 0 14px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid #edf2f7 !important;
+    color: #0f172a !important;
+    font-size: 16px !important;
+    font-weight: 900 !important;
+    line-height: 1.35 !important;
+}
+
+body.bookstore-checkout-page .opc-block-shipping-information .shipping-information-content {
+    color: #334155 !important;
+    font-size: 14px !important;
+    line-height: 1.65 !important;
+}
+
+body.bookstore-checkout-page .bookstore-vietqr {
+    grid-template-columns: 220px minmax(0, 1fr) !important;
+    padding: 18px !important;
+    border-radius: 8px !important;
+    background: #f8fafc !important;
+}
+
+@media (max-width: 1024px) {
+    body.bookstore-checkout-page .opc-wrapper,
+    body.bookstore-checkout-page .opc-sidebar {
+        float: none !important;
+        width: 100% !important;
+    }
+
+    body.bookstore-checkout-page .opc-sidebar {
+        margin-top: 18px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    body.bookstore-checkout-page .page-main {
+        padding: 28px 14px 48px !important;
+    }
+
+    body.bookstore-checkout-page .opc-progress-bar {
+        flex-direction: column !important;
+    }
+
+    body.bookstore-checkout-page .shipping-address-items,
+    body.bookstore-checkout-page .bookstore-vietqr {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ==========================================================================
+   11. CHECKOUT FINAL POLISH
+   ========================================================================== */
+body.bookstore-checkout-page .page-main {
+    padding-top: 42px !important;
+    padding-bottom: 56px !important;
+}
+
+body.bookstore-checkout-page .checkout-container {
+    max-width: 1080px !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar {
+    gap: 12px !important;
+    max-width: 1080px !important;
+    margin-bottom: 18px !important;
+    padding-bottom: 14px !important;
+    border-bottom: 1px solid #e6edf5 !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item > span {
+    position: relative !important;
+    justify-content: flex-start !important;
+    min-height: 50px !important;
+    padding: 10px 16px !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    overflow: hidden !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item > span::before {
+    flex: 0 0 26px !important;
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 12px !important;
+    box-shadow: inset 0 0 0 1px rgba(0, 149, 255, 0.18) !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item > span::after {
+    display: block !important;
+    color: #64748b !important;
+    font-size: 13px !important;
+    font-weight: 850 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    content: "Vận chuyển" !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item:nth-child(2) > span::after {
+    content: "Xem lại & thanh toán" !important;
+}
+
+body.bookstore-checkout-page .opc-progress-bar-item._active > span::after {
+    color: #0095ff !important;
+}
+
+body.bookstore-checkout-page .opc-wrapper {
+    width: calc(100% - 374px) !important;
+}
+
+body.bookstore-checkout-page .opc-sidebar {
+    width: 342px !important;
+}
+
+body.bookstore-checkout-page .opc-wrapper .checkout-shipping-address,
+body.bookstore-checkout-page .opc-wrapper .checkout-shipping-method,
+body.bookstore-checkout-page .opc-wrapper .payment-group {
+    padding: 20px !important;
+}
+
+body.bookstore-checkout-page .opc-wrapper .checkout-shipping-address,
+body.bookstore-checkout-page .opc-wrapper .checkout-shipping-method {
+    margin-bottom: 12px !important;
+}
+
+body.bookstore-checkout-page .step-title {
+    margin-bottom: 14px !important;
+    padding-bottom: 12px !important;
+    font-size: 18px !important;
+    letter-spacing: 0 !important;
+}
+
+body.bookstore-checkout-page .shipping-address-items {
+    gap: 12px !important;
+    margin-bottom: 12px !important;
+}
+
+body.bookstore-checkout-page .shipping-address-item {
+    min-height: 136px !important;
+    padding: 14px 14px 46px !important;
+    border-color: #d8e3ef !important;
+    background: #fbfdff !important;
+    line-height: 1.5 !important;
+}
+
+body.bookstore-checkout-page .shipping-address-item.selected-item,
+body.bookstore-checkout-page .payment-method._active,
+body.bookstore-checkout-page .table-checkout-shipping-method input[type="radio"]:checked {
+    border-color: #0095ff !important;
+}
+
+body.bookstore-checkout-page .shipping-address-item.selected-item,
+body.bookstore-checkout-page .payment-method._active {
+    background: #f7fbff !important;
+    box-shadow: 0 0 0 1px rgba(0, 149, 255, 0.08), 0 10px 24px rgba(15, 23, 42, 0.06) !important;
+}
+
+body.bookstore-checkout-page .shipping-address-item .action-select-shipping-item {
+    bottom: 12px !important;
+    right: 12px !important;
+}
+
+body.bookstore-checkout-page .action-show-popup {
+    margin-top: 0 !important;
+}
+
+body.bookstore-checkout-page .table-checkout-shipping-method td {
+    padding: 13px 16px !important;
+    line-height: 1.4 !important;
+}
+
+body.bookstore-checkout-page .checkout-shipping-method .actions-toolbar,
+body.bookstore-checkout-page .payment-method .actions-toolbar {
+    margin-top: 14px !important;
+}
+
+body.bookstore-checkout-page .payment-method {
+    margin-bottom: 10px !important;
+    border-color: #d8e3ef !important;
+}
+
+body.bookstore-checkout-page .payment-method-title {
+    min-height: 54px !important;
+    padding: 0 16px !important;
+}
+
+body.bookstore-checkout-page .payment-method-content {
+    padding: 0 16px 16px !important;
+}
+
+body.bookstore-checkout-page .opc-sidebar .modal-inner-wrap {
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.bookstore-checkout-page .opc-sidebar .opc-block-summary,
+body.bookstore-checkout-page .opc-block-shipping-information {
+    padding: 20px !important;
+    border-color: #d8e3ef !important;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07) !important;
+}
+
+body.bookstore-checkout-page .opc-sidebar .opc-block-summary > .title {
+    margin-bottom: 14px !important;
+    padding-bottom: 12px !important;
+}
+
+body.bookstore-checkout-page .opc-sidebar .opc-block-summary > .title::before {
+    font-size: 17px !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .table-totals th,
+body.bookstore-checkout-page .opc-block-summary .table-totals td {
+    padding: 8px 0 !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .grand.totals th,
+body.bookstore-checkout-page .opc-block-summary .grand.totals td {
+    padding-top: 13px !important;
+    font-size: 15px !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .grand.totals .price {
+    display: inline-block !important;
+    color: #0095ff !important;
+    font-size: 22px !important;
+    font-weight: 950 !important;
+    letter-spacing: 0 !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .items-in-cart > .title {
+    margin-top: 14px !important;
+    padding-top: 12px !important;
+}
+
+body.bookstore-checkout-page .opc-block-summary .items-in-cart > .title::before {
+    font-size: 13px !important;
+}
+
+body.bookstore-checkout-page .opc-block-shipping-information {
+    margin-top: 12px !important;
+}
+
+body.bookstore-checkout-page .opc-block-shipping-information .shipping-information-title {
+    margin-bottom: 12px !important;
+    padding-bottom: 10px !important;
+    font-size: 15px !important;
+}
+
+body.bookstore-checkout-page button.action.primary,
+body.bookstore-checkout-page .payment-method .actions-toolbar .primary button {
+    min-height: 46px !important;
+    padding: 12px 26px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 18px rgba(0, 149, 255, 0.22) !important;
+}
+
+@media (max-width: 1024px) {
+    body.bookstore-checkout-page .opc-wrapper,
+    body.bookstore-checkout-page .opc-sidebar {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    body.bookstore-checkout-page .page-main {
+        padding-top: 24px !important;
+        padding-bottom: 42px !important;
+    }
+
+    body.bookstore-checkout-page .opc-progress-bar-item > span::after {
+        white-space: normal !important;
+    }
+}
+
+/* ==========================================================================
+   12. CHECKOUT SUCCESS PAYMENT
+   ========================================================================== */
+.bookstore-success.checkout-success-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 52px 20px 64px;
+    background: #f6f8fb;
+}
+
+.bookstore-success .checkout-success-card {
+    width: 100%;
+    max-width: 860px;
+    padding: 34px;
+    border: 1px solid #d8e3ef;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.08);
+    text-align: center;
+}
+
+.bookstore-success .success-icon {
+    margin-bottom: 18px;
+}
+
+.bookstore-success h1 {
+    margin: 0 0 10px;
+    color: #0f172a;
+    font-size: 30px;
+    font-weight: 950;
+    letter-spacing: 0;
+}
+
+.bookstore-success .success-lead {
+    margin: 0 0 24px;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.bookstore-success .success-lead strong {
+    color: #0f172a;
+    font-weight: 950;
+}
+
+.bookstore-success .success-payment-panel {
+    margin: 0 auto 24px;
+    padding: 20px;
+    border: 1px solid #d8e3ef;
+    border-radius: 8px;
+    background: #fbfdff;
+    text-align: left;
+}
+
+.bookstore-success .success-payment-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e6edf5;
+}
+
+.bookstore-success .success-payment-heading span {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.bookstore-success .success-payment-heading strong {
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 950;
+}
+
+.bookstore-success .success-payment-note {
+    margin: 10px 0 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.bookstore-success .action.primary.continue {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 26px;
+    border-radius: 8px;
+    background: #0095ff;
+    color: #fff;
+    font-weight: 900;
+    text-decoration: none;
+    box-shadow: 0 8px 18px rgba(0, 149, 255, 0.22);
+}
+
+@media (max-width: 768px) {
+    .bookstore-success.checkout-success-wrapper {
+        padding: 28px 14px 42px;
+    }
+
+    .bookstore-success .checkout-success-card {
+        padding: 22px;
+    }
+
 }

@@ -124,6 +124,37 @@
     margin-top: 10px !important;
 }
 
+.cms-new-books #maincontent,
+.cms-new-books .columns,
+.cms-new-books .column.main,
+.cms-new-books .main.content {
+    row-gap: 0 !important;
+}
+
+.cms-new-books .main.content > *:empty {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+.cms-new-books .bookstore-listing-hero,
+.cms-new-books .bookstore-cms-hero {
+    margin-bottom: 8px !important;
+    padding-bottom: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.cms-new-books .bookstore-listing-hero ~ .catalog-search-container,
+.cms-new-books .bookstore-cms-hero ~ .catalog-search-container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
 /* Biến container thành Flexbox giúp Sidebar và Content nằm ngang hàng */
 .cms-new-books .catalog-search-container.theme-green {
     display: flex !important;

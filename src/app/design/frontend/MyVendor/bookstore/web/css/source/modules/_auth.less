@@ -28,13 +28,46 @@
             box-shadow: 0 8px 24px rgba(0, 149, 255, 0.05) !important;
         }
 
+        .login-card > .block-content,
+        .form-login-custom,
+        .form-create-account-custom {
+            width: 100% !important;
+            max-width: none !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        .login-header {
+            margin-bottom: 20px !important;
+            h2 {
+                margin: 0 0 12px !important;
+                font-size: 26px !important;
+                line-height: 1.25 !important;
+                font-weight: 500 !important;
+                color: var(--text-main) !important;
+            }
+            p {
+                margin: 0 !important;
+                font-size: 14px !important;
+                line-height: 1.5 !important;
+                color: var(--text-main) !important;
+            }
+        }
+
         // ĐÈ BẸP FIELDSET CŨ CỦA MAGENTO
+        .fieldset-custom-login,
         .fieldset-custom-register, 
         .fieldset {
             border: none !important;
             margin: 0 !important;
             padding: 0 !important;
             display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
         }
 
         // CẤU TRÚC HÀNG NGANG: NHÃN TRÁI - INPUT PHẢI (CHẶN ĐỨNG TRÀN VIỀN)
@@ -45,7 +78,10 @@
             align-items: center !important;
             justify-content: flex-start !important;
             width: 100% !important;
+            max-width: 100% !important;
             margin-bottom: 16px !important;
+            gap: 16px !important;
+            box-sizing: border-box !important;
         }
 
         .label-custom,
@@ -61,16 +97,19 @@
 
         .control-custom,
         .control {
-            flex: 1 1 auto !important;
-            width: auto !important;
-            max-width: calc(100% - 120px) !important; // Khóa chết kích thước không cho tràn vạch đỏ
+            flex: 1 1 calc(100% - 136px) !important;
+            min-width: 0 !important;
+            width: calc(100% - 136px) !important;
+            max-width: calc(100% - 136px) !important;
             display: block !important;
+            box-sizing: border-box !important;
         }
 
         .input-custom-field,
         .input-text {
             width: 100% !important;
             max-width: 100% !important;
+            min-width: 0 !important;
             height: 42px !important;
             border: 1px solid var(--border) !important;
             border-radius: 8px !important;
@@ -175,6 +214,21 @@
             gap: 8px !important;
             font-weight: 600 !important;
             cursor: pointer !important;
+            margin: 0 auto !important;
+
+            img {
+                width: 18px !important;
+                height: 18px !important;
+                max-width: 18px !important;
+                flex: 0 0 18px !important;
+                display: block !important;
+            }
+        }
+
+        .social-actions-custom {
+            display: flex !important;
+            justify-content: center !important;
+            width: 100% !important;
         }
 
         // Khối chuyển hướng chân Form đổ về góc trái dưới gạch viền
@@ -195,12 +249,14 @@
 @media only screen and (max-width: 480px) {
     .customer-account-login .login-container-wrapper,
     .customer-account-create .login-container-wrapper {
+        padding: 28px 16px !important;
+        .login-card { padding: 24px 18px !important; }
         .field-group-custom, .field {
             flex-direction: column !important;
             align-items: flex-start !important;
-            gap: 4px !important;
+            gap: 6px !important;
         }
-        .label-custom, .label { width: 100% !important; }
+        .label-custom, .label { width: 100% !important; min-width: 0 !important; flex-basis: auto !important; }
         .control-custom, .control { max-width: 100% !important; width: 100% !important; }
         .btn-login-submit-custom, .btn-register-submit-custom, .btn-google-login-custom { max-width: 100% !important; }
     }

@@ -1,0 +1,53 @@
+<?php
+/**
+ * @var \Magento\Checkout\Block\Onepage\Success $block
+ */
+$viewModel = $block->getData('success_payment_view_model');
+$order = $viewModel ? $viewModel->getOrder() : null;
+$orderId = $order ? $order->getIncrementId() : $block->getOrderId();
+$isVietQr = $viewModel && $viewModel->isVietQr($order);
+?>
+<div class="checkout-success-wrapper bookstore-success">
+    <div class="checkout-success-card">
+        <div class="success-icon" aria-hidden="true">
+            <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="36" cy="36" r="36" fill="#EAF7EF"/>
+                <path d="M50 26L32 44L23 35" stroke="#16A34A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <h1><?= $block->escapeHtml(__('Đặt hàng thành công!')) ?></h1>
+        <p class="success-lead">
+            <?= $block->escapeHtml(__('Cảm ơn bạn đã mua sách tại BookStore.')) ?><br>
+            <?= $block->escapeHtml(__('Mã đơn hàng:')) ?>
+            <strong>#<?= $block->escapeHtml($orderId) ?></strong>
+        </p>
+
+        <?php if ($viewModel && $order): ?>
+            <div class="success-payment-panel">
+                <div class="success-payment-heading">
+                    <span><?= $block->escapeHtml(__('Phương thức thanh toán')) ?></span>
+                    <strong><?= $block->escapeHtml($viewModel->getPaymentTitle($order)) ?></strong>
+                </div>
+
+                <?php if ($isVietQr): ?>
+                    <p class="success-payment-note">
+                        <?= $block->escapeHtml(__('Cửa hàng đã ghi nhận đơn hàng và sẽ kiểm tra giao dịch chuyển khoản của bạn.')) ?>
+                    </p>
+                <?php else: ?>
+                    <p class="success-payment-note">
+                        <?= $block->escapeHtml(__('Bạn sẽ thanh toán khi nhận hàng. Cửa hàng sẽ liên hệ nếu cần xác nhận thêm thông tin giao hàng.')) ?>
+                    </p>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="actions-toolbar">
+            <div class="primary">
+                <a class="action primary continue" href="<?= $block->escapeUrl($block->getUrl('')) ?>">
+                    <?= $block->escapeHtml(__('Tiếp tục mua sắm')) ?>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

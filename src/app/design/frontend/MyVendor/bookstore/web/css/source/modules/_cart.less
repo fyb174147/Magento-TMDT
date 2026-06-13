@@ -706,7 +706,6 @@ body.bookstore-checkout-page {
             box-shadow: 0 4px 12px rgba(0, 149, 255, 0.05) !important;
         }
 
-        // Ẩn nhãn chữ Tiếng Anh gốc (Check / Money order)
         .payment-method-title {
             display: flex !important;
             align-items: center !important;
@@ -721,14 +720,9 @@ body.bookstore-checkout-page {
             }
 
             label.label span {
-                font-size: 0 !important; // Khử chữ gốc
-                
-                &:before {
-                    content: "Chuyển khoản Ngân hàng nội địa (Xác thực API tự động QR-Code)" !important;
-                    font-size: 15px !important;
-                    font-weight: 600 !important;
-                    color: #0f172a !important;
-                }
+                font-size: 15px !important;
+                font-weight: 600 !important;
+                color: #0f172a !important;
             }
         }
 
@@ -743,7 +737,6 @@ body.bookstore-checkout-page {
                 display: none !important; // Khử bỏ rác thỏa thuận rườm rà
             }
 
-            // Tạo khung thông báo hướng dẫn chuyển khoản mượt mà
             .payment-method-note {
                 background: #f8fafc !important;
                 border: 1px solid #e2e8f0 !important;
@@ -753,15 +746,6 @@ body.bookstore-checkout-page {
                 font-size: 13.5px !important;
                 line-height: 1.6 !important;
                 color: #475569 !important;
-                
-                span {
-                    font-size: 0 !important;
-                    &:before {
-                        content: "Hệ thống sẽ tự động tạo mã QR điền sẵn số tiền và nội dung chuyển khoản qua API ngay sau khi bạn bấm Đặt hàng. Đơn hàng sẽ được kích hoạt tự động sau 30 giây kể từ khi nhận tiền thành công." !important;
-                        font-size: 13.5px !important;
-                        color: #475569 !important;
-                    }
-                }
             }
 
             // Làm đẹp cho nút Đặt hàng (Place Order) nằm bên trong khối này
@@ -792,11 +776,7 @@ body.bookstore-checkout-page {
                         }
 
                         span {
-                            font-size: 0 !important;
-                            &:before {
-                                content: "Xác nhận đặt hàng & Thanh toán" !important;
-                                font-size: 15px !important;
-                            }
+                            font-size: 15px !important;
                         }
                     }
                 }

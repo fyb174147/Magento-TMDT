@@ -5,6 +5,7 @@ namespace Bookstore\Payment\Model;
 use Magento\Payment\Model\Method\AbstractMethod;
 use Magento\Payment\Model\InfoInterface;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\LocalizedException;
 
 class VietQr extends AbstractMethod
 {
@@ -19,13 +20,50 @@ class VietQr extends AbstractMethod
     protected $_canUseForMultishipping = false;
 
     /**
+     * Store confirmation data submitted by the VietQR renderer.
+     */
+    public function assignData(DataObject $data)
+    {
+        parent::assignData($data);
+
+        $additionalData = $data->getData('additional_data');
+
+        if ($additionalData instanceof DataObject) {
+            $additionalData = $additionalData->getData();
+        }
+
+        if (is_array($additionalData)) {
+            $this->getInfoInstance()
+                ->setAdditionalInformation(
+                    'vietqr_self_confirmed',
+                    !empty($additionalData['vietqr_self_confirmed']) ? 1 : 0
+                )
+                ->setAdditionalInformation(
+                    'vietqr_amount',
+                    $additionalData['vietqr_amount'] ?? null
+                )
+                ->setAdditionalInformation(
+                    'vietqr_content',
+                    $additionalData['vietqr_content'] ?? null
+                );
+        }
+
+        return $this;
+    }
+
+    /**
      * Validate payment method
      */
     public function validate()
     {
         parent::validate();
 
-        // Always return true for offline simulated payment
+        if ((int)$this->getInfoInstance()->getAdditionalInformation('vietqr_self_confirmed') !== 1) {
+            throw new LocalizedException(
+                __('Vui lòng quét mã VietQR và xác nhận đã chuyển khoản trước khi đặt hàng.')
+            );
+        }
+
         return $this;
     }
 
@@ -84,4 +122,3 @@ class VietQr extends AbstractMethod
         return parent::isAvailable($quote);
     }
 }
-

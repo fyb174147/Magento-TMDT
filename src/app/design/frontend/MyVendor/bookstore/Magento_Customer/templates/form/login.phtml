@@ -55,7 +55,7 @@
             </div>
 
             <div class="social-actions-custom">
-                <button type="button" class="btn-google-login-custom" onclick="window.location.href='#'">
+                <button type="button" class="btn-google-login-custom" onclick="window.location.href='<?= $escaper->escapeUrl($block->getUrl('shop/auth/google')) ?>'">
                     <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
                     <span><?= $escaper->escapeHtml(__('Google')) ?></span>
                 </button>

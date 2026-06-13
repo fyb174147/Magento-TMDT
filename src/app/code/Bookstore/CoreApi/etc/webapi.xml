@@ -8,8 +8,20 @@
         <service class="Bookstore\CoreApi\Api\CatalogInterface" method="getCategories"/>
         <resources><resource ref="anonymous"/></resources>
     </route>
+    <route url="/V1/bookstore/catalog/products/:productId" method="GET">
+        <service class="Bookstore\CoreApi\Model\BookstoreApi" method="getProduct"/>
+        <resources><resource ref="anonymous"/></resources>
+    </route>
     <route url="/V1/bookstore/customer/me" method="GET">
         <service class="Bookstore\CoreApi\Api\CustomerInterface" method="me"/>
+        <resources><resource ref="self"/></resources>
+    </route>
+    <route url="/V1/bookstore/customer/profile" method="GET">
+        <service class="Bookstore\CoreApi\Model\BookstoreApi" method="getCustomerProfile"/>
+        <resources><resource ref="self"/></resources>
+    </route>
+    <route url="/V1/bookstore/customer/orders" method="GET">
+        <service class="Bookstore\CoreApi\Model\BookstoreApi" method="getCustomerOrders"/>
         <resources><resource ref="self"/></resources>
     </route>
     <route url="/V1/bookstore/orders" method="POST">
@@ -18,6 +30,14 @@
     </route>
     <route url="/V1/bookstore/orders/:orderId" method="GET">
         <service class="Bookstore\CoreApi\Api\OrderRepositoryInterface" method="get"/>
+        <resources><resource ref="self"/></resources>
+    </route>
+    <route url="/V1/bookstore/orders/:orderId/status" method="GET">
+        <service class="Bookstore\CoreApi\Model\BookstoreApi" method="getOrderStatus"/>
+        <resources><resource ref="self"/></resources>
+    </route>
+    <route url="/V1/bookstore/payments/vietqr/qr" method="GET">
+        <service class="Bookstore\CoreApi\Model\BookstoreApi" method="getVietQr"/>
         <resources><resource ref="self"/></resources>
     </route>
 </routes>

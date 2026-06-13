@@ -38,6 +38,8 @@ services:
     environment:
       # Tăng giới hạn RAM cho PHP để fix lỗi Admin lag
       - PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
     deploy:
       resources:
         limits:

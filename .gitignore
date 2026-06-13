@@ -57,3 +57,6 @@ src/phpserver/
 src/var/cache/
 src/var/page_cache/
 src/var/composer_home/
+
+custom_code_tree.txt
+agent_rules.txt

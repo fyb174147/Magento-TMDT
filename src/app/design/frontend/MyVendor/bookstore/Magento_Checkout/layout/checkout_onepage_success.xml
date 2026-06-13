@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="css/cart-custom.css"/>
+    </head>
+    <body>
+        <referenceBlock name="checkout.success">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Magento_Checkout::success.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="success_payment_view_model" xsi:type="object">Bookstore\Payment\ViewModel\SuccessPayment</argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>
