@@ -4,6 +4,17 @@ $_product = $block->getProduct();
 $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
 $isLoggedIn = $customerSession->isLoggedIn();
+$stockQty = 0;
+
+try {
+    $stockRegistry = $objectManager->get(\Magento\CatalogInventory\Api\StockRegistryInterface::class);
+    $stockItem = $stockRegistry->getStockItem((int)$_product->getId());
+    $stockQty = max(0, (int)floor((float)$stockItem->getQty()));
+} catch (\Exception $e) {
+    $stockQty = $_product->isAvailable() ? 999 : 0;
+}
+
+$isSaleable = $_product->isSaleable() && $stockQty > 0;
 ?>
 <div class="product-detail-container">
     <!-- Breadcrumb -->
@@ -79,9 +90,12 @@ $isLoggedIn = $customerSession->isLoggedIn();
 
             <!-- Stock & SKU Badges -->
             <div class="product-badges-section">
-                <span class="stock-badge <?= $_product->isAvailable() ? 'is-in-stock' : 'is-out-stock' ?>">
-                    <?= $_product->isAvailable() ? 'CÒN HÀNG' : 'HẾT HÀNG' ?>
+                <span class="stock-badge <?= $isSaleable ? 'is-in-stock' : 'is-out-stock' ?>">
+                    <?= $isSaleable ? 'CÒN HÀNG' : 'HẾT HÀNG' ?>
                 </span>
+                <?php if ($isSaleable): ?>
+                    <span class="sku-badge">Còn lại: <?= (int)$stockQty ?> cuốn</span>
+                <?php endif; ?>
                 <span class="sku-badge">SKU: <?= $block->escapeHtml($_product->getSku()) ?></span>
             </div>
 
@@ -112,12 +126,22 @@ $isLoggedIn = $customerSession->isLoggedIn();
                     
                     <div class="qty-section">
                         <label class="qty-label">Số Lượng:</label>
-                        <input type="number" name="qty" value="1" min="1" max="999" class="qty-input">
+                        <input type="number"
+                               name="qty"
+                               value="<?= $isSaleable ? 1 : 0 ?>"
+                               min="<?= $isSaleable ? 1 : 0 ?>"
+                               max="<?= (int)$stockQty ?>"
+                               class="qty-input"
+                               <?= $isSaleable ? '' : 'disabled' ?>>
                     </div>
 
-                    <?php if ($isLoggedIn): ?>
+                    <?php if ($isLoggedIn && $isSaleable): ?>
                         <button type="submit" class="btn-add-to-cart">
                             Thêm vào giỏ hàng
+                        </button>
+                    <?php elseif ($isLoggedIn): ?>
+                        <button type="button" class="btn-add-to-cart is-login-required" disabled aria-disabled="true">
+                            Hết hàng
                         </button>
                     <?php else: ?>
                         <span class="login-required-tooltip"
@@ -132,6 +156,33 @@ $isLoggedIn = $customerSession->isLoggedIn();
                         </span>
                     <?php endif; ?>
                 </form>
+                <?php if ($isSaleable): ?>
+                    <script>
+                        (function () {
+                            var form = document.currentScript.closest('.product-actions-block').querySelector('.product-action-form');
+                            var qtyInput = form ? form.querySelector('.qty-input') : null;
+                            var maxQty = <?= (int)$stockQty ?>;
+
+                            if (!form || !qtyInput) {
+                                return;
+                            }
+
+                            function clampQty() {
+                                var value = parseInt(qtyInput.value, 10);
+                                if (isNaN(value) || value < 1) {
+                                    value = 1;
+                                }
+                                if (value > maxQty) {
+                                    value = maxQty;
+                                }
+                                qtyInput.value = value;
+                            }
+
+                            qtyInput.addEventListener('input', clampQty);
+                            form.addEventListener('submit', clampQty);
+                        })();
+                    </script>
+                <?php endif; ?>
             </div>
 
             <!-- Product Specs -->
